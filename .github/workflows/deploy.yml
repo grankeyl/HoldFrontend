@@ -40,5 +40,5 @@ jobs:
           password: ${{ secrets.DEV_SSH_PASSWORD }}
           script: |
             cd traefik
-            docker compose build frontend
-            docker compose up frontend -d
+            docker compose rm -f frontend
+            docker compose up --build -d frontend
