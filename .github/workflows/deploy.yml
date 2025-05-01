@@ -18,12 +18,6 @@ jobs:
           npm install
           npm run build
 
-      - name: Debug list workspace
-        run: |
-          pwd
-          ls -la
-          ls -la app/dist
-
       - name: Clean remote frontend directory
         uses: appleboy/ssh-action@v0.1.6
         with:
@@ -34,11 +28,7 @@ jobs:
             cd project/frontend
             rm -rf dist
             mkdir -p dist
-        
-      - name: Debug list root directory
-        run: |
-          pwd
-          ls -la
+            exit
 
       - name: Upload docker-compose.yml
         uses: appleboy/scp-action@v0.1.4
@@ -66,7 +56,7 @@ jobs:
           host: ${{ secrets.DEV_SSH_HOST }}
           username: ${{ secrets.DEV_SSH_USER }}
           password: ${{ secrets.DEV_SSH_PASSWORD }}
-          source: "app/dist/*"
+          source: "./app/dist/*"
           target: project/frontend
           rm: false
 
