@@ -49,6 +49,16 @@ jobs:
           source: "Dockerfile.frontend"
           target: project/frontend
           rm: false
+
+      - name: Upload nginx.conf
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
+          source: "nginx.conf"
+          target: project/frontend
+          rm: false
       
       - name: Upload dist directory
         uses: appleboy/scp-action@v0.1.4

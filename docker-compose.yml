@@ -7,9 +7,6 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.frontend
-    depends_on:
-      - postgres
-      - backend
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.entrypoints=http"
@@ -25,5 +22,9 @@ services:
     networks:
       - app_network
       - proxy
-volumes:
-  db_data:
+
+networks:
+  app_network:
+    driver: bridge
+  proxy:
+    external: true
