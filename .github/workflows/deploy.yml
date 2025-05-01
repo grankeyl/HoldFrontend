@@ -40,13 +40,33 @@ jobs:
           pwd
           ls -la
 
-      - name: Upload frontend files
+      - name: Upload docker-compose.yml
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.DEV_SSH_HOST }}
           username: ${{ secrets.DEV_SSH_USER }}
           password: ${{ secrets.DEV_SSH_PASSWORD }}
-          source: docker-compose.yml Dockerfile.frontend README.md
+          source: "docker-compose.yml"
+          target: project/frontend
+          rm: false
+
+      - name: Upload Dockerfile
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
+          source: "Dockerfile.frontend"
+          target: project/frontend
+          rm: false
+      
+      - name: Upload dist directory
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
+          source: "app/dist"
           target: project/frontend
           rm: false
 
