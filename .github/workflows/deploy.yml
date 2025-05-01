@@ -45,7 +45,6 @@ jobs:
             docker-compose.yml
             Dockerfile.frontend
             README.md
-            app/dist/**/*
           target: project/frontend
           rm: false
 
