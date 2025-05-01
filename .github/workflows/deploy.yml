@@ -30,10 +30,10 @@ jobs:
           username: ${{ secrets.DEV_SSH_USER }}
           password: ${{ secrets.DEV_SSH_PASSWORD }}
           source: |
-            docker-compose.yml
-            Dockerfile.frontend
-            README.md
-            app/dist/**
+            ./docker-compose.yml
+            ./Dockerfile.frontend
+            ./README.md
+            ./app/dist/**
           target: project/frontend
 
       - name: Restart Frontend Container
