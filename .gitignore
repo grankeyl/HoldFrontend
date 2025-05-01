@@ -27,8 +27,9 @@ dist-ssr
 *
 
 # Но не игнорировать это
-!dist/
-!dist/**
+!app/
+!app/dist/
+!app/dist/**
 !.github/
 !.github/**
 !.gitignore

@@ -2,7 +2,8 @@ name: Deploy to Development
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -11,26 +12,29 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Server
+      - name: Clean remote frontend directory
         uses: appleboy/ssh-action@v0.1.6
         with:
           host: ${{ secrets.DEV_SSH_HOST }}
           username: ${{ secrets.DEV_SSH_USER }}
           password: ${{ secrets.DEV_SSH_PASSWORD }}
           script: |
-            cd traefik
+            cd project/frontend
             rm -rf dist
-            mkdir dist
-            exit 
-          
-      - name: Upload frontend
+            mkdir -p dist
+
+      - name: Upload frontend files
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.DEV_SSH_HOST }}
           username: ${{ secrets.DEV_SSH_USER }}
           password: ${{ secrets.DEV_SSH_PASSWORD }}
-          source: "./dist/*"
-          target: "traefik"
+          source: |
+            docker-compose.yml
+            Dockerfile.frontend
+            README.md
+            app/dist/**
+          target: project/frontend
 
       - name: Restart Frontend Container
         uses: appleboy/ssh-action@v0.1.6
@@ -39,5 +43,5 @@ jobs:
           username: ${{ secrets.DEV_SSH_USER }}
           password: ${{ secrets.DEV_SSH_PASSWORD }}
           script: |
-            cd traefik
-            docker compose up --build
+            cd project/frontend
+            docker compose up -d --build
