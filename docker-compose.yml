@@ -1,0 +1,29 @@
+services:
+      
+  frontend:
+    deploy:
+      restart_policy:
+        condition: always
+    build:
+      context: ./
+      dockerfile: Dockerfile.frontend
+    depends_on:
+      - postgres
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.entrypoints=http"
+      - "traefik.http.routers.frontend.rule=Host(`testnet.holdslaves.com`)"
+      - "traefik.http.middlewares.frontend-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.frontend.middlewares=frontend-https-redirect"
+      - "traefik.http.routers.frontend-secure.entrypoints=https"
+      - "traefik.http.routers.frontend-secure.rule=Host(`testnet.holdslaves.com`)"
+      - "traefik.http.routers.frontend-secure.tls=true"
+      - "traefik.http.routers.frontend-secure.service=frontend"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      - "traefik.docker.network=proxy"
+    networks:
+      - app_network
+      - proxy
+volumes:
+  db_data:
