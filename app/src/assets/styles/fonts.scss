@@ -11,37 +11,37 @@ $font-path: '@/assets/fonts/';
 }
 
 // Thin (100)
-@include zapus-font(normal, 100, zapussans-thin);
-@include zapus-font(italic, 100, zapussans-thinitalic);
+@include zapus-font(normal, 100, ZapusSans-Thin);
+@include zapus-font(italic, 100, ZapusSans-ThinItalic);
 
 // ExtraLight (200)
-@include zapus-font(normal, 200, zapussans-extralight);
-@include zapus-font(italic, 200, zapussans-extralightitalic);
+@include zapus-font(normal, 200, ZapusSans-ExtraLight);
+@include zapus-font(italic, 200, ZapusSans-ExtraLightItalic);
 
 // Light (300)
-@include zapus-font(normal, 300, zapussans-light);
-@include zapus-font(italic, 300, zapussans-lightitalic);
+@include zapus-font(normal, 300, ZapusSans-Light);
+@include zapus-font(italic, 300, ZapusSans-LightItalic);
 
 // Regular (400)
-@include zapus-font(normal, 400, zapussans-regular);
-@include zapus-font(italic, 400, zapussans-italic);
+@include zapus-font(normal, 400, ZapusSans-Regular);
+@include zapus-font(italic, 400, ZapusSans-Italic);
 
 // Medium (500)
-@include zapus-font(normal, 500, zapussans-medium);
-@include zapus-font(italic, 500, zapussans-mediumitalic);
+@include zapus-font(normal, 500, ZapusSans-Medium);
+@include zapus-font(italic, 500, ZapusSans-MediumItalic);
 
 // Semibold (600)
-@include zapus-font(normal, 600, zapussans-semibold);
-@include zapus-font(italic, 600, zapussans-semibolditalic);
+@include zapus-font(normal, 600, ZapusSans-SemiBold);
+@include zapus-font(italic, 600, ZapusSans-SemiBoldItalic);
 
 // Bold (700)
-@include zapus-font(normal, 700, zapussans-bold);
-@include zapus-font(italic, 700, zapussans-bolditalic);
+@include zapus-font(normal, 700, ZapusSans-Bold);
+@include zapus-font(italic, 700, ZapusSans-BoldItalic);
 
 // ExtraBold (800)
-@include zapus-font(normal, 800, zapussans-extrabold);
-@include zapus-font(italic, 800, zapussans-extrabolditalic);
+@include zapus-font(normal, 800, ZapusSans-ExtraBold);
+@include zapus-font(italic, 800, ZapusSans-ExtraBoldItalic);
 
 // Black (900)
-@include zapus-font(normal, 900, zapussans-black);
-@include zapus-font(italic, 900, zapussans-blackitalic);
+@include zapus-font(normal, 900, ZapusSans-Black);
+@include zapus-font(italic, 900, ZapusSans-BlackItalic);
