@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+ 
       - name: Install dependencies and build frontend
         run: |
           cd app
@@ -79,4 +79,4 @@ jobs:
           password: ${{ secrets.DEV_SSH_PASSWORD }}
           script: |
             cd project/frontend
-            docker compose up -d --build
+            docker compose up --build -d
