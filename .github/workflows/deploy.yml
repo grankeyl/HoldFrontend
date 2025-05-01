@@ -46,7 +46,7 @@ jobs:
           host: ${{ secrets.DEV_SSH_HOST }}
           username: ${{ secrets.DEV_SSH_USER }}
           password: ${{ secrets.DEV_SSH_PASSWORD }}
-          ssource: docker-compose.yml Dockerfile.frontend README.md
+          source: docker-compose.yml Dockerfile.frontend README.md
           target: project/frontend
           rm: false
 
