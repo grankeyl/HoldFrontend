@@ -1,0 +1,47 @@
+@use "@/assets/styles/variables.scss" as *;
+@use "@/assets/styles/keyframes.scss" as *;
+
+.load {
+    width: 100%;
+    height: 100%;
+    background-color: $app-background;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .load-image {
+        width: 40vw;
+        max-width: 320px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+    
+        img {
+            width: 100%;
+            height: auto;
+            animation: logotypeFadeIn 0.9s ease-in-out infinite;
+            will-change: opacity;
+            animation-fill-mode: forwards;
+
+            @media screen and (min-width: 440px) {
+                width: 312px;
+            }
+        }
+    }
+
+    .load-bg {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+}

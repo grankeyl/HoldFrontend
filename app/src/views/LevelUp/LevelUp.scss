@@ -1,0 +1,467 @@
+@use '@/assets/styles/keyframes.scss' as *;
+@use "@/assets/styles/variables.scss" as *;
+
+@keyframes fadeInUpContent {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.preview {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  opacity: .4;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+._wrap._levelup {
+  width: 100%;
+  height: 100%;
+  background: url("/levelup/background.png") no-repeat;
+  background-size: cover;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  overflow: hidden;
+  padding-bottom: 80px;
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    overflow: auto;
+    animation: fadeInUp 0.6s ease-out both;
+  }
+
+  ._levelupSymbols {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 348px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInZoom 0.6s ease-out both;
+    animation-delay: 0.15s;
+    will-change: opacity, transform;
+    overflow: hidden;
+
+    &.no-animation {
+      animation: none;
+    }
+
+    img {
+      height: 100%;
+      animation: pulse 2s ease-in-out infinite;
+      animation-delay: 0.75s;
+
+      @media screen and (min-width: 386px) {
+        width: 100%;
+      }
+    }
+  }
+
+  ._view {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 88px 0 135px 0;
+
+    .contextSection {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .context {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      position: relative;
+      z-index: 1;
+      margin-top: 5%;
+      overflow: hidden;
+      padding-left: $app-page-padding-left;
+      padding-right: $app-page-padding-right;
+
+      .contextInfo {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        position: absolute;
+        top: 52%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        animation: fadeInUpContent 0.6s ease-out both;
+        animation-delay: 0.3s;
+
+        &Image {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 1;
+          gap: 8px;
+          margin-top: 8%;
+          margin-bottom: 16%;
+
+          & img {
+            width: 146px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 12px;
+          }
+
+          &Info {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            bottom: -45px;
+            gap: 4px;
+
+            & .kit-icon {
+              margin-top: 4px;
+            }
+
+            & span {
+              width: fit-content;
+              height: 28px;
+              font-size: 17px;
+              font-weight: 700;
+              background: $app-h;
+              border-radius: 50px;
+              white-space: nowrap;
+              color: $app-b;
+              text-align: center;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 0 11px;
+            }
+          }
+        }
+
+        &Level {
+          width: 100%;
+          max-width: fit-content;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          position: relative;
+          z-index: 1;
+          gap: 30px;
+          animation: fadeInZoom 0.6s ease-out both;
+          animation-delay: 0.6s;
+
+          .contextInfoLevelOldTitle {
+            h4 {
+              color: $app-color-tint !important;
+            }
+          }
+
+          &Old, &New {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            gap: 8px;
+
+            &Title {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              gap: 4px;
+              z-index: 1;
+
+              & h4 {
+                width: 100%;
+                height: fit-content;
+                font-size: 20px;
+                font-weight: 600;
+                color: $app-h;
+                text-align: center;
+              }
+            }
+
+            &Description {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 4px;
+
+              & h4 {
+                font-size: 20px;
+                font-weight: 600;
+                color: $app-color-tint;
+              }
+
+              & .kit-icon {
+                margin-top: 3px;
+              }
+
+              & p {
+                font-size: 14px;
+                font-weight: 500;
+                color: $app-color-tint;
+              }
+            }
+          }
+        }
+
+        &Description {
+          width: 100%;
+          max-width: 250px;
+          text-align: center;
+          margin: auto;
+          margin-bottom: 10%;
+          gap: 8px;
+          display: flex;
+          align-items: center;
+          position: relative;
+          z-index: 1;
+          animation: fadeInUp 0.6s ease-out both;
+          animation-delay: 0.9s;
+
+          & h4 {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 32px;
+            color: $app-h;
+
+            & span {
+              display: inline-block;
+              height: 28px;
+              line-height: 28px;
+              font-size: 20px;
+              font-weight: 700;
+              color: $app-b;
+              background: $app-color-primary;
+              border-radius: 12px;
+              white-space: nowrap;
+              text-align: center;
+              padding: 0 6px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: calc($app-menu-height * 1.1);
+    width: 100%;
+    padding-left: $app-page-padding-left;
+    padding-right: $app-page-padding-right;
+    z-index: 10;
+    gap: 15px;
+    animation: fadeInUp 0.6s ease-out both;
+    animation-delay: 1.2s;
+
+    &Button {
+      width: 100%;
+
+      &.ads button {
+        background: $app-bg-noise;
+        box-shadow: 0px 0px 40.447px 0px rgba(255, 255, 255, 0.40) inset;
+        border: 1px solid rgba($app-h, 0.2);
+        backdrop-filter: blur(20px);
+        position: relative;
+        overflow: hidden;
+        height: 50px;
+
+        span {
+          position: relative;
+          color: $app-h;
+        }
+
+        svg {
+          position: relative;
+        }
+
+        & .bg {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 0;
+          opacity: .5;
+          background: $app-bg-secondary-h;
+
+          & img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+          }
+        }
+      }
+
+      button {
+        width: 100%;
+        height: 60px;
+        background: $app-color-primary;
+        border-radius: 10px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s linear, opacity 0.2s linear;
+        will-change: transform, opacity;
+        gap: 10px;
+        cursor: pointer;
+        position: relative;
+
+        &:active {
+          opacity: 0.87;
+          transform: scale(0.98);
+        }
+
+        & .kit-icon {
+          width: 24px;
+          height: 24px;
+        }
+
+        & .loader-button {
+          display: none;
+        }
+
+        &.loading {
+          pointer-events: none;
+
+          & .loader-button {
+            display: block;
+          }
+
+          & .kit-icon, & span, & strong {
+            display: none;
+          }
+        }
+
+        span {
+          font-size: 4.13vw;
+          font-weight: 600;
+          color: $app-button-text;
+          margin-top: 2px;
+
+          @media screen and (min-width: 440px) {
+            font-size: calc($font-size-h2 / 1.2);
+          }
+        }
+
+        strong {
+          width: fit-content;
+          height: 33px;
+          padding: 0 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          border-radius: 10px;
+          background: $app-bg-secondary;
+          z-index: 1;
+          gap: 4px;
+
+          & p {
+            font-size: 14px;
+            font-weight: 600;
+            color: $app-h;
+          }
+
+          & .kit-icon {
+            width: 16px;
+            height: 16px;
+            margin-top: 1px;
+          }
+        }
+      }
+    }
+  }
+}

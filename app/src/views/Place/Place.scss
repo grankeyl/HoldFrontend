@@ -1,0 +1,620 @@
+@use '@/assets/styles/keyframes.scss' as *;
+@use "@/assets/styles/variables.scss" as *;
+
+@keyframes fadeInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.preview {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    opacity: .4;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.head-balance {
+  width: fit-content;
+  height: 36px;
+  position: absolute;
+  top: calc(var(--tg-safe-area-inset-top) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: $app-bg-secondary-h;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  gap: 6px;
+  z-index: 4;
+
+  h4 {
+    width: 100%;
+    height: fit-content;
+    font-size: 17px;
+    font-weight: 700;
+    color: $app-h;
+    text-align: center;
+  }
+
+  & .kit-icon {
+    margin-top: 3px;
+  }
+}
+
+._wrap._place {
+  width: 100%;
+  background: #000;
+  background-size: cover;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  overflow: hidden;
+  padding-bottom: 80px;
+  
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    overflow: auto;
+  }
+
+  ._placeSymbols {
+    top: 70px;
+    left: 0;
+    right: 0;
+    height: 35%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    animation: fadeInZoom 0.6s ease-out;
+    will-change: opacity, transform;
+    overflow: hidden;
+    position: relative;
+
+    &.no-animation {
+      animation: none;
+    }
+
+    & .nulledTop {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        bottom: 0;
+        z-index: 10;
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 1) 100%);
+    }
+
+    & .nulled {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        bottom: 0;
+        z-index: 10;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 100%);
+    }
+  
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+  }
+
+  ._view {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 135px 0;
+
+    .contextSection {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .context {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      position: relative;
+      padding-left: $app-page-padding-left;
+      padding-right: $app-page-padding-right;
+      z-index: 1;
+      margin-top: 5%;
+
+      .contextLocation {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      
+        .icon-wrapper {
+          position: relative;
+          display: inline-block;
+      
+          img {
+            width: 44px;
+            height: 44px;
+
+            &.chains-small {
+                animation: spin 13s linear infinite;
+                will-change: transform;
+            }
+          }
+      
+          .kit-icon {
+            position: absolute;
+            top: -1px;
+            right: -14px;
+            width: 16px;
+            height: 16px;
+      
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+      
+        p {
+            width: fit-content;
+            font-size: 17px;
+            margin: auto;
+            white-space: nowrap;
+
+            span {
+                color: $app-color-tint;
+            }
+        
+            strong {
+                font-weight: 600;
+                color: $app-h;
+            }
+        }
+
+        span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          gap: 6px;
+          margin-top: 6px;
+
+          & .kit-icon {
+            margin-top: 2px;
+            margin-right: 2px;
+          }
+
+          & p {
+            width: fit-content;
+            height: fit-content;
+            font-size: 20px;
+            font-weight: 700;
+            color: $app-h;
+          }
+        }
+      }
+
+      .contextProgress {
+        width: 100%;
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        margin-top: 18px;
+        position: relative;
+
+        &Left {
+            width: 54px;
+            min-width: 54px;
+            max-width: 54px;
+            height: 38px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            & .kit-icon {
+                width: 23px;
+                height: 23px;
+
+                & svg {
+                    width: 23px;
+                    height: 23px;
+                }
+            }
+        }
+
+        &Proccess {
+            width: 100%;
+            height: 64px;
+            max-width: 100%;
+            overflow-y: auto;
+            position: relative;
+
+            &Lines {
+                width: 100%;
+                height: 35px;
+                display: flex;
+                justify-content: space-around;
+                gap: 5px;
+                position: absolute;
+                bottom: 0;
+                padding-left: 14px;
+                padding-right: 14px;
+                display: flex;
+
+                &Lined {
+                    position: relative;
+                    width: 100%;
+                }
+
+                &Line {
+                    width: 100%;
+                    height: 100%;
+                    min-width: 4px;
+                    background: $app-bg-secondary-b;
+                    border-radius: 9px;
+                    box-shadow: 0px 0px 0px 0px;
+                    transition: background 0.1s linear;
+                    will-change: background;
+
+                    &.primary {
+                      background: $app-color-primary;
+                      box-shadow: 0px 0px 12px 0px rgb(152, 43, 12);
+                    }
+
+                    &Last {
+                        position: absolute;
+                        z-index: 2;
+                        top: -26px;
+                        width: 33px;
+                        min-width: 33px;
+                        height: 17px;
+                        background: $app-color-primary;
+                        border-radius: 30px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        left: 50%;
+                        transform: translateX(-50%);
+
+                        &.lasting {
+                            left: 0;
+                        }
+
+                        &::before {
+                            content: url('/icons/root/tail-block.svg');
+                            width: inline-block;
+                            position: absolute;
+                            bottom: -8px;
+                        }
+
+                        & p {
+                            height: 14px;
+                            font-size: 12px;
+                            font-weight: 800;
+                            color: $app-b;
+                        }
+                    }
+
+                    &All {
+                        position: absolute;
+                        z-index: 1;
+                        top: -26px;
+                        width: 33px;
+                        min-width: 33px;
+                        height: 17px;
+                        background: $app-h;
+                        border-radius: 30px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        right: 0px;
+
+                        & p {
+                            height: 15px;
+                            font-size: 12px;
+                            font-weight: 800;
+                            color: $app-b;
+                        }
+                    }
+                }
+            }
+        }
+
+        &Right {
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            align-items: center;
+            width: 54px;
+            min-width: 54px;
+            max-width: 54px;
+            height: 38px;
+
+            & img {
+                width: 31px;
+                height: 31px;
+                margin-bottom: 4px;
+            }
+
+            & p {
+                font-size: 14px;
+                font-weight: 600;
+                color: $app-color-tint;
+            }
+        }
+      }
+
+      .contextPlaces {
+        display: flex;
+        gap: 8px;
+        margin-top: 24px;
+        width: 100%;
+        overflow-x: scroll;
+
+        .contextPlace {
+          width: 150px;
+          max-width: 150px;
+          min-width: 150px;
+          height: 126px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          background: $app-bg-secondary;
+          position: relative;
+          border-radius: 12px;
+          z-index: 1;
+          overflow: hidden;
+
+          opacity: 0;
+          transform: translateX(-30px);
+          animation: fadeInRight 0.33s forwards;
+
+          &:active {
+            opacity: 0.89;
+            transform: scale(0.98);
+          }
+
+          .contextPlaceOverlay {
+            width: 100%;
+            height: 70%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: top;
+            }
+
+            .shadow {
+              width: 100%;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+              z-index: 0;
+              background: linear-gradient(0deg, #0F0F0F 0%, rgba(15, 15, 15, 0.00) 100%);
+            }
+          }
+
+          .contextPlaceContext {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+
+            .contextPlaceContextImage {
+              width: fit-content;
+              height: 100%;
+
+              img {
+                width: 36px;
+                height: 36px;
+              }
+            }
+
+            &Title {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+
+              h4 {
+                width: 100%;
+                height: fit-content;
+                font-size: 14px;
+                font-weight: 600;
+                color: $app-h;
+                text-align: center;
+                margin-top: 10px;
+              }
+            }
+
+            &Info {
+              width: 100%;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              margin-top: 4px;
+              z-index: 1;
+
+              & .kit-icon {
+                margin-right: 2px;
+                opacity: .5;
+              }
+
+              p {
+                width: 100%;
+                height: fit-content;
+                font-size: 14px;
+                font-weight: 500;
+                color: $app-color-tint;
+                text-align: center;
+              }
+
+              span {
+                margin-left: 5px;
+                width: fit-content;
+                height: 17px;
+                font-size: 12px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 6px;
+                color: $app-button-text;
+                background: $app-color-primary;
+                border-radius: 10px;
+                text-align: center;
+              }
+            }
+          }
+        }
+      }
+
+      .contextTip {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        position: relative;
+        margin-top: 35px;
+        z-index: 1;
+
+        & .kit-icon {
+          margin-right: 12px;
+        }
+
+        p {
+          width: 100%;
+          max-width: 380px;
+          height: fit-content;
+          font-size: 12px;
+          font-weight: 500;
+          color: $app-color-tint;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+
+.button {
+    width: 100%;
+    height: fit-content;
+    position: absolute;
+    bottom: calc($app-menu-height);
+    padding-left: $app-page-padding-left;
+    padding-right: $app-page-padding-right;
+    margin-top: 24px;
+    z-index: 10;
+
+    button {
+        width: 100%;
+        height: 50px;
+        background: $app-bg-secondary-h;
+        border-radius: 10px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s linear, opacity 0.2s linear;
+        will-change: transform, opacity;
+        gap: 10px;
+        border: 1px solid rgba($app-h, 0.1);
+        cursor: pointer;
+
+        &:active {
+            opacity: 0.87;
+            transform: scale(0.98);
+        }
+
+        & .kit-icon {
+            width: 24px;
+            height: 22px;
+        }
+
+        span {
+            font-size: 4.13vw;
+            font-weight: $font-medium;
+            color: $app-h;
+            margin-top: 2px;
+
+            @media screen and (min-width: 440px) {
+                font-size: calc($font-size-h2 / 1.2);
+            }
+        }
+    }
+}

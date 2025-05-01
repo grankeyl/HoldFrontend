@@ -1,0 +1,85 @@
+@use "@/assets/styles/variables.scss" as *;
+
+.reward {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    gap: 4px;
+    opacity: .8;
+
+    & span {
+      width: fit-content;
+      height: fit-content;
+      font-size: 17px;
+      font-weight: 700;
+      color: $app-h;
+      margin-top: -3px;
+    }
+
+    & .kit-icon {
+      width: 16px;
+      height: 16px;
+    }
+}
+
+.button {
+  width: fit-content;
+  height: 33px;
+  margin-left: -23px;
+  background: $app-button;
+  border-radius: 50px;
+  border: none;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s linear, opacity 0.2s linear;
+  will-change: transform, opacity;
+  gap: 10px;
+  cursor: pointer;
+  
+  &:active {
+    opacity: 0.87;
+    transform: scale(0.98);
+  }
+
+    span {
+      font-size: 14px;
+      font-weight: 700;
+      color: $app-button-text;
+      margin-top: 1px;
+    }
+}
+
+.done {
+  width: fit-content;
+  height: 33px;
+  margin-left: -23px;
+  background: $app-bg-secondary-h;
+  border-radius: 50px;
+  border: none;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s linear, opacity 0.2s linear;
+  will-change: transform, opacity;
+  gap: 10px;
+  cursor: pointer;
+  
+  &:active {
+    opacity: 0.87;
+    transform: scale(0.98);
+  }
+
+    span {
+      font-size: 14px;
+      font-weight: 700;
+      color: $app-color-primary;
+      margin-top: 1px;
+    }
+}

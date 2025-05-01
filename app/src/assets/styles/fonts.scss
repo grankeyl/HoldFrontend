@@ -1,0 +1,47 @@
+$font-path: '@/assets/fonts/';
+
+@mixin zapus-font($style, $weight, $name) {
+  @font-face {
+    font-family: 'ZapusSans';
+    src: url('#{$font-path}#{$name}.ttf') format('truetype');
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+  }
+}
+
+// Thin (100)
+@include zapus-font(normal, 100, zapussans-thin);
+@include zapus-font(italic, 100, zapussans-thinitalic);
+
+// ExtraLight (200)
+@include zapus-font(normal, 200, zapussans-extralight);
+@include zapus-font(italic, 200, zapussans-extralightitalic);
+
+// Light (300)
+@include zapus-font(normal, 300, zapussans-light);
+@include zapus-font(italic, 300, zapussans-lightitalic);
+
+// Regular (400)
+@include zapus-font(normal, 400, zapussans-regular);
+@include zapus-font(italic, 400, zapussans-italic);
+
+// Medium (500)
+@include zapus-font(normal, 500, zapussans-medium);
+@include zapus-font(italic, 500, zapussans-mediumitalic);
+
+// Semibold (600)
+@include zapus-font(normal, 600, zapussans-semibold);
+@include zapus-font(italic, 600, zapussans-semibolditalic);
+
+// Bold (700)
+@include zapus-font(normal, 700, zapussans-bold);
+@include zapus-font(italic, 700, zapussans-bolditalic);
+
+// ExtraBold (800)
+@include zapus-font(normal, 800, zapussans-extrabold);
+@include zapus-font(italic, 800, zapussans-extrabolditalic);
+
+// Black (900)
+@include zapus-font(normal, 900, zapussans-black);
+@include zapus-font(italic, 900, zapussans-blackitalic);

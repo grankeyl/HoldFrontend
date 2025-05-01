@@ -1,0 +1,736 @@
+@use '@/assets/styles/keyframes.scss' as *;
+@use "@/assets/styles/variables.scss" as *;
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.preview {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    opacity: .4;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+._wrap._tasks {
+  width: 100%;
+  background: #000;
+  background-size: cover;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  overflow: hidden;
+  padding-bottom: 40px;
+  
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    overflow: auto;
+  }
+
+  .head-balance {
+    width: fit-content;
+    height: 36px;
+    position: absolute;
+    top: calc(var(--tg-safe-area-inset-top) + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: $app-bg-secondary-h;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    gap: 6px;
+    z-index: 4;
+
+    h4 {
+      width: 100%;
+      height: fit-content;
+      font-size: 17px;
+      font-weight: 700;
+      color: $app-h;
+      text-align: center;
+    }
+
+    & .kit-icon {
+      margin-top: 3px;
+    }
+  }
+
+  ._view {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 135px 0;
+    padding-top: 88px;
+
+    .contextSection {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .context {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      position: relative;
+      z-index: 1;
+      margin-top: 5%;
+      overflow: hidden;
+      padding-left: $app-page-padding-left;
+      padding-right: $app-page-padding-right;
+      
+      .contextTitle {
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        gap: 8px;
+        
+        & .kit-icon {
+          margin-top: 5px;
+        }
+
+        & h4 {
+          font-size: 29px;
+          font-weight: 700;
+          color: $app-h;
+        }
+      }
+
+      .contextBanners {
+        width: 100%;
+        margin-top: 24px;
+
+        & .swiper {
+          display: flex;
+          overflow: visible;
+        }
+
+        & .swiper-slide {
+          width: calc(100% - 40px);
+          min-width: 278px;
+          max-width: 278px;
+          height: 163px;
+          border-radius: 14px;
+          overflow: hidden;
+          flex-shrink: 0;
+          position: relative;
+          display: flex;
+          align-items: center;
+          transition: transform 0.2s linear, opacity 0.2s linear;
+          will-change: transform, opacity;
+
+          &:active {
+            opacity: 0.89;
+            transform: scale(0.98);
+          }
+        }
+
+        .contextBannersBanner {
+          width: 278px;
+          min-width: 278px;
+          max-width: 278px;
+          height: 163px;
+          background: $app-bg-secondary;
+          border-radius: 12px;
+          padding: 12px 10px 12px 13px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          overflow: hidden;
+          z-index: 1;
+  
+          &Reward {
+            width: fit-content;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 50px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            gap: 3px;
+            z-index: 2;
+            padding: 0px 9px 0px 10px;
+            border: 1px solid #EE5023;
+            background: radial-gradient(52.47% 66.67% at 50% 50%, rgba(238, 80, 35, 0.60) 0%, rgba(238, 80, 35, 0.00) 100%), #000;
+            box-shadow: 0px 0px 20.906px 0px #701C05, 0px 0px 11.946px 0px #701C05, 0px 0px 6.969px 0px #701C05, 0px 0px 3.484px 0px #701C05, 0px 0px 0.996px 0px #701C05, 0px 0px 0.498px 0px #701C05;
+
+            & span {
+                font-size: 14px;
+                font-weight: 700;
+                color: $app-h;
+            }
+          }
+
+          &Bg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+
+            & img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: top;
+            }
+          }
+
+          &Content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+
+            &Top {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 5px;
+            }
+
+            &Title {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 10px;
+              margin-top: -8px;
+
+              & h1 {
+                max-width: 210px;
+                font-size: 19px;
+                font-weight: 700;
+                color: $app-h;
+              }
+            }
+
+            &Button {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 10px;
+
+              &.claim button {
+                background: $app-color-primary;
+                border: 1px solid rgba($app-color-primary, 0.1);
+              }
+
+              &.loading button {
+                background: $app-color-primary;
+                border: 1px solid rgba($app-color-primary, 0.1);
+
+                .spinner {
+                  width: 24px;
+                  height: 24px;
+                }
+              }
+
+              & button {
+                width: fit-content;
+                height: 33px;
+                background: $app-button;
+                border-radius: 50px;
+                border: none;
+                padding: 0 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: transform 0.2s linear, opacity 0.2s linear;
+                will-change: transform, opacity;
+                gap: 10px;
+                cursor: pointer;
+
+                &:active {
+                  opacity: 0.87;
+                  transform: scale(0.98);
+                }
+
+                span {
+                  font-size: 14px;
+                  font-weight: 700;
+                  color: $app-button-text;
+                  margin-top: 1px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .contextFerm {
+        width: 100%;
+        margin-top: 24px;
+
+        &Title {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 1;
+          gap: 8px;
+          margin-bottom: 12px;
+          
+          & h4 {
+            width: 100%;
+            font-size: 20px;
+            font-weight: 500;
+            color: $app-color-tint;
+            text-align: left;
+          }
+        }
+
+        & .swiper {
+          display: flex;
+          overflow: visible;
+        }
+
+        & .swiper-slide {
+          width: 330px;
+          min-width: 330px;
+          max-width: 330px;
+          height: 120px;
+          border-radius: 12px;
+          overflow: hidden;
+          flex-shrink: 0;
+          position: relative;
+          display: flex;
+          align-items: center;
+          transition: transform 0.2s linear, opacity 0.2s linear;
+          will-change: transform, opacity;
+
+          &:active {
+            opacity: 0.89;
+            transform: scale(0.98);
+          }
+        }
+
+        .contextBannersBanner {
+          width: 330px;
+          min-width: 330px;
+          max-width: 330px;
+          height: 120px;
+          background: $app-bg-noise;
+          background-image: url('/home/background-video.png');
+          background-size: cover;
+          background-repeat: no-repeat;
+          box-shadow: 0px 0px 40.447px 0px rgba(255, 255, 255, 0.40) inset;
+          padding: 12px 10px 12px 13px;
+          padding: 20px 16px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          overflow: hidden;
+          z-index: 1;
+  
+          &Reward {
+            width: fit-content;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 50px;
+            position: absolute;
+            bottom: 20px;
+            right: 16px;
+            gap: 3px;
+            z-index: 2;
+            padding: 0px 9px 0px 10px;
+            border: 1px solid #EE5023;
+            background: radial-gradient(52.47% 66.67% at 50% 50%, rgba(238, 80, 35, 0.60) 0%, rgba(238, 80, 35, 0.00) 100%), #000;
+            box-shadow: 0px 0px 20.906px 0px #701C05, 0px 0px 11.946px 0px #701C05, 0px 0px 6.969px 0px #701C05, 0px 0px 3.484px 0px #701C05, 0px 0px 0.996px 0px #701C05, 0px 0px 0.498px 0px #701C05;
+
+            & span {
+                font-size: 14px;
+                font-weight: 700;
+                color: $app-h;
+            }
+          }
+
+          &Bg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+
+            & img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: top;
+            }
+          }
+
+          &Content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+
+            &Top {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 5px;
+            }
+
+            &Title {
+              width: 100%;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              position: relative;
+              white-space: nowrap;
+              z-index: 1;
+              gap: 10px;
+              margin-top: -8px;
+
+              & img {
+                width: 30px;
+                height: 30px;
+              }
+
+              & h1 {
+                max-width: 210px;
+                font-size: 17px;
+                font-weight: 600;
+                color: $app-h;
+                margin-right: auto;
+              }
+
+              & span {
+                max-width: 210px;
+                font-size: 17px;
+                font-weight: 600;
+                color: $app-color-tint;
+              }
+            }
+
+            &Button {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 10px;
+
+              & button {
+                width: 100%;
+                height: 33px;
+                background: $app-button;
+                border-radius: 50px;
+                border: none;
+                padding: 0 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: transform 0.2s linear, opacity 0.2s linear;
+                will-change: transform, opacity;
+                gap: 10px;
+                cursor: pointer;
+  
+                &:active {
+                  opacity: 0.87;
+                  transform: scale(0.98);
+                }
+
+                span {
+                  font-size: 14px;
+                  font-weight: 700;
+                  color: $app-button-text;
+                  margin-top: 1px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .contextTasks {
+        width: 100%;
+        margin-top: 24px;
+
+        &Title {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 1;
+          gap: 8px;
+          margin-bottom: 12px;
+          
+          & h4 {
+            width: 100%;
+            font-size: 20px;
+            font-weight: 500;
+            color: $app-color-tint;
+            text-align: left;
+          }
+        }
+      }
+
+      .contextTasksItems {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: space-between;
+        position: relative;
+        z-index: 1;
+        gap: 24px;
+
+        .contextTasksItemsItem {
+          width: 100%;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px 0;
+          position: relative;
+          z-index: 1;
+          gap: 12px;
+          opacity: 0;
+          transform: translateY(20px);
+          animation: fadeInUp 0.63s forwards;
+
+          &Content {
+            width: 100%;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: start;
+            position: relative;
+            z-index: 1;
+            gap: 4px;
+
+            &Title {
+              width: 100%;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              position: relative;
+              z-index: 1;
+              gap: 10px;
+
+              & h4 {
+                width: 100%;
+                height: fit-content;
+                font-size: 14px;
+                font-weight: 500;
+                color: $app-h;
+                text-align: left;
+              }
+            }
+          }
+
+          &Button {
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            gap: 10px;
+
+            &.claim button {
+              background: $app-color-primary;
+              border: 1px solid rgba($app-color-primary, 0.1);
+            }
+
+            &.loading button {
+              background: $app-color-primary;
+              border: 1px solid rgba($app-color-primary, 0.1);
+
+              .spinner {
+                width: 24px;
+                height: 24px;
+              }
+            }
+
+            & button {
+              width: 80px;
+              min-width: 80px;
+              max-width: 80px;
+              height: 33px;
+              background: $app-button;
+              border-radius: 50px;
+              border: none;
+              padding: 0 12px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: transform 0.2s linear, opacity 0.2s linear;
+              will-change: transform, opacity;
+              gap: 10px;
+              cursor: pointer;
+
+              &:active {
+                opacity: 0.87;
+                transform: scale(0.98);
+              }
+
+              span {
+                font-size: 14px;
+                font-weight: 700;
+                color: $app-button-text;
+                margin-top: 1px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .button {
+        width: 100%;
+        height: fit-content;
+        position: absolute;
+        bottom: calc($app-menu-height);
+        padding-left: $app-page-padding-left;
+        padding-right: $app-page-padding-right;
+        margin-top: 24px;
+        z-index: 10;
+
+        button {
+            width: 100%;
+            height: 50px;
+            background: $app-bg-secondary-h;
+            border-radius: 10px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s linear, opacity 0.2s linear;
+            will-change: transform, opacity;
+            gap: 10px;
+            border: 1px solid rgba($app-h, 0.1);
+            cursor: pointer;
+
+            &:active {
+                opacity: 0.87;
+                transform: scale(0.98);
+            }
+
+            & .kit-icon {
+                width: 24px;
+                height: 22px;
+            }
+
+            span {
+                font-size: 4.13vw;
+                font-weight: $font-medium;
+                color: $app-h;
+                margin-top: 2px;
+
+                @media screen and (min-width: 440px) {
+                    font-size: calc($font-size-h2 / 1.2);
+                }
+            }
+        }
+    }
+  }
+}

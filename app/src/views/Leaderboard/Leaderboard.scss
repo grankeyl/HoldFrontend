@@ -1,0 +1,484 @@
+@use '@/assets/styles/keyframes.scss' as *;
+@use "@/assets/styles/variables.scss" as *;
+
+@keyframes showBlock {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.preview {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    opacity: .4;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+._wrap._leaderboard {
+  width: 100%;
+  background: #000;
+  background-size: cover;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  overflow: hidden;
+  padding-bottom: 80px;
+  
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    overflow: auto;
+  }
+
+  .head-balance {
+    width: fit-content;
+    height: 36px;
+    position: absolute;
+    top: calc(var(--tg-safe-area-inset-top) + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: $app-bg-secondary-h;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    gap: 6px;
+    z-index: 4;
+
+    h4 {
+      width: 100%;
+      height: fit-content;
+      font-size: 17px;
+      font-weight: 700;
+      color: $app-h;
+      text-align: center;
+    }
+
+    & .kit-icon {
+      margin-top: 3px;
+    }
+  }
+
+  ._view {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 135px 0;
+    padding-top: 88px;
+
+    .contextSection {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .context {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      position: relative;
+      z-index: 1;
+      margin-top: 5%;
+      overflow: hidden;
+      padding-left: $app-page-padding-left;
+      padding-right: $app-page-padding-right;
+      
+      .contextTitle {
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        gap: 8px;
+        
+        & .kit-icon {
+          margin-top: 5px;
+        }
+
+        & h4 {
+          font-size: 29px;
+          font-weight: 700;
+          color: $app-h;
+        }
+      }
+      
+      .contextDescrption {
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        gap: 8px;
+        margin-top: 24px;
+        
+        & p {
+          font-size: 14px;
+          font-weight: 600;
+          color: $app-color-tint;
+        }
+      }
+
+      .contextLeaders {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        margin-top: 24px;
+        z-index: 1;
+
+        &.loading {
+          margin-top: 15%;
+        }
+
+        &Leader {
+          width: 100%;
+          height: 79px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+          z-index: 1;
+          padding-left: $app-page-padding-left;
+          padding-right: $app-page-padding-right;
+          transform: translateY(20px);
+          animation: fadeInUp 0.63s forwards;
+          opacity: 0;
+          
+          &Number {
+            width: 35px;
+            min-width: 35px;
+            max-width: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-right: 12px;
+            z-index: 1;
+          
+            & h1 {
+              max-width: 100%;
+              font-weight: 700;
+              color: $app-color-tint;
+              font-size: 24px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-align: center;
+            }
+          }
+
+          &Image {
+            width: 47px;
+            height: 47px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-right: auto;
+            margin-right: 12px;
+            z-index: 1;
+            gap: 8px;
+            background: $app-bg-secondary;
+            border-radius: 12px;
+            
+            & img {
+              width: 47px;
+              height: 47px;
+              object-fit: cover;
+              border-radius: 12px;
+              animation: fadeIn 0.4s linear;
+            }
+            
+            & .league {
+              width: 22px;
+              height: 22px;
+              object-fit: cover;
+              position: absolute;
+              bottom: -8px;
+              left: 50%;
+              transform: translateX(-50%);
+            }
+          }
+
+          &Context {
+            width: 100%;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+
+            &Title {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              position: relative;
+              z-index: 1;
+              gap: 8px;
+              
+              & h4 {
+                font-size: 12px;
+                font-weight: 600;
+                color: $app-h;
+              }
+            }
+
+            &Description {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              position: relative;
+              z-index: 1;
+              gap: 3px;
+              
+              & span {
+                font-size: 10px;
+                font-weight: 600;
+                color: $app-color-tint;
+              }
+
+              & .kit-icon {
+                width: fit-content;
+                margin-top: -2px;
+              }
+            }
+          }
+
+          &Value {
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            white-space: nowrap;
+            gap: 4px;
+
+            & span {
+              font-size: 17px;
+              font-weight: 700;
+              color: $app-h;
+            }
+
+            & .kit-icon {
+              width: fit-content;
+              margin-top: 2px;
+            }
+          }
+
+          &:last-child {
+            padding-bottom: 0;
+          }
+        }
+      }
+    }
+
+    .contextPinnedLeader {
+      width: calc(100% - $app-page-padding-left - $app-page-padding-right);
+      max-width: calc($app-max-width - $app-page-padding-left - $app-page-padding-right);
+      height: 79px;
+      position: fixed;
+      bottom: calc($app-menu-height * 2 + 12px);
+      border-radius: 12px;
+      background: $app-bg-secondary-h;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1;
+      padding-left: $app-page-padding-left;
+      padding-right: $app-page-padding-right;
+      opacity: 0;
+      transform: translateY(-80px) scale(0.7);
+      animation: showBlock 0.35s forwards;
+      
+      &Number {
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-right: 12px;
+        z-index: 1;
+        gap: 8px;
+        
+        & h1 {
+          font-size: 24px;
+          font-weight: 700;
+          color: $app-color-tint;
+        }
+      }
+
+      &Image {
+        width: 47px;
+        height: 47px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-right: auto;
+        margin-right: 12px;
+        z-index: 1;
+        gap: 8px;
+        
+        & img {
+          width: 47px;
+          height: 47px;
+          object-fit: cover;
+          border-radius: 12px;
+        }
+        
+        & .league {
+          width: 22px;
+          height: 22px;
+          object-fit: cover;
+          position: absolute;
+          bottom: -8px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+
+      &Context {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: space-between;
+        position: relative;
+        z-index: 1;
+
+        &Title {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          position: relative;
+          z-index: 1;
+          gap: 8px;
+          
+          & h4 {
+            font-size: 12px;
+            font-weight: 600;
+            color: $app-h;
+          }
+        }
+
+        &Description {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          position: relative;
+          z-index: 1;
+          gap: 3px;
+          
+          & span {
+            font-size: 10px;
+            font-weight: 600;
+            color: $app-color-tint;
+          }
+
+          & .kit-icon {
+            width: fit-content;
+            margin-top: -2px;
+          }
+        }
+      }
+
+      &Value {
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+        gap: 4px;
+        white-space: nowrap;
+
+        & span {
+          font-size: 17px;
+          font-weight: 700;
+          color: $app-h;
+        }
+
+        & .kit-icon {
+          width: fit-content;
+          margin-top: 2px;
+        }
+      }
+    }
+  }
+}

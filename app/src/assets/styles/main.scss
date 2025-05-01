@@ -1,0 +1,161 @@
+@use "./variables.scss" as *;
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background: $app-background;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    overflow: hidden;
+    margin: 0;
+    font-family: $font;
+    color: $app-h;
+    background: $app-preview;
+
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+
+    display: flex;
+    flex-direction: column;
+
+    section {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        max-width: $app-max-width;
+        animation: page-in $app-transition-page;
+        overflow: hidden;
+    }
+}
+
+@keyframes page-in {
+    0% {
+        opacity: 0;
+        filter: blur(7px);
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.00);
+    }
+}
+
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+a,
+button,
+input,
+textarea,
+select,
+option,
+img {
+    font-family: $font;
+    color: $app-h;
+}
+
+a {
+    text-decoration: none;
+}
+
+._direction {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -moz-box-orient: horizontal;
+  -moz-box-direction: normal;
+  flex-direction: row;
+}
+
+._wrap {
+  background: $app-background;
+  max-width: $app-max-width;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  ._view {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    flex-direction: column;
+    padding-left: $app-page-padding-left;
+    padding-right: $app-page-padding-right;
+  }
+}
+
+.content {
+    position: relative;
+    max-width: $app-max-width;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    margin: auto;
+    background: $app-background;
+}
+
+.loader-button {
+  width: 23px;
+  height: 23px;
+  border: 2px solid #ccc;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: auto;
+}
+
+img.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+img.fade-in.loaded {
+  opacity: 1;
+}

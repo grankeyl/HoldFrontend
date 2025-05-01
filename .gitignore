@@ -23,16 +23,5 @@ dist-ssr
 *.sln
 *.sw?
 
-# Игнорировать всё
-*
-
-# Но не игнорировать это
-!app/
-!app/dist/
-!app/dist/**
-!.github/
-!.github/**
-!.gitignore
-!README.md
-!docker-compose.yml
-!Dockerfile.frontend
+*node_modules*
+*package-lock.json

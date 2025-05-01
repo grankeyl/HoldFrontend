@@ -1,0 +1,229 @@
+@use "@/assets/styles/variables.scss" as *;
+
+.modalWrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  visibility: hidden;
+
+  &.active {
+    visibility: visible;
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  z-index: 1;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+  visibility: visible;
+
+  &.hide {
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+    pointer-events: none;
+  }
+}
+
+.modal {
+  width: 100%;
+  max-width: $app-max-width;
+  height: fit-content;
+  background: $app-bg-secondary;
+  position: relative;
+  z-index: 2;
+  border-radius: 32px 32px 0 0;
+  padding: 20px 16px 54px 16px;
+  visibility: hidden;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+
+  &.hide {
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  }
+}
+
+.modalBorder {
+    width: 100px;
+    height: 6px;
+    background: $app-bg-surface;
+    border-radius: 50px;
+    margin: auto;
+}
+
+.modalInner {
+    width: 100%;
+    height: fit-content;
+    padding-top: 28px;
+}
+
+.modalTitle {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  gap: 8px;
+  margin-bottom: 14px;
+
+  & .kit-icon {
+    margin-top: 5px;
+  }
+
+  & h4 {    
+    font-size: 20px;
+    font-weight: 700;
+    color: $app-h;
+    text-align: center;
+  }
+}
+
+.modalDescription {
+  width: 100%;
+  max-width: 330px;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  margin: auto;
+  z-index: 1;
+  gap: 8px;
+
+  & p {    
+    font-size: 16px;
+    font-weight: 600;
+    color: $app-color-tint;
+    text-align: center;
+  }
+}
+
+.modalReferral {
+  width: 100%;
+  height: fit-content;
+  background: $app-bg-secondary-h;
+  border-radius: 12px;
+  padding: 12px 17px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 25px;
+  margin-bottom: -18px;
+
+  & h4 {
+    width: fit-content;
+    max-width: 200px;
+    margin-right: auto;
+    height: fit-content;
+    font-size: 14px;
+    font-weight: 600;
+    color: $app-h;
+    text-align: left;
+  }
+
+  & .modalReferralCopy {
+    width: fit-content;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    gap: 8px;
+    right: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: $app-bg-secondary-h-primary;
+    border-radius: 12px;
+    padding: 0 16px;
+
+    &:active {
+      opacity: 0.87;
+      transform: translateY(-50%) scale(0.98);
+    }
+
+    & p {
+      font-size: 15px;
+      font-weight: 600;
+      color: $app-h;
+      text-align: center;
+    }
+  }
+}
+
+.modalButton {
+    width: 100%;
+    height: fit-content;
+    z-index: 10;
+    animation: fadeUp 0.3s ease-out both;
+    margin-top: 35px;
+
+    &.connected button {
+      background: $app-bg-secondary;
+
+      span {
+          font-size: 4.13vw;
+          font-weight: 600;
+          color: $app-h;
+          margin-top: 2px;
+
+          @media screen and (min-width: 440px) {
+              font-size: calc($font-size-h2 / 1.2);
+          }
+      }
+    }
+
+    button {
+        width: 100%;
+        height: 50px;
+        background: $app-button;
+        border-radius: 10px;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s linear, opacity 0.2s linear;
+        will-change: transform, opacity;
+        gap: 10px;
+        cursor: pointer;
+        position: relative;
+
+        &:active {
+            opacity: 0.87;
+            transform: scale(0.98);
+        }
+
+        & .kit-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        span {
+            font-size: 4.13vw;
+            font-weight: 600;
+            color: $app-button-text;
+            margin-top: 2px;
+
+            @media screen and (min-width: 440px) {
+                font-size: calc($font-size-h2 / 1.2);
+            }
+        }
+    }
+}

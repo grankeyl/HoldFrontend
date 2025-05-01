@@ -1,0 +1,250 @@
+@use '@/assets/styles/keyframes.scss' as *;
+@use "@/assets/styles/variables.scss" as *;
+
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.preview {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    opacity: .4;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.head {
+  width: fit-content;
+  height: 22px;
+  position: absolute;
+  top: calc(var(--tg-safe-area-inset-top) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+
+  img {
+    width: 100%;
+    height: 100%;
+    margin-top: 14px;
+  }
+}
+
+._wrap._onborad {
+  width: 100%;
+  height: 100%;
+  background: url("/onborad/background.png") no-repeat;
+  background-size: cover;
+  padding-left: $app-page-padding-left;
+  padding-right: $app-page-padding-right;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  overflow: hidden;
+  
+  &.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &._slaved {
+    background: #000;
+  }
+
+  ._onboradSymbols {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 348px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInZoom 0.6s ease-out;
+    will-change: opacity, transform;
+    overflow: hidden;
+
+    &.no-animation {
+      animation: none;
+    }
+
+    img {
+      height: 100%;
+      animation: pulse 2s ease-in-out;
+      will-change: transform;
+
+      @media screen and (min-width: 386px) {
+        width: 100%;
+      }
+    }
+  }
+
+  ._view {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 58px 0;
+    padding-top: calc(var(--tg-safe-area-inset-top));
+
+    .contextSection {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .context {
+      width: 100%;
+      height: 80%;
+      padding-top: 10%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+
+      .contextImage {
+        width: 100%;
+        height: 304px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        animation: fadeInZoom 0.6s ease-out;
+        will-change: opacity, transform;
+
+        img {
+          width: 100%;
+          animation: pulse 2s ease-in-out infinite;
+          will-change: transform;
+
+          @media screen and (min-width: 440px) {
+            width: 412px;
+            height: 304px;
+          }
+        }
+      }
+
+      .contextTitle {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        animation: fadeInZoom 0.6s ease-out;
+        will-change: opacity, transform;
+        margin-bottom: 16px;
+
+        h4 {
+            width: 100%;
+            font-size: 8vw;
+            font-weight: 800;
+            color: $app-h;
+
+            @media screen and (min-width: 440px) {
+                font-size: $font-size-title-bold;
+            }
+
+            span {
+                color: $app-color-primary;
+            }
+        }
+      }
+
+      .contextDescription {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        animation: fadeInZoom 0.6s ease-out;
+        will-change: opacity, transform;
+        padding: 0 12px;
+
+        p {
+            width: 100%;
+            font-size: 4.85vw;
+            font-weight: $font-medium;
+            color: $app-h;
+
+            @media screen and (min-width: 440px) {
+                font-size: $font-size-h2;
+            }
+
+            span {
+                color: $app-color-tint;
+            }
+        }
+      }
+    }
+
+    .button {
+        width: 100%;
+
+        button {
+            width: 100%;
+            height: 50px;
+            background: $app-button;
+            border-radius: 10px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s linear, opacity 0.2s linear;
+            will-change: transform, opacity;
+
+            &:active {
+                opacity: 0.87;
+                transform: scale(0.98);
+            }
+
+            span {
+                font-size: 4.13vw;
+                font-weight: $font-medium;
+                color: $app-button-text;
+                margin-top: 2px;
+
+                @media screen and (min-width: 440px) {
+                    font-size: calc($font-size-h2 / 1.2);
+                }
+            }
+        }
+    }
+  }
+}

@@ -1,0 +1,902 @@
+@use '@/assets/styles/keyframes.scss' as *;
+@use "@/assets/styles/variables.scss" as *;
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.preview {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    opacity: .4;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.head-balance {
+  width: fit-content;
+  height: 36px;
+  position: absolute;
+  top: calc(var(--tg-safe-area-inset-top) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: $app-bg-secondary-h;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  gap: 6px;
+  z-index: 4;
+
+  h4 {
+    width: 100%;
+    height: fit-content;
+    font-size: 17px;
+    font-weight: 700;
+    color: $app-h;
+    text-align: center;
+  }
+
+  & .kit-icon {
+    margin-top: 3px;
+  }
+}
+
+._wrap._friends {
+  width: 100%;
+  background: #000;
+  background-size: cover;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  overflow: hidden;
+  padding-bottom: 80px;
+  
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    overflow: auto;
+  }
+
+  ._friendsSymbols {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 35%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    animation: fadeInZoom 0.6s ease-out;
+    will-change: opacity, transform;
+    overflow: hidden;
+    position: absolute;
+
+    &.no-animation {
+      animation: none;
+    }
+
+    & .nulled {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        bottom: 0;
+        z-index: 10;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 73%, rgba(0, 0, 0, 1) 100%);
+    }
+  
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+  }
+
+  ._view {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0 135px 0;
+    padding-top: 88px;
+
+    .contextSection {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .context {
+      width: 100%;
+      height: fit-content;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      position: relative;
+      z-index: 1;
+      margin-top: 5%;
+      overflow: hidden;
+      padding-left: $app-page-padding-left;
+      padding-right: $app-page-padding-right;
+      
+      .contextTitle {
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        gap: 8px;
+        
+        & .kit-icon {
+          margin-top: 5px;
+        }
+
+        & h4 {
+          font-size: 29px;
+          font-weight: 700;
+          color: $app-h;
+        }
+      }
+      
+      .contextInfo {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        z-index: 1;
+        margin-top: 24px;
+
+        &Left {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 1;
+          gap: 6px;
+
+          &Label {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            gap: 10px;
+
+            & h4 {
+              font-size: 14px;
+              font-weight: 500;
+              color: $app-color-tint;
+            }
+          }
+
+          &Title {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            gap: 5px;
+
+            & span {
+              font-size: 17px;
+              font-weight: 700;
+              color: $app-h;
+            }
+
+            & .kit-icon {
+              margin-top: 4px;
+            }
+          }
+        }
+
+        &Right {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 1;
+          gap: 6px;
+
+          &Label {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            gap: 10px;
+
+            & h4 {
+              font-size: 14px;
+              font-weight: 500;
+              color: $app-color-tint;
+            }
+          }
+
+          &Title {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            gap: 5px;
+
+            & span {
+              font-size: 17px;
+              font-weight: 700;
+              color: $app-h;
+            }
+
+            & .kit-icon {
+              margin-top: 4px;
+            }
+          }
+        }
+        
+        &Center {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          position: relative;
+          z-index: 1;
+
+          &Image {
+            width: fit-content;
+            height: fit-content;
+
+            & img {
+              width: 130px;
+              height: 77px;
+            }
+          }
+
+          &Title {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+
+            & h1 {
+              font-size: 17px;
+              font-weight: 600;
+              color: $app-h;
+
+              & strong {
+                color: $app-color-primary;
+              }
+            }
+          }
+        }
+      }
+
+      .contextButtons {
+        display: flex;
+        gap: 8px;
+        margin-top: 24px;
+        width: 100%;
+        overflow-x: scroll;
+        position: relative;
+        z-index: 1;
+
+        &Button {
+          width: 100%;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+
+          &.primary button {
+            background: $app-color-primary;
+          }
+
+          button {
+              width: 100%;
+              height: 42px;
+              background: $app-button;
+              border-radius: 10px;
+              border: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: transform 0.2s linear, opacity 0.2s linear;
+              will-change: transform, opacity;
+              gap: 10px;
+              cursor: pointer;
+              position: relative;
+    
+              &:active {
+                  opacity: 0.87;
+                  transform: scale(0.98);
+              }
+    
+              & .kit-icon {
+                  width: 24px;
+                  height: 24px;
+              }
+    
+              span {
+                  font-size: 15px;
+                  font-weight: $font-bold;
+                  color: $app-button-text;
+              }
+          }
+        }
+      }
+
+      .contextReward {
+        width: 100%;
+        height: 90px;
+        background: $app-bg-secondary;
+        border-radius: 12px;
+        margin-top: 24px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        padding: 0 23px;
+        z-index: 1;
+
+        &Left {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 1;
+          gap: 20px;
+
+          &Image {
+            width: fit-content;
+            height: fit-content;
+
+            & img {
+              width: 50px;
+              height: 50px;
+            }
+          }
+
+          &Context {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            gap: 4px;
+
+            &Label {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 10px;
+
+              & h4 {
+                font-size: 14px;
+                font-weight: 500;
+                color: $app-color-tint;
+              }
+            } 
+
+            &Title {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 5px;
+
+              & span {
+                font-size: 24px;
+                font-weight: 700;
+                color: $app-h;
+              }
+
+              & .kit-icon {
+                margin-top: 4px;
+              } 
+            }
+          }
+        }
+
+        &Border {
+          width: 1px;
+          height: 50px;
+          background: $app-bg-secondary-h;
+          margin-right: 22px;
+          margin-left: auto;
+        }
+
+        &Right {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 1;
+          gap: 6px;
+
+          &Button {
+            width: fit-content;
+            height: fit-content;
+            
+            button {
+                width: 100%;
+                height: 33px;
+                background: $app-button;
+                border-radius: 50px;
+                padding: 0 12px;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: transform 0.2s linear, opacity 0.2s linear;
+                will-change: transform, opacity;
+                gap: 10px;
+                cursor: pointer;
+                position: relative;
+      
+                &:active {
+                    opacity: 0.87;
+                    transform: scale(0.98);
+                }
+      
+                & .kit-icon {
+                    width: 24px;
+                    height: 24px;
+                }
+    
+                span {
+                    font-size: 15px;
+                    font-weight: $font-bold;
+                    color: $app-button-text;
+                }
+            }
+      
+            & .kit-icon {
+              width: 24px;
+              height: 24px;
+              margin-top: 1px;
+            }
+      
+            span {
+              font-size: 4.13vw;
+              font-weight: $font-medium;
+              color: $app-h;
+              margin-top: 2px;
+      
+              @media screen and (min-width: 440px) {
+                font-size: calc($font-size-h2 / 1.2);
+              }
+            }
+      
+            &.primary {
+              background: $app-color-primary;
+              border: 1px solid rgba($app-color-primary, 0.1);
+      
+              & span {
+                color: $app-button-text;
+              }
+            }
+          }
+        }
+      }
+
+      .contextFriends {
+        width: 100%;
+        margin-top: 30px;
+
+        &Title {
+          width: fit-content;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 1;
+          gap: 8px;
+          margin-bottom: 12px;
+          
+          & h4 {
+            width: 100%;
+            font-size: 20px;
+            font-weight: 500;
+            color: $app-color-tint;
+            text-align: left;
+          }
+        }
+      }
+
+      .contextFriendsItems {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: space-between;
+        position: relative;
+        z-index: 1;
+        gap: 16px;
+        margin-top: 27px;
+
+        &Item {
+          width: 100%;
+          height: fit-content;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: relative;
+          z-index: 1;
+          gap: 14px;
+          border-bottom: 1px solid $app-bg-secondary-h;
+          padding-bottom: 16px;
+          opacity: 0;
+          transform: translateY(20px);
+          animation: fadeInUp 0.63s forwards;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          &Deep {
+            width: 47px;
+            min-width: 47px;
+            max-width: 47px;
+            height: 47px;
+            min-height: 47px;
+            max-height: 47px;
+            background: $app-bg-secondary-h;
+            display: flex;
+            border-radius: 12px;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            gap: 10px;
+
+            & .kit-icon {
+              margin-top: 4px;
+            }
+
+            & img {
+              width: 37px;
+              height: 37px;
+            }
+
+            & span {
+              position: absolute;
+              top: -6px;
+              right: -6px;
+              width: fit-content;
+              height: 18px;
+              padding: 0px 6px;
+              background: $app-color-primary;
+              border-radius: 10px;
+              font-size: 12px;
+              font-weight: 700;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: $app-h;
+            }
+          }
+
+          &Content {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            justify-content: start;
+            position: relative;
+            z-index: 1;
+            margin-right: auto;
+            gap: 4px;
+
+            &Title {
+              width: 100%;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              position: relative;
+              z-index: 1;
+              gap: 10px;
+
+              & h4 {
+                width: 100%;
+                height: fit-content;
+                font-size: 14px;
+                font-weight: 500;
+                color: $app-h;
+                text-align: left;
+              }
+            } 
+
+            &Reward {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 4px;
+              opacity: .8;
+
+              & span {
+                width: fit-content;
+                height: fit-content;
+                font-size: 17px;
+                font-weight: 700;
+                color: $app-h;
+              }
+
+              & .kit-icon {
+                width: 16px;
+                height: 16px;
+              }
+            }
+          }
+
+          &Rewarding {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            align-items: start;
+            justify-content: center;
+            flex-direction: column;
+            position: relative;
+            margin-right: auto;
+            z-index: 1;
+
+            &Label {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 10px;
+
+              & h4 {
+                font-size: 14px;
+                font-weight: 500;
+                color: $app-color-tint;
+              }
+            } 
+
+            &Title {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 5px;
+
+              & span {
+                font-size: 24px;
+                font-weight: 700;
+                color: $app-h;
+              }
+
+              & .kit-icon {
+                margin-top: 2px;
+              } 
+            }
+          }
+
+          &Button {
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            gap: 10px;
+
+            &.claim button {
+              background: $app-color-primary;
+              border: 1px solid rgba($app-color-primary, 0.1);
+            }
+
+            &.loading button {
+              background: $app-color-primary;
+              border: 1px solid rgba($app-color-primary, 0.1);
+
+              .spinner {
+                width: 24px;
+                height: 24px;
+              }
+            }
+
+            & button {
+              width: 80px;
+              min-width: 80px;
+              max-width: 80px;
+              height: 33px;
+              background: $app-button;
+              border-radius: 50px;
+              border: none;
+              padding: 0 12px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: transform 0.2s linear, opacity 0.2s linear;
+              will-change: transform, opacity;
+              gap: 10px;
+              cursor: pointer;
+
+              &:active {
+                opacity: 0.87;
+                transform: scale(0.98);
+              }
+
+              span {
+                font-size: 14px;
+                font-weight: 700;
+                color: $app-button-text;
+                margin-top: 1px;
+              }
+            }
+          }
+        }
+      }
+
+      .contextFriendsNull {
+        width: 100%;
+        height: 40vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+
+        strong {
+          width: 100%;
+          max-width: 285px;
+          height: fit-content;
+          font-size: 14px;
+          font-weight: 700;
+          color: $app-h;
+          text-align: center;
+        }
+      }
+    }
+
+    .button {
+        width: 100%;
+        height: fit-content;
+        position: absolute;
+        bottom: calc($app-menu-height);
+        padding-left: $app-page-padding-left;
+        padding-right: $app-page-padding-right;
+        margin-top: 24px;
+        z-index: 10;
+
+        button {
+            width: 100%;
+            height: 50px;
+            background: $app-bg-secondary-h;
+            border-radius: 10px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s linear, opacity 0.2s linear;
+            will-change: transform, opacity;
+            gap: 10px;
+            border: 1px solid rgba($app-h, 0.1);
+            cursor: pointer;
+
+            &:active {
+                opacity: 0.87;
+                transform: scale(0.98);
+            }
+
+            & .kit-icon {
+                width: 24px;
+                height: 22px;
+            }
+
+            span {
+                font-size: 4.13vw;
+                font-weight: $font-medium;
+                color: $app-h;
+                margin-top: 2px;
+
+                @media screen and (min-width: 440px) {
+                    font-size: calc($font-size-h2 / 1.2);
+                }
+            }
+        }
+    }
+  }
+}

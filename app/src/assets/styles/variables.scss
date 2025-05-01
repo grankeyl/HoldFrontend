@@ -1,0 +1,68 @@
+:root {
+    --tg-safe-area-inset-top: env(safe-area-inset-top, 0px)
+    --tg-safe-area-inset-bottom: env(safe-area-inset-bottom, 0px)
+    --tg-safe-area-inset-left: env(safe-area-inset-left, 0px)
+    --tg-safe-area-inset-right: env(safe-area-inset-right, 0px)
+
+    --tg-content-safe-area-inset-top: env(safe-area-inset-top, 0px)
+    --tg-content-safe-area-inset-bottom: env(safe-area-inset-bottom, 0px)
+    --tg-content-safe-area-inset-left: env(safe-area-inset-left, 0px)
+    --tg-content-safe-area-inset-right: env(safe-area-inset-right, 0px)
+}
+
+
+/* Setting */
+$app-max-width: 520px;
+$app-preview: #272727;
+$app-background: #000000;
+
+
+/* Color Text */
+$app-h: #ffffff;
+$app-p: #ffffff;
+$app-s: #ffffff;
+$app-b: #000000;
+$app-color-primary: #EE5023;
+$app-color-tint: #AAAAAA;
+
+
+/* Backgrounds */
+$app-button: #fff;
+$app-button-text: #212121;
+
+$app-bg-secondary: #0F0F0F;
+$app-bg-secondary-h: #212121;
+$app-bg-secondary-h-primary: #2d2d2d;
+$app-bg-secondary-b: #232323;
+$app-bg-noise: #0e0f117c;
+$app-bg-quaternary: #2F2F2F;
+$app-bg-surface: #383838;
+
+
+/* Transitios */
+$app-transition-page: 0.57s;
+
+
+/* Fonts */
+$font: 'ZapusSans';
+$font-thin: 300;
+$font-normal: 400;
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-extrabold: 800;
+$font-black: 900;
+
+$font-size-display-bold: 42px;
+$font-size-title-bold: 35px;
+$font-size-subtitle-bold: 29px;
+$font-size-h2: 20px;
+
+
+/* Menu */
+$app-menu-height: 62px;
+
+
+/* Padding */
+$app-page-padding-left: 15px;
+$app-page-padding-right: 15px;
