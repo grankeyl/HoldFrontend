@@ -41,6 +41,7 @@ jobs:
             README.md
             app/dist/**/*
           target: project/frontend
+          rm: false
 
       - name: Restart Frontend Container
         uses: appleboy/ssh-action@v0.1.6
