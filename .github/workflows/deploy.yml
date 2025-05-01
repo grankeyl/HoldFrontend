@@ -33,7 +33,7 @@ jobs:
             ./docker-compose.yml
             ./Dockerfile.frontend
             ./README.md
-            ./app/dist/**
+            ./app/dist/*
           target: project/frontend
 
       - name: Restart Frontend Container
