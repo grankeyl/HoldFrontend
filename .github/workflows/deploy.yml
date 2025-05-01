@@ -23,6 +23,12 @@ jobs:
             rm -rf dist
             mkdir -p dist
 
+      - name: Debug list workspace
+        run: |
+          pwd
+          ls -la
+          ls -la app/dist
+
       - name: Upload frontend files
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -30,10 +36,10 @@ jobs:
           username: ${{ secrets.DEV_SSH_USER }}
           password: ${{ secrets.DEV_SSH_PASSWORD }}
           source: |
-            ./docker-compose.yml
-            ./Dockerfile.frontend
-            ./README.md
-            ./app/dist/**
+            docker-compose.yml
+            Dockerfile.frontend
+            README.md
+            app/dist/**
           target: project/frontend
 
       - name: Restart Frontend Container
