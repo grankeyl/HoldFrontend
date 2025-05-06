@@ -64,7 +64,7 @@ jobs:
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.DEV_SSH_HOST }}
-          username: ${{ secrets.DEV_SSH_USER }}
+          username: ${{ secrets.DEV_SSH_USER }} 
           password: ${{ secrets.DEV_SSH_PASSWORD }}
           source: "app/dist/*"
           target: project/frontend/dist
