@@ -220,7 +220,7 @@ export default {
       PropsSuccess: this.success,
       IsPageLoading: false,
 
-      PageType: 'all',
+      PageType: 'slave',
 
       UserData: appCache.UserData,
 

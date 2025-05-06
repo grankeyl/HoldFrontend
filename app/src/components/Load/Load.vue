@@ -4,7 +4,7 @@
       <img src="/logotype.svg" alt="logotype">
     </div>
     <div class="load-bg">
-      <img src="/load/background.png" alt="background">
+      <img src="/load/background.webp" alt="background">
     </div>
   </div>
 </template>

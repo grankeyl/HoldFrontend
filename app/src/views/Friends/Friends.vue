@@ -33,6 +33,7 @@
             pathColor="#fff"
           />
           <h4>Друзья</h4>
+          {{ ReferralsList }}
         </div>
         
         <div class="contextInfo">
@@ -59,7 +60,7 @@
               />
             </div>
             <div class="contextInfoCenterTitle">
-              <h1><strong>{{ ReferralsInfo.ReferralsCountCurrent }}</strong> Рабов</h1>
+              <h1><strong>{{ UserData.referrals_count }}</strong> Рабов</h1>
             </div>
           </div>
           <div class="contextInfoRight">
@@ -136,7 +137,7 @@
  
         <div v-if="ReferralsInfo.ReferralsCountCurrent > 0" class="contextFriendsItems">
           <div 
-            v-for="(index, i) in 6" :key="i" 
+            v-for="(referral, i) in ReferralsList" :key="i" 
             class="contextFriendsItemsItem" 
             :style="{ animationDelay: `${i * 0.07}s` }"
           >
@@ -147,14 +148,14 @@
                 class="fade-in"
                 @load="onImageLoad"
               />
-              <span class="contextFriendsItemsItemDeepLevel">2</span>
+              <span class="contextFriendsItemsItemDeepLevel">{{ referral.ref_level }}</span>
             </div>
             <div class="contextFriendsItemsItemContent">
               <div class="contextFriendsItemsItemContentTitle">
-                <h4>malen_kihuy {{ index }}</h4>
+                <h4>{{ referral.full_name }}</h4>
               </div>
               <div class="contextFriendsItemsItemContentReward">
-                <span>+100</span>
+                <span>+{{ referral.tokens_per_hour }}</span>
                 <IconComp 
                   :icon="Icon.Token"
                   width="16px"
@@ -168,7 +169,7 @@
                 <h4>Принес вам</h4>
               </div>
               <div class="contextFriendsItemsItemRewardingTitle">
-                <span>12000</span>
+                <span>{{ referral.tokens_to_get }}</span>
                 <IconComp 
                   :icon="Icon.Token"
                   width="21px"
@@ -198,6 +199,8 @@
 import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
 
+import * as userApi from '@/api/services/user.service'
+
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue'
@@ -222,6 +225,7 @@ export default {
       PropsSuccess: this.success,
       IsPageLoading: false,
 
+      ReferralsList: [] as any,
       ReferralsInfo: {
         ReferralsMoneyToHour: 0,
         ReferralsMoneyToHourCurrent: 0,
@@ -251,6 +255,8 @@ export default {
       this.animateReferralsToHour();
       this.animateReferralsAll();
       this.animateReferralsProgress();
+
+      this.getReferralsList();
     }
   },
 
@@ -341,6 +347,15 @@ export default {
       this.ReferralsInfo.ReferralsMoneyAllCurrent = 12000;
 
       return true;
+    },
+
+    async getReferralsList() {
+      const result = await userApi.getReferrals({
+        offset: 0,
+        limit: 20,
+      });
+
+      this.ReferralsList = result;
     }
   },
 };

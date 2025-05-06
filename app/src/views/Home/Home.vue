@@ -74,7 +74,7 @@
           <div class="icon-wrapper">
             <img 
               class="chains-small fade-in" 
-              src="/home/chains-small.png"
+              src="/home/chains-small.webp"
               alt="chains-small" 
               @load="onImageLoad"
             />
@@ -191,7 +191,7 @@
 
         <div v-if="SlavedPage" class="contextRabs">
           <img 
-          src="/home/rabs.png"
+          src="/home/rabs.webp"
           alt="rabs"
           class="fade-in"
           @load="onImageLoad"
@@ -205,7 +205,7 @@
 
         <div v-if="!SlavedPage && ReferralsInfo.ReferralsCountCurrent === 0" class="contextRabs">
           <img 
-            src="/home/rabs.png"
+            src="/home/rabs.webp"
             alt="rabs"
             class="fade-in"
             @load="onImageLoad"
@@ -237,7 +237,7 @@
             <div @click="openFriends()" class="contextRabsReferralsLeftRabs">
               <div class="contextRabsReferralsLeftRabsImage">
                 <img 
-                  src="/home/rabs-two.png"
+                  src="/home/rabs-two.webp"
                   alt="rabs"
                   class="fade-in"
                   @load="onImageLoad"
@@ -397,6 +397,8 @@ export default {
       const adToken = adUse.reward_token;
       localStorage.setItem('ads_last', adToken);
 
+      // onReward();
+
       await showAd();
     };
 
@@ -516,6 +518,9 @@ export default {
     this.$watch(() => this.UserData.balance, (newValue: number) => {
       if (this.UserData.is_slaved && newValue >= 0) {
         this.UserData.is_slaved = false;
+        this.UserData.place.place_id = 1;
+        this.UserData.place.place_type = 'village';
+        this.$router.push('/level-up');
         this.userProgressInit();
       }
     });

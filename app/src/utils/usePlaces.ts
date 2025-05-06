@@ -1,4 +1,9 @@
 const placesData = {
+  chains: {
+    name: 'Цепи',
+    icon: '/places/icons/village.png',
+    photo: '/places/village.png',
+  },
   village: {
     name: 'Деревня',
     icon: '/places/icons/village.png',

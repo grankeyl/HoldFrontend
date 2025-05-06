@@ -29,6 +29,7 @@ import Menu from '@/components/Menu/Menu.vue'
 import TelegramModule from './hooks/useTelegram';
 
 import type { GameDataType } from './types/types';
+import { usePlaceStore } from './stores/place.storage';
 
 export default {
   components: {
@@ -45,6 +46,7 @@ export default {
 
     const router = useRouter();
     const appCache = AppCache() as any;
+    const storePlace = usePlaceStore() as any;
 
     const loadingPage = ref(true);
     const pageSuccess = ref(false);
@@ -76,12 +78,41 @@ export default {
       }
     }
 
+    const checkLevelUp = () => {
+      if (!storePlace.currentPlace) { return; }
+      
+      if (appCache.UserData.place.place_id > storePlace.currentPlace.placeId) {
+        storePlace.setCurrentPlace({
+          placeId: appCache.UserData.place.place_id,
+          placeType: appCache.UserData.place.place_type
+        });
+        router.push({ name: 'level-up' });
+      } else {
+        storePlace.setCurrentPlace({
+          placeId: appCache.UserData.place.place_id,
+          placeType: appCache.UserData.place.place_type
+        });
+      }
+    }
+
+    const setNewPlaceStore = (status: string) => {
+      if (status === 'registered') {
+        storePlace.setCurrentPlace({
+          placeId: 1,
+          placeType: 'village'
+        });
+      } else if (status === 'slaved') {
+        storePlace.setCurrentPlace({
+          placeId: 0,
+          placeType: ''
+        });
+      }
+    }
+
     onMounted(async () => {
       const isAuthenticated = await authenticate();
 
       if (isAuthenticated) {
-        mountMiniApp();
-
         const userGet = await userApi.get();
         const placesGet = await placesApi.get();
         const tasksGet = await tasksApi.get();
@@ -92,10 +123,17 @@ export default {
         appCache.TasksData = { ...tasksGet };
         appCache.GameData = { ...gameGet } as GameDataType;
 
-        loadingPage.value = false;
-        pageSuccess.value = true;
+        if (userGet) {
+          loadingPage.value = false;
+          pageSuccess.value = true;
+
+          mountMiniApp();
+          checkLevelUp();
+        }
 
         if (isAuthenticated.status) {
+          setNewPlaceStore(isAuthenticated.status);
+          
           router.push({ 
             name: 'onborad', 
             params: { type: isAuthenticated.status }

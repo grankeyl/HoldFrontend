@@ -1,6 +1,6 @@
 import api from '@/api/clients/axios'
 import Cookies from "js-cookie";
-import type { UserRewardPayload } from '../types/api.types';
+import type { UserGetReferralsPayload, UserRewardPayload } from '../types/api.types';
 
 export const get = async () => {
   try {
@@ -22,6 +22,29 @@ export const get = async () => {
     }
   } catch (e: any) {
     throw new Error("User get failed");
+  }
+}
+
+export const getReferrals = async (payload: UserGetReferralsPayload) => {
+  try {
+    const tokenAuth = Cookies.get("token");
+
+    if (!tokenAuth) {
+      throw new Error("Token not found");
+    }
+
+    const response = await api.post(
+      '/user/referrals/get',
+      { ...payload },
+      { headers: { Authorization: `Bearer ${tokenAuth}` } }
+    );
+
+    if (response.status === 200) {
+      const responseData = response.data;
+      return responseData.message;
+    }
+  } catch (e: any) {
+    throw new Error("User referrals get failed");
   }
 }
 
