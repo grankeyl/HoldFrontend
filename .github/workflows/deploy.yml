@@ -46,7 +46,7 @@ jobs:
           host: ${{ secrets.DEV_SSH_HOST }}
           username: ${{ secrets.DEV_SSH_USER }}
           password: ${{ secrets.DEV_SSH_PASSWORD }}
-          source: "Dockerfile.frontend"
+          source: "docker/Dockerfile.frontend"
           target: project/frontend
           rm: false
 
