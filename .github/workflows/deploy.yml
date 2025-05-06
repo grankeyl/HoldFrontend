@@ -30,16 +30,6 @@ jobs:
             mkdir -p dist
             exit
 
-      - name: Upload docker-compose.yml
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.DEV_SSH_HOST }}
-          username: ${{ secrets.DEV_SSH_USER }}
-          password: ${{ secrets.DEV_SSH_PASSWORD }}
-          source: "docker-compose.yml"
-          target: project/frontend
-          rm: false
-
       - name: Upload Dockerfile
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -78,5 +68,5 @@ jobs:
           username: ${{ secrets.DEV_SSH_USER }}
           password: ${{ secrets.DEV_SSH_PASSWORD }}
           script: |
-            cd project/frontend
-            docker compose up --build -d
+            cd project
+            docker compose up frontend --build -d
