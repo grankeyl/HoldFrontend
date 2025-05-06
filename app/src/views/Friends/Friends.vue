@@ -89,7 +89,7 @@
               <span>Поймать раба</span>
             </button>
           </div>
-          <div v-if="ReferralsInfo.ReferralsCountCurrent > 0" class="contextButtonsButton primary">
+          <div v-if="ReferralsList && ReferralsList.length > 0" class="contextButtonsButton primary">
             <button @click="openUpgrade(1)">
               <IconComp 
                 :icon="Icon.Up"
@@ -135,7 +135,7 @@
           </div>
         </div>
  
-        <div v-if="ReferralsInfo.ReferralsCountCurrent > 0" class="contextFriendsItems">
+        <div v-if="ReferralsList && ReferralsList.length > 0" class="contextFriendsItems">
           <div 
             v-for="(referral, i) in ReferralsList" :key="i" 
             class="contextFriendsItemsItem" 
@@ -185,7 +185,7 @@
           </div>
         </div>
 
-        <div v-if="ReferralsInfo.ReferralsCountCurrent === 0" class="contextFriendsNull">
+        <div v-if="ReferralsList && ReferralsList.length === 0" class="contextFriendsNull">
           <strong>Пригласи друзей, чтобы превратить их в своих рабов и поднять золотишка</strong>
         </div>
 
