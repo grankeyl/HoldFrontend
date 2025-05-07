@@ -245,6 +245,7 @@ import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue';
 import Loader from '@/components/Loader.vue';
 import Modal from '@/components/Modal/Modal.vue';
+import { collectConfetti } from '@/utils/useConfetti';
 
 const appCache = AppCache() as any;
 
@@ -360,7 +361,7 @@ export default {
     },
 
     animateReferralsToHour() {
-      const duration = 600;
+      const duration = 1250;
       const start = performance.now();
       const from = 0;
       const to = this.ReferralsInfo.ReferralsMoneyToHourCurrent;
@@ -377,18 +378,20 @@ export default {
     },
 
     animateReferralsAll() {
-      this.ReferralsInfo.ReferralsMoneyAll = 0;
-      const target = this.ReferralsInfo.ReferralsMoneyAllCurrent;
-      const step = Math.max(1, Math.floor(target / 100));
+      const duration = 1250;
+      const start = performance.now();
+      const from = 0;
+      const to = this.ReferralsInfo.ReferralsMoneyAllCurrent;
 
-      const interval = setInterval(() => {
-        this.ReferralsInfo.ReferralsMoneyAll += step;
-
-        if (this.ReferralsInfo.ReferralsMoneyAll >= target) {
-          this.ReferralsInfo.ReferralsMoneyAll = target;
-          clearInterval(interval);
+      const step = (timestamp: number) => {
+        const progress = Math.min((timestamp - start) / duration, 1);
+        this.ReferralsInfo.ReferralsMoneyAll = Math.floor(from + (to - from) * progress);
+        if (progress < 1) {
+          requestAnimationFrame(step);
         }
-      }, 35);
+      };
+
+      requestAnimationFrame(step);
     },
     
     animateReferralsProgress() {
@@ -455,7 +458,7 @@ export default {
 
       const step = (timestamp: number) => {
         const progress = Math.min((timestamp - start) / duration, 1);
-        this.ReferralsInfo.ReferralsMoneyAllCurrent = Math.floor(from + (to - from) * progress);
+        this.ReferralsInfo.ReferralsMoneyAll = Math.floor(from + (to - from) * progress);
         if (progress < 1) {
           requestAnimationFrame(step);
         }
@@ -465,13 +468,18 @@ export default {
     },
 
     async collectReferral() {
-      const collect = await userApi.friendsCollect({ referral_code: this.ReferralLink });
+      const collect = await userApi.friendsCollect({});
       if (!collect) { return; }
-
+      
       this.UserData.balance = collect.new_balance;
+
+      this.ReferralsInfo.ReferralsMoneyTake = 0;
+      this.ReferralsInfo.ReferralsMoneyTakeCurrent = 0;
 
       this.ReferralsInfo.ReferralsMoneyAllCurrent = collect.total_collected;
       this.addTotalCollected();
+
+      collectConfetti();
     }
   },
 };

@@ -162,4 +162,5 @@ img.fade-in.loaded {
 
 button:disabled {
   opacity: 0.4;
+  pointer-events: none;
 }

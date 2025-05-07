@@ -273,7 +273,7 @@
               />
             </div>
             <div class="contextRabsReferralsRightButton">
-              <button>
+              <button @click="collectReferral()" :disabled="ReferralsInfo.ReferralsMoneyTakeCurrent === 0">
                 <span>Собрать</span>
               </button>
             </div>
@@ -312,6 +312,7 @@ import * as userApi from '@/api/services/user.service';
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue';
 import Modal from '@/components/Modal/Modal.vue';
+import { collectConfetti } from '@/utils/useConfetti';
 
 const appCache = AppCache() as any;
 
@@ -406,6 +407,7 @@ export default {
       UserData,
       GameInfo,
       ContextInfoVideo,
+      AddBalanceAnimation,
       showAds
     };
   },
@@ -496,7 +498,7 @@ export default {
 
     this.$nextTick(async () => {
       this.cycleInitUserData() as any;
-      
+
       const initGame = this.initGame();
 
       this.userProgressInit();
@@ -504,8 +506,15 @@ export default {
 
       if (initGame) {
         this.animateBalance();
-        this.animateReferralsInfo();
       }
+
+      this.getReferralsList().then(getFriends => {
+        if (getFriends) {
+          this.ReferralsInfo.ReferralsCountCurrent = this.UserData.referrals_count;
+          this.ReferralsInfo.ReferralsMoneyTakeCurrent = getFriends.total_income;
+          this.animateReferralsInfo();
+        }
+      });
     });
 
     this.$emit('loaded');
@@ -568,18 +577,20 @@ export default {
     },
     
     animateReferralsInfo() {
-      this.ReferralsInfo.ReferralsMoneyTake = 0;
-      const target = this.ReferralsInfo.ReferralsMoneyTakeCurrent;
-      const step = Math.max(1, Math.floor(target / 40));
+      const duration = 600;
+      const start = performance.now();
+      const from = 0;
+      const to = this.ReferralsInfo.ReferralsMoneyTakeCurrent;
 
-      const interval = setInterval(() => {
-        this.ReferralsInfo.ReferralsMoneyTake += step;
-
-        if (this.ReferralsInfo.ReferralsMoneyTake >= target) {
-          this.ReferralsInfo.ReferralsMoneyTake = target;
-          clearInterval(interval);
+      const step = (timestamp: number) => {
+        const progress = Math.min((timestamp - start) / duration, 1);
+        this.ReferralsInfo.ReferralsMoneyTake = Math.floor(from + (to - from) * progress);
+        if (progress < 1) {
+          requestAnimationFrame(step);
         }
-      }, 30);
+      };
+
+      requestAnimationFrame(step);
     },
 
     openPlace() {
@@ -677,6 +688,28 @@ export default {
       const text = "123"
       TelegramModule.useMediumHaptic();
       TelegramModule.useSendMessage(link, text);
+    },
+
+    async getReferralsList() {
+      const result = await userApi.getFriends({
+        offset: 0,
+        limit: 20,
+      });
+      if (!result) { return; }
+      return result;
+    },
+
+    async collectReferral() {
+      const collect = await userApi.friendsCollect({});
+      if (!collect) { return; }
+      
+      this.GameInfo.BalanceCurrent = collect.new_balance;
+      this.AddBalanceAnimation();
+
+      this.ReferralsInfo.ReferralsMoneyTake = 0;
+      this.ReferralsInfo.ReferralsMoneyTakeCurrent = 0;
+
+      collectConfetti();
     }
   },
 };
