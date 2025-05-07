@@ -12,6 +12,46 @@
     class="_wrap _friends" 
     :class="{ show: !IsPageLoading }"
   >
+
+    <Modal
+      :isVisible="ShareReferralModal"
+      @update:isVisible="ShareReferralModal = $event"
+    >
+      <div class="modalTitle">
+        <IconComp
+          :icon="Icon.Friends"
+          width="22px"
+          height="22px"
+        /> 
+        <h4>Catch a slave</h4>
+      </div>
+      
+      <div class="modalDescription">
+        <p>Copy the link or share directly</p>
+      </div>
+
+      <div class="modalReferral">
+        <h4>{{ ReferralLink }}</h4>
+        <div 
+          @click="copyShareReferral(ReferralLink)"
+          class="modalReferralCopy"
+        >
+          <p>{{ ShareReferralCopied ? 'Copied!' : 'Copy' }}</p>
+        </div>
+      </div>
+
+      <div class="modalButton">
+        <button @click="sendShareReferral()">
+          <IconComp 
+            :icon="Icon.ArrowRightTo"
+            width="24px"
+            height="24px"
+          />
+          <span>Share</span>
+        </button>
+      </div>
+    </Modal>
+
     <div class="_friendsSymbols no-animation">
       <img 
         src="/friends/background-symbols.png"
@@ -33,7 +73,6 @@
             pathColor="#fff"
           />
           <h4>Друзья</h4>
-          {{ ReferralsList }}
         </div>
         
         <div class="contextInfo">
@@ -80,7 +119,7 @@
 
         <div class="contextButtons">
           <div class="contextButtonsButton">
-            <button>
+            <button @click="openShareReferral()">
               <IconComp 
                 :icon="Icon.Link"
                 width="24px"
@@ -128,13 +167,13 @@
           <div class="contextRewardBorder"></div>
           <div class="contextRewardRight">
             <div class="contextRewardRightButton">
-              <button>
+              <button @click="collectReferral()" :disabled="ReferralsInfo.ReferralsMoneyTake === 0">
                 <span>Собрать</span>
               </button>
             </div>
           </div>
         </div>
- 
+
         <div v-if="ReferralsList && ReferralsList.length > 0" class="contextFriendsItems">
           <div 
             v-for="(referral, i) in ReferralsList" :key="i" 
@@ -198,12 +237,14 @@
 <script lang="ts">
 import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
+import { copyToClipboard, getReferralLink } from '@/utils/useApp';
 
-import * as userApi from '@/api/services/user.service'
+import * as userApi from '@/api/services/user.service';
 
 import TelegramModule from '@/hooks/useTelegram';
-import IconComp from '@/components/IconComp.vue'
-import Loader from '@/components/Loader.vue'
+import IconComp from '@/components/IconComp.vue';
+import Loader from '@/components/Loader.vue';
+import Modal from '@/components/Modal/Modal.vue';
 
 const appCache = AppCache() as any;
 
@@ -218,12 +259,16 @@ export default {
   components: {
     IconComp,
     Loader,
+    Modal,
   },
 
   data() {
     return {
       PropsSuccess: this.success,
       IsPageLoading: false,
+
+      ShareReferralModal: false,
+      ShareReferralCopied: false,
 
       ReferralsList: [] as any,
       ReferralsInfo: {
@@ -244,6 +289,12 @@ export default {
     };
   },
 
+  computed: {
+    ReferralLink() {
+      return getReferralLink(this.UserData.referral_link);
+    },
+  },
+
   mounted() {
     TelegramModule.useBackButton(() => {
       this.$router.push('/');
@@ -251,13 +302,17 @@ export default {
     
     this.waitForAssets();
 
-    if (this.initReferralsInfo()) {
-      this.animateReferralsToHour();
-      this.animateReferralsAll();
-      this.animateReferralsProgress();
-
-      this.getReferralsList();
-    }
+    this.getReferralsList().then(getFriends => {
+      if (getFriends) {
+        console.log(getFriends);
+        this.ReferralsList = getFriends.referrals;
+        this.initReferralsInfo({
+          ReferralsMoneyTakeCurrent: getFriends.total_income,
+          ReferralsMoneyToHourCurrent: getFriends.tokens_per_hour,
+          ReferralsMoneyAllCurrent: getFriends.total_collected,
+        });
+      }
+    });
   },
 
   methods: {
@@ -287,20 +342,38 @@ export default {
       this.IsPageLoading = false;
       this.$emit('loaded');
     },
-    
+
+    initReferralsInfo(dto: {
+      ReferralsMoneyTakeCurrent: number,
+      ReferralsMoneyToHourCurrent: number,
+      ReferralsMoneyAllCurrent: number,
+    }) {
+      this.ReferralsInfo.ReferralsMoneyTakeCurrent = dto.ReferralsMoneyTakeCurrent;
+      this.ReferralsInfo.ReferralsMoneyToHourCurrent = dto.ReferralsMoneyToHourCurrent;
+      this.ReferralsInfo.ReferralsMoneyAllCurrent = dto.ReferralsMoneyAllCurrent;
+
+      this.animateReferralsToHour();
+      this.animateReferralsAll();
+      this.animateReferralsProgress();
+      
+      return true;
+    },
+
     animateReferralsToHour() {
-      this.ReferralsInfo.ReferralsMoneyToHour = 0;
-      const target = this.ReferralsInfo.ReferralsMoneyToHourCurrent;
-      const step = Math.max(1, Math.floor(target / 100));
+      const duration = 600;
+      const start = performance.now();
+      const from = 0;
+      const to = this.ReferralsInfo.ReferralsMoneyToHourCurrent;
 
-      const interval = setInterval(() => {
-        this.ReferralsInfo.ReferralsMoneyToHour += step;
-
-        if (this.ReferralsInfo.ReferralsMoneyToHour >= target) {
-          this.ReferralsInfo.ReferralsMoneyToHour = target;
-          clearInterval(interval);
+      const step = (timestamp: number) => {
+        const progress = Math.min((timestamp - start) / duration, 1);
+        this.ReferralsInfo.ReferralsMoneyToHour = Math.floor(from + (to - from) * progress);
+        if (progress < 1) {
+          requestAnimationFrame(step);
         }
-      }, 10);
+      };
+
+      requestAnimationFrame(step);
     },
 
     animateReferralsAll() {
@@ -341,21 +414,64 @@ export default {
       this.$router.push(`/friends/upgrade/${id}`);
     },
 
-    initReferralsInfo() {
-      this.ReferralsInfo.ReferralsMoneyTakeCurrent = 12800;
-      this.ReferralsInfo.ReferralsMoneyToHourCurrent = 3200;
-      this.ReferralsInfo.ReferralsMoneyAllCurrent = 12000;
-
-      return true;
-    },
-
     async getReferralsList() {
-      const result = await userApi.getReferrals({
+      const result = await userApi.getFriends({
         offset: 0,
         limit: 20,
       });
+      if (!result) { return; }
+      return result;
+    },
 
-      this.ReferralsList = result;
+    openShareReferral() {
+      this.ShareReferralModal = true;
+      TelegramModule.useMediumHaptic();
+    },
+    
+    copyShareReferral(text: string) {
+      if (this.ShareReferralCopied) return;
+
+      copyToClipboard(text);
+      this.ShareReferralCopied = true;
+      TelegramModule.useMediumHaptic();
+
+      setTimeout(() => {
+        this.ShareReferralCopied = false;
+      }, 1500);
+    },
+
+    sendShareReferral() {
+      const link = this.ReferralLink;
+      const text = "123"
+      TelegramModule.useMediumHaptic();
+      TelegramModule.useSendMessage(link, text);
+    },
+
+    addTotalCollected() {
+      const duration = 600;
+      const start = performance.now();
+      const from = this.ReferralsInfo.ReferralsMoneyAll;
+      const to = this.ReferralsInfo.ReferralsMoneyAllCurrent;
+
+      const step = (timestamp: number) => {
+        const progress = Math.min((timestamp - start) / duration, 1);
+        this.ReferralsInfo.ReferralsMoneyAllCurrent = Math.floor(from + (to - from) * progress);
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      };
+
+      requestAnimationFrame(step);
+    },
+
+    async collectReferral() {
+      const collect = await userApi.friendsCollect({ referral_code: this.ReferralLink });
+      if (!collect) { return; }
+
+      this.UserData.balance = collect.new_balance;
+
+      this.ReferralsInfo.ReferralsMoneyAllCurrent = collect.total_collected;
+      this.addTotalCollected();
     }
   },
 };
@@ -363,4 +479,5 @@ export default {
 
 <style scoped lang="scss">
 @use './Friends.scss' as *;
+@use '@/components/Modal/Modal.scss' as *;
 </style>

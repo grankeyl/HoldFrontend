@@ -217,8 +217,8 @@
           v-if="!SlavedPage && ReferralsInfo.ReferralsCountCurrent > 0"
           class="contextRabsReferrals"
         >
-          <div class="contextRabsReferralsLeft">
-            <div @click="openFriends()" class="contextRabsReferralsLeftTitle">
+          <div @click="openFriends()" class="contextRabsReferralsLeft">
+            <div class="contextRabsReferralsLeftTitle">
               <IconComp 
                 :icon="Icon.Friends"
                 width="16px"
@@ -231,10 +231,10 @@
                 height="16px"
               />
             </div>
-            <div @click="openFriends()" class="contextRabsReferralsLeftDescription">
+            <div class="contextRabsReferralsLeftDescription">
               <p>Повышайте доход в час, улучшая своих рабов</p>
             </div>
-            <div @click="openFriends()" class="contextRabsReferralsLeftRabs">
+            <div class="contextRabsReferralsLeftRabs">
               <div class="contextRabsReferralsLeftRabsImage">
                 <img 
                   src="/home/rabs-two.webp"
@@ -487,8 +487,7 @@ export default {
       Icon,
       toRoman,
       toUniqNumber,
-      getReferralLink,
-      copyToClipboard
+      getReferralLink
     };
   },
 
@@ -496,13 +495,7 @@ export default {
     TelegramModule.hideBackButton();
 
     this.$nextTick(async () => {
-      const userGet = await userApi.get();
-      appCache.UserData = userGet;
-
-      if (!userGet) {
-        return;
-      }
-
+      const cycleUserData = await this.cycleInitUserData() as any;
       const initGame = this.initGame();
 
       this.userProgressInit();
@@ -612,6 +605,16 @@ export default {
       return true;
     },
 
+    async cycleInitUserData() {
+      setInterval(async () => {
+        const userGet = await userApi.get();
+
+        if (userGet) {
+          appCache.UserData = userGet;
+        }
+      }, 10000);
+    },
+
     userProgressInit() {
       const userReferralsCountCurrent = appCache.UserData.referrals_count;
       const nextPlace = this.userProgressGetNext();
@@ -659,7 +662,7 @@ export default {
     copyShareReferral(text: string) {
       if (this.ShareReferralCopied) return;
 
-      this.copyToClipboard(text);
+      copyToClipboard(text);
       this.ShareReferralCopied = true;
       TelegramModule.useMediumHaptic();
 

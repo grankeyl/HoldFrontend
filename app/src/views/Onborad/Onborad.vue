@@ -4,19 +4,29 @@
   </div>
 
   <section 
-    v-if="IsSlavePage === 'slaved'" 
+    v-if="OnboradStep === 3" 
     class="_wrap _onborad _slaved" 
     :class="{ show: !IsPageLoading }"
   >
     <div class="_onboradSymbols no-animation">
-      <img src="/onborad/background-symbols-slave.png" alt="background-symbols-slave" />
+      <img 
+        src="/onborad/background-symbols-slave.png"
+        alt="background-symbols-slave"
+        class="fade-in"
+        @load="onImageLoad"
+      />
     </div>
 
     <div class="_view">
       <div class="contextSection">
         <div class="context">
           <div class="contextImage">
-            <img src="/onborad/chains.png" alt="chains" />
+            <img 
+              src="/onborad/chains.png"
+              alt="chains"
+              class="fade-in"
+              @load="onImageLoad"
+            />
           </div>
           <div class="contextTitle">
             <h4>You’ve Been Enslaved by <span>{{ UserData.refer_name }}</span>!</h4>
@@ -48,14 +58,24 @@
     :class="{ show: !IsPageLoading }"
   >
     <div class="_onboradSymbols">
-      <img src="/onborad/background-symbols.png" alt="background-symbols" />
+      <img 
+        src="/onborad/background-symbols.png" 
+        alt="background-symbols"
+        class="fade-in"
+        @load="onImageLoad"
+       />
     </div>
 
     <div class="_view">
       <div v-if="OnboradStep === 0" class="contextSection">
         <div class="context">
           <div class="contextImage">
-            <img src="/onborad/flag.png" alt="flag" />
+            <img
+              src="/onborad/flag.png"
+              alt="flag"
+              class="fade-in"
+              @load="onImageLoad"
+            />
           </div>
           <div class="contextTitle">
             <h4>It’s Time<br>to Build <span>Empire</span>!</h4>
@@ -75,7 +95,12 @@
       <div v-if="OnboradStep === 1" class="contextSection">
         <div class="context">
           <div class="contextImage">
-            <img src="/onborad/coin.png" alt="coin" />
+            <img 
+              src="/onborad/coin.png"
+              alt="coin"
+              class="fade-in"
+              @load="onImageLoad"
+            />
           </div>
           <div class="contextTitle">
             <h4>Real Profits,<br><span>No Scams.</span></h4>
@@ -95,7 +120,12 @@
       <div v-if="OnboradStep === 2" class="contextSection">
         <div class="context">
           <div class="contextImage">
-            <img src="/onborad/chest.png" alt="chest" />
+            <img 
+              src="/onborad/chest.png"
+              alt="chest"
+              class="fade-in"
+              @load="onImageLoad"
+            />
           </div>
           <div class="contextTitle">
             <h4>Simple Rules,<br><span>Big Rewards</span></h4>
@@ -157,6 +187,11 @@ export default {
   },
 
   methods: {
+    onImageLoad(event: Event) {
+      const img = event.target as HTMLImageElement;
+      img.classList.add('loaded');
+    },
+
     async waitForAssets() {
       const fontPromise = document.fonts?.ready ?? Promise.resolve();
       const imagePromises = [
@@ -184,6 +219,8 @@ export default {
     },
 
     setPageToHome() {
+      if (this.OnboradStep >= 3) { return this.$router.push('/'); }
+      if (this.IsSlavePage === 'slaved') { this.OnboradStep++; return; }
       this.$router.push('/');
     },
   },

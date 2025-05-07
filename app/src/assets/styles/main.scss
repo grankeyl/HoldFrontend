@@ -159,3 +159,7 @@ img.fade-in {
 img.fade-in.loaded {
   opacity: 1;
 }
+
+button:disabled {
+  opacity: 0.4;
+}

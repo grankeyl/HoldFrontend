@@ -15,10 +15,12 @@ export interface UserRewardPayload {
   sum: number;
 }
 
-export interface UserGetReferralsPayload {
+export interface UserGetFriendsPayload {
   offset: number;
   limit: number;
 }
+
+export interface UserFriendsCollect {}
 
 export interface AdsRequestPayload {
   task_type: string;

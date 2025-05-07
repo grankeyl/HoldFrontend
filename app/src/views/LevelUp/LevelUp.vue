@@ -5,7 +5,12 @@
   >
     
     <div class="_levelupSymbols">
-      <img src="/levelup/background-symbols.png" alt="background-symbols" />
+      <img 
+        src="/levelup/background-symbols.png" 
+        alt="background-symbols" 
+        class="fade-in"
+        @load="onImageLoad"
+      />
     </div>
 
     <div class="_view">
@@ -36,7 +41,12 @@
           </div>
 
           <div class="contextInfoImage">
-            <img src="/levelup/shield1.png" alt="shield1" />
+            <img 
+              src="/levelup/shield1.png"
+              alt="shield1"
+              class="fade-in"
+              @load="onImageLoad"
+            />
             <div class="contextInfoImageInfo">
               <IconComp
                 :icon="Icon.Friends"
@@ -63,7 +73,12 @@
       <div class="buttonsButton ads">
         <button @click="openHome()">
           <div class="bg">
-            <img src="/friends/upgrade/ads.png" alt="ads" />
+            <img
+              src="/friends/upgrade/ads.png"
+              alt="ads"
+              class="fade-in"
+              @load="onImageLoad"
+            />
           </div>
           <span>Okay</span>
         </button>
@@ -135,6 +150,11 @@ export default {
   },
 
   methods: {
+    onImageLoad(event: Event) {
+      const img = event.target as HTMLImageElement;
+      img.classList.add('loaded');
+    },
+
     async waitForAssets() {
       const fontPromise = document.fonts?.ready ?? Promise.resolve();
       const imagePromises = [
