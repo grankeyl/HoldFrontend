@@ -495,7 +495,8 @@ export default {
     TelegramModule.hideBackButton();
 
     this.$nextTick(async () => {
-      const cycleUserData = await this.cycleInitUserData() as any;
+      this.cycleInitUserData() as any;
+      
       const initGame = this.initGame();
 
       this.userProgressInit();
