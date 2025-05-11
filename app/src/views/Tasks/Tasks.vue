@@ -111,7 +111,7 @@
                   </div>
                   <div class="contextBannersBannerContentButton">
                     <button>
-                      <span>Подписаться</span>
+                      <span>Пригласить</span>
                     </button>
                   </div>
                 </div>

@@ -165,7 +165,7 @@ export default {
 
     initMenu() {
       const excludedRoutes: Array<string | null> = [
-        'onborad', 'place', 'friends-upgrade', 'level-up'
+        'onborad', 'place', 'friends-upgrade', 'level-up', 'error'
       ];
       return !excludedRoutes.includes(this.$route.name?.toString() || '');
     }

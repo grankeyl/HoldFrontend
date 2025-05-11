@@ -69,4 +69,5 @@ jobs:
           password: ${{ secrets.DEV_SSH_PASSWORD }}
           script: |
             cd project
-            docker compose up frontend --build -d
+            docker compose build --no-cache frontend
+            docker compose up -d frontend

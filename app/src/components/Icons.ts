@@ -18,6 +18,7 @@ import ArrowRightIcon from '/icons/ArrowRight.svg?raw';
 import ArrowRightToIcon from '/icons/ArrowRightTo.svg?raw';
 import UpIcon from '/icons/Up.svg?raw';
 import CloseIcon from '/icons/Close.svg?raw';
+import TowerBlack from '/icons/TowerBlack.svg?raw';
 
 export const Icon = {
     Town: TownIcon,
@@ -40,4 +41,5 @@ export const Icon = {
     ArrowRightTo: ArrowRightToIcon,
     Up: UpIcon,
     Close: CloseIcon,
+    TowerBlack: TowerBlack,
 };

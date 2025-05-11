@@ -37,7 +37,7 @@
             :ref="(el) => index === LeadersData.length - 1 ? setLastLeaderRef(el) : null"
           >
             <div class="contextLeadersLeaderNumber">
-              <h1 v-if="leader.id < 10" class="big">#{{ leader.id }}</h1>
+              <h1 v-if="leader.id < 10" class="big" :class="{ first: leader.id === 1, two: leader.id === 2, three: leader.id === 3 }">#{{ leader.id }}</h1>
               <h1 v-if="leader.id >= 10 && leader.id < 100" class="medium">#{{ leader.id }}</h1>
               <h1 v-if="leader.id >= 100 && leader.id < 1000" class="small">#{{ leader.id }}</h1>
             </div>

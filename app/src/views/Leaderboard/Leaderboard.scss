@@ -230,6 +230,7 @@
             & h1 {
               max-width: 100%;
               color: $app-color-tint;
+              opacity: .65;
               white-space: nowrap;
               overflow: hidden;
               text-align: center;
@@ -238,6 +239,30 @@
             & h1.big {
               font-size: 24px;
               font-weight: 700;
+            }
+
+            & h1.first {
+              background: linear-gradient(180deg, #FFE8A5 0%, #FFE289 54.33%, #D7A06A 100%);
+              background-clip: text;
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              opacity: 1;
+            }
+
+            & h1.two {
+              background: linear-gradient(180deg, #AAA 0%, #CFCFCF 53.85%, #6A6A6A 100%);
+              background-clip: text;
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              opacity: 1;
+            }
+
+            & h1.three {
+              background: linear-gradient(180deg, #FFA473 0%, #FFA789 54.33%, #BF5C3B 100%);
+              background-clip: text;
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              opacity: 1;
             }
 
             & h1.medium {
