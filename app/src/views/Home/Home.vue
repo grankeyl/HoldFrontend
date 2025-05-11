@@ -203,7 +203,7 @@
           </p>
         </div>
 
-        <div v-if="!SlavedPage && ReferralsInfo.ReferralsCountCurrent === 0" class="contextRabs">
+        <div v-if="!SlavedPage && UserData.referrals_count === 0" class="contextRabs">
           <img 
             src="/home/rabs.webp"
             alt="rabs"
@@ -214,7 +214,7 @@
         </div>
 
         <div 
-          v-if="!SlavedPage && ReferralsInfo.ReferralsCountCurrent > 0"
+          v-if="!SlavedPage && UserData.referrals_count > 0"
           class="contextRabsReferrals"
         >
           <div @click="openFriends()" class="contextRabsReferralsLeft">
@@ -465,10 +465,10 @@ export default {
       ReferralsCountNeed: 29,
 
       ReferralsInfo: {
-        ReferralsCountCurrent: 20,
-        ReferralsMoneyToHour: 1200,
+        ReferralsCountCurrent: 0,
+        ReferralsMoneyToHour: 0,
         ReferralsMoneyTake: 0,
-        ReferralsMoneyTakeCurrent: 780
+        ReferralsMoneyTakeCurrent: 0
       },
 
       UserProgressTotalLines: 25,
@@ -536,7 +536,7 @@ export default {
     },
     
     animateBalance() {
-      const duration = 600;
+      const duration = 800;
       const start = performance.now();
       const from = 0;
       const to = this.GameInfo.BalanceCurrent;
@@ -573,7 +573,7 @@ export default {
             }
           });
         }
-      }, 30);
+      }, 15);
     },
     
     animateReferralsInfo() {

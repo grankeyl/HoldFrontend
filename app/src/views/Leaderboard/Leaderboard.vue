@@ -34,22 +34,30 @@
             v-for="(leader, index) in LeadersData"
             :key="index"
             class="contextLeadersLeader"
-            :style="{ animationDelay: `${index * 0.035}s` }"
             :ref="(el) => index === LeadersData.length - 1 ? setLastLeaderRef(el) : null"
           >
             <div class="contextLeadersLeaderNumber">
-              <h1>#{{ leader.id }}</h1>
+              <h1 v-if="leader.id < 10" class="big">#{{ leader.id }}</h1>
+              <h1 v-if="leader.id >= 10 && leader.id < 100" class="medium">#{{ leader.id }}</h1>
+              <h1 v-if="leader.id >= 100 && leader.id < 1000" class="small">#{{ leader.id }}</h1>
             </div>
             <div class="contextLeadersLeaderImage">
-              <img 
+              <img
+                v-if="leader.photo_url"
                 :src="leader.photo_url"
                 alt="avatar"
                 class="fade-in"
                 @load="onImageLoad"
               >
+
+              <div v-if="!leader.photo_url" class="avatar-null">
+                <h1>{{ leader.first_name[0] }}</h1>
+              </div>
+
               <img 
+                v-if="PlacesListData[leader.place]"
                 class="league fade-in" 
-                :src="PlacesListData[leader.place.place_type].icon" 
+                :src="PlacesListData[leader.place].icon" 
                 alt="league"
                 @load="onImageLoad"
               >
@@ -86,9 +94,9 @@
       </div>
       
       <div class="contextPinnedLeader">
-        <div class="contextPinnedLeaderNumber">
-          <h1>#1</h1>
-        </div>
+        <!-- <div class="contextPinnedLeaderNumber">
+          <h1>#100</h1>
+        </div> -->
         <div class="contextPinnedLeaderImage">
           <img 
             :src="UserData.photo_link"
@@ -163,12 +171,11 @@ export default {
       PropsSuccess: this.success,
       IsPageLoading: false,
 
+      PlacesListData: getPlacesData() as any,
+
       LeadersData: [] as any[],
       LeadersOffset: 0,
       LeadersLimit: 10,
-
-      PlacesListData: getPlacesData() as any,
-
       LeadersObserver: null as IntersectionObserver | null,
       LastLeader: null as HTMLElement | null,
 
@@ -180,10 +187,8 @@ export default {
 
   mounted() {
     TelegramModule.hideBackButton();
-    
-    // this.waitForAssets();
 
-    this.leadersDataGet();
+    this.fetchLeaders();
   },
 
   watch: {
@@ -223,26 +228,17 @@ export default {
       this.$router.push('/');
     },
 
-    async leadersDataGet() {
-      const leaders = await leadersApi.get({ 
-        offset: this.LeadersOffset, 
-        limit: this.LeadersLimit
-      });
-
-      this.LeadersData.push(...leaders);
-    },
-
-    async loadMoreLeaders() {
-      this.LeadersOffset += this.LeadersLimit;
-      const moreLeaders = await leadersApi.get({
+    async fetchLeaders() {
+      const leaders = await leadersApi.get({
         offset: this.LeadersOffset,
         limit: this.LeadersLimit
       });
 
-      if (moreLeaders.length > 0) {
-        this.LeadersData.push(...moreLeaders);
-      } else if (this.LeadersObserver) {
-        this.LeadersObserver.disconnect();
+      if (leaders.length) {
+        this.LeadersData.push(...leaders);
+        this.LeadersOffset += this.LeadersLimit;
+      } else {
+        this.LeadersObserver?.disconnect();
       }
     },
 
@@ -251,22 +247,14 @@ export default {
     },
 
     initObserver() {
-      if (this.LeadersObserver) this.LeadersObserver.disconnect();
+      this.LeadersObserver?.disconnect();
+      if (!this.LastLeader) return;
 
-      const lastEl = this.LastLeader;
-      if (!lastEl) return;
+      this.LeadersObserver = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) this.fetchLeaders();
+      }, { root: null, rootMargin: '0px', threshold: 1.0 });
 
-      this.LeadersObserver = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          this.loadMoreLeaders();
-        }
-      }, {
-        root: null,
-        rootMargin: '0px',
-        threshold: 1.0
-      });
-
-      this.LeadersObserver.observe(lastEl);
+      this.LeadersObserver.observe(this.LastLeader);
     }
   },
 };

@@ -335,7 +335,7 @@ export default {
             }
           });
         }
-      }, 10);
+      }, 15);
     },
 
     openHome() {

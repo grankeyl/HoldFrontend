@@ -204,6 +204,7 @@
         &Leader {
           width: 100%;
           height: 79px;
+          margin-left: -10px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -216,9 +217,9 @@
           opacity: 0;
           
           &Number {
-            width: 35px;
-            min-width: 35px;
-            max-width: 35px;
+            width: 38px;
+            min-width: 38px;
+            max-width: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -228,12 +229,27 @@
           
             & h1 {
               max-width: 100%;
-              font-weight: 700;
               color: $app-color-tint;
-              font-size: 24px;
               white-space: nowrap;
               overflow: hidden;
               text-align: center;
+            }
+
+            & h1.big {
+              font-size: 24px;
+              font-weight: 700;
+            }
+
+            & h1.medium {
+              font-size: 18px;
+              font-weight: 700;
+              margin-left: -5px;
+            }
+
+            & h1.small {
+              font-size: 16px;
+              font-weight: 700;
+              margin-left: -10px;
             }
           }
 
@@ -256,6 +272,23 @@
               object-fit: cover;
               border-radius: 12px;
               animation: fadeIn 0.4s linear;
+            }
+
+            & .avatar-null {
+              width: 47px;
+              height: 47px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+
+              & h1 {
+                font-size: 18px;
+                font-weight: 700;
+                color: $app-h;
+                animation: fadeIn 0.4s linear;
+              }
             }
             
             & .league {

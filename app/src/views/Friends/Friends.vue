@@ -128,7 +128,7 @@
               <span>Поймать раба</span>
             </button>
           </div>
-          <div v-if="ReferralsList && ReferralsList.length > 0" class="contextButtonsButton primary">
+          <div v-if="FriendsData && UserData.referrals_count > 0" class="contextButtonsButton primary">
             <button @click="openUpgrade(1)">
               <IconComp 
                 :icon="Icon.Up"
@@ -174,11 +174,12 @@
           </div>
         </div>
 
-        <div v-if="ReferralsList && ReferralsList.length > 0" class="contextFriendsItems">
+        <div v-if="FriendsData && FriendsData.length > 0" class="contextFriendsItems">
           <div 
-            v-for="(referral, i) in ReferralsList" :key="i" 
+            v-for="(referral, i) in FriendsData" :key="i" 
             class="contextFriendsItemsItem" 
             :style="{ animationDelay: `${i * 0.07}s` }"
+            :ref="(el) => i === FriendsData.length - 1 ? setLastFriendsRef(el) : null"
           >
             <div class="contextFriendsItemsItemDeep">
               <img 
@@ -224,7 +225,7 @@
           </div>
         </div>
 
-        <div v-if="ReferralsList && ReferralsList.length === 0" class="contextFriendsNull">
+        <div v-if="FriendsData && FriendsData.length === 0" class="contextFriendsNull">
           <strong>Пригласи друзей, чтобы превратить их в своих рабов и поднять золотишка</strong>
         </div>
 
@@ -268,10 +269,15 @@ export default {
       PropsSuccess: this.success,
       IsPageLoading: false,
 
+      FriendsData: [] as any,
+      FriendsOffset: 0,
+      FriendsLimit: 3,
+      FriendsObserver: null as IntersectionObserver | null,
+      LastFriendRef: null as HTMLElement | null,
+
       ShareReferralModal: false,
       ShareReferralCopied: false,
 
-      ReferralsList: [] as any,
       ReferralsInfo: {
         ReferralsMoneyToHour: 0,
         ReferralsMoneyToHourCurrent: 0,
@@ -306,7 +312,7 @@ export default {
     this.getReferralsList().then(getFriends => {
       if (getFriends) {
         console.log(getFriends);
-        this.ReferralsList = getFriends.referrals;
+        this.FriendsData = getFriends.referrals;
         this.initReferralsInfo({
           ReferralsMoneyTakeCurrent: getFriends.total_income,
           ReferralsMoneyToHourCurrent: getFriends.tokens_per_hour,
@@ -320,6 +326,10 @@ export default {
     onImageLoad(event: Event) {
       const img = event.target as HTMLImageElement;
       img.classList.add('loaded');
+    },
+
+    setLastFriendsRef(el: HTMLElement | any) {
+      this.LastFriendRef = el;
     },
 
     async waitForAssets() {
@@ -425,6 +435,35 @@ export default {
       if (!result) { return; }
       return result;
     },
+    
+    async fetchFriends() {
+      const friends = await userApi.getFriends({
+        offset: this.FriendsOffset,
+        limit: this.FriendsLimit
+      });
+
+      if (friends.length) {
+        this.FriendsData.push(...friends);
+        this.FriendsOffset += this.FriendsLimit;
+      } else {
+        this.FriendsObserver?.disconnect();
+      }
+    },
+
+    setLastLeaderRef(el: HTMLElement | any) {
+      this.LastFriendRef = el;
+    },
+
+    initObserver() {
+      this.FriendsObserver?.disconnect();
+      if (!this.LastFriendRef) return;
+
+      this.FriendsObserver = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) this.fetchFriends();
+      }, { root: null, rootMargin: '0px', threshold: 1.0 });
+
+      this.FriendsObserver.observe(this.LastFriendRef);
+    },
 
     openShareReferral() {
       this.ShareReferralModal = true;
@@ -477,6 +516,7 @@ export default {
       this.ReferralsInfo.ReferralsMoneyTakeCurrent = 0;
 
       this.ReferralsInfo.ReferralsMoneyAllCurrent = collect.total_collected;
+      this.FriendsData.forEach((referral: any) => { referral.tokens_to_get = 0; });
       this.addTotalCollected();
 
       collectConfetti();
