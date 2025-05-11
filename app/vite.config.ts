@@ -12,14 +12,12 @@ export default defineConfig({
   base: '/',
   plugins: [vue(), vueDevTools()],
   server: {
-    allowedHosts: ['79bf-213-211-79-219.ngrok-free.app'],
     port: 10,
     host: '0.0.0.0',
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      buffer: 'buffer',
+      '@': path.resolve(__dirname, './src')
     },
   }
 })
