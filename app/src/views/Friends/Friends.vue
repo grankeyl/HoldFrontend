@@ -218,7 +218,7 @@
               </div>
             </div>
             <div class="contextFriendsItemsItemButton claim">
-              <button @click="openUpgrade(1)">
+              <button @click="openUpgrade(referral.user_id)">
                 <span>Улучшить</span>
               </button>
             </div>
@@ -423,8 +423,11 @@ export default {
       this.$router.push('/');
     },
 
-    openUpgrade(id: number) {
-      this.$router.push(`/friends/upgrade/${id}`);
+    openUpgrade(user_id: number) {
+      this.$router.push({ 
+        name: 'friends-upgrade', 
+        params: { user_id }
+      });
     },
 
     async getReferralsList() {

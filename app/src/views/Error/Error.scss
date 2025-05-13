@@ -70,6 +70,29 @@
   overflow: hidden;
   padding-bottom: 170px;
 
+  ._errorSymbols {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeInZoom 0.6s ease-out;
+    will-change: opacity, transform;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+
+    &.no-animation {
+      animation: none;
+    }
+  }
+
   &.show {
     opacity: 1;
     visibility: visible;
@@ -135,10 +158,28 @@
       justify-content: start;
       position: relative;
       z-index: 1;
-      margin-top: 20%;
+      margin-top: 24%;
       overflow: hidden;
       padding-left: $app-page-padding-left;
       padding-right: $app-page-padding-right;
+
+      .contextImage {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin-top: 10%;
+        margin-bottom: 6%;
+        z-index: 1;
+
+        & img {
+          width: 155px;
+          height: 155px;
+          animation: pulse 1s ease-out infinite;
+        }
+      }
       
       .contextTitle {
         width: fit-content;
@@ -172,30 +213,12 @@
         margin: auto;
         z-index: 1;
         gap: 8px;
-        margin-top: 24px;
+        margin-top: 20px;
         
         & p {
-          font-size: 14px;
+          font-size: 17px;
           font-weight: 600;
           color: $app-color-tint;
-        }
-      }
-
-      .contextCoin {
-        width: 100%;
-        height: fit-content;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        margin-top: 10%;
-        margin-bottom: 10%;
-        z-index: 1;
-
-        & img {
-          width: 121px;
-          height: 115px;
-          animation: pulse 1s ease-out infinite;
         }
       }
 
@@ -332,7 +355,7 @@
     width: 100%;
     height: fit-content;
     position: absolute;
-    bottom: calc($app-menu-height * 2.1);
+    bottom: calc($app-menu-height);
     padding-left: $app-page-padding-left;
     padding-right: $app-page-padding-right;
     margin-top: 24px;
@@ -361,8 +384,8 @@
         }
 
         & .kit-icon {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
         }
 
         span {

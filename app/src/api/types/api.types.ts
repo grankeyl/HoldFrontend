@@ -22,6 +22,15 @@ export interface UserGetFriendsPayload {
 
 export interface UserFriendsCollect {}
 
+export interface UserFriendsUpgrade {
+  action: string | number;
+}
+
+export interface UserFriendsUpgradeGet {
+  user_id: number;
+  type: string;
+}
+
 export interface AdsRequestPayload {
   task_type: string;
 }

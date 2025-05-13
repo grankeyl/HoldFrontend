@@ -3,13 +3,21 @@
     class="_wrap _error" 
     :class="{ show: !IsPageLoading }"
   >
+    <div class="_errorSymbols no-animation">
+      <img 
+        src="/error/bg.png"
+        alt="bg"
+        class="fade-in"
+        @load="onImageLoad"
+      />
+    </div>
 
     <div class="_view">
       <div class="context">
 
-        <div class="contextCoin">
+        <div class="contextImage">
           <img 
-            src="/wallet/coin.png"
+            src="/error/link.png"
             alt="coin"
             class="fade-in"
             @load="onImageLoad"
@@ -17,12 +25,6 @@
         </div>
 
         <div class="contextTitle">
-          <IconComp
-            :icon="Icon.WalletFull"
-            width="27px"
-            height="27px"
-            pathColor="#fff"
-          />
           <h4>Произошла ошибка</h4>
         </div>
 
@@ -38,8 +40,8 @@
     <button @click="openHome()">
       <IconComp 
         :icon="Icon.TowerBlack"
-        width="24px"
-        height="24px"
+        width="22px"
+        height="22px"
       />
       <span>Вернуться домой</span>
     </button>
@@ -109,7 +111,7 @@ export default {
     },
 
     openHome() {
-      this.$router.push('/');
+      location.href = '/';
       TelegramModule.useMediumHaptic();
     },
   },

@@ -37,16 +37,23 @@
               class="fade-in"
               @load="onImageLoad"
             />
-            <span v-if="PageType !== 'all'">malen_kihuy</span>
+            <span v-if="PageType !== 'all'">{{ FriendData.name }}</span>
           </div>
           <div class="contextInfoLevel">
 
             <div v-if="PageType !== 'all'" class="contextInfoLevelOld">
               <div class="contextInfoLevelOldTitle">
-                <span>10</span>
+                <span>{{ FriendData.old_level }}</span>
                 <h4>Уровень</h4>
               </div>
               <div class="contextInfoLevelOldDescription">
+                <h4>{{ FriendData.old_tokens_per_hour }}</h4>
+                <IconComp 
+                  :icon="Icon.Token"
+                  width="20px"
+                  height="20px"
+                  pathColor="#AAAAAA"
+                />
                 <p>/час</p>
               </div>
             </div>
@@ -77,11 +84,11 @@
 
             <div v-if="PageType !== 'all'" class="contextInfoLevelNew">
               <div class="contextInfoLevelNewTitle">
-                <span>10</span>
+                <span>{{ FriendData.new_level }}</span>
                 <h4>Уровень</h4>
               </div>
               <div class="contextInfoLevelNewDescription">
-                <h4>1,000</h4>
+                <h4>{{ FriendData.new_tokens_per_hour }}</h4>
                 <IconComp 
                   :icon="Icon.Token"
                   width="20px"
@@ -116,7 +123,7 @@
 
     <div class="buttons">
       <div class="buttonsButton">
-        <button>
+        <button @click="upgrade()">
           <IconComp 
             :icon="Icon.Up"
             width="24px"
@@ -124,7 +131,7 @@
           />
           <span>Улучшить</span>
           <strong>
-            <p>3,000</p>
+            <p>{{ FriendData.tokens_to_upgrade }}</p>
             <IconComp 
               :icon="Icon.Token"
               width="16px"
@@ -196,6 +203,8 @@
 import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
 
+import * as userApi from '@/api/services/user.service'
+
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue'
@@ -224,6 +233,16 @@ export default {
 
       UserData: appCache.UserData,
 
+      FriendData: {
+        id: 0,
+        name: 'Empty',
+        old_level: 0,
+        new_level: 0,
+        old_tokens_per_hour: 0,
+        new_tokens_per_hour: 0,
+        tokens_to_upgrade: 0,
+      },
+
       Icon,
     };
   },
@@ -234,9 +253,29 @@ export default {
     });
     
     this.waitForAssets();
+    this.initUpgradeFriend();
   },
 
   methods: {
+    async initUpgradeFriend() {
+      const params = this.$route.params as any;
+      if (!params) { return; }
+      
+      const getFriend = await userApi.friendsUpgradeGet({
+        user_id: params.user_id,
+        type: 'user'
+      });
+      if (!getFriend) { return; }
+
+      this.FriendData.id = params.user_id;
+      this.FriendData.name = getFriend.name;
+      this.FriendData.old_level = getFriend.old_level;
+      this.FriendData.new_level = getFriend.new_level;
+      this.FriendData.old_tokens_per_hour = getFriend.old_tokens_per_hour;
+      this.FriendData.new_tokens_per_hour = getFriend.new_tokens_per_hour;
+      this.FriendData.tokens_to_upgrade = getFriend.tokens_to_upgrade;
+    },
+
     onImageLoad(event: Event) {
       const img = event.target as HTMLImageElement;
       img.classList.add('loaded');
@@ -263,6 +302,16 @@ export default {
     openHome() {
       this.$router.push('/');
     },
+
+    async upgrade() {
+      console.log(this.FriendData);
+      const result = await userApi.friendsUpgrade({
+        action: Number(this.FriendData.id)
+      });
+      if (!result) { return; }
+
+      this.$router.push('/');
+    }
   },
 };
 </script>

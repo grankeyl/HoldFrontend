@@ -24,7 +24,7 @@ const router = createRouter({
       component: () => import('@/views/Friends/Friends.vue')
     },
     {
-      path: '/friends/upgrade/:id',
+      path: '/friends/upgrade/:user_id',
       name: 'friends-upgrade',
       component: () => import('@/views/Friends/Upgrade/Upgrade.vue')
     },

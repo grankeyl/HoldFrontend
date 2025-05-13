@@ -128,7 +128,7 @@ export default {
           pageSuccess.value = true;
 
           mountMiniApp();
-          checkLevelUp();
+          // checkLevelUp();
         }
 
         if (isAuthenticated.status) {
