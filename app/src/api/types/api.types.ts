@@ -1,15 +1,29 @@
+/* _____ Auth _____ */
+
 export interface AuthPayload {
   initData: string;
 }
+
+
+
+/* _____ Wallet _____ */
 
 export interface WalletConnectPayload {
   address: string;
 }
 
+
+
+/* _____ Leaders _____ */
+
 export interface LeadersGetPayload {
   offset: number;
   limit: number;
 }
+
+
+
+/* _____ User _____ */
 
 export interface UserRewardPayload {
   sum: number;
@@ -31,10 +45,36 @@ export interface UserFriendsUpgradeGet {
   type: string;
 }
 
+
+
+/* _____ Ads _____ */
+
 export interface AdsRequestPayload {
   task_type: string;
 }
 
 export interface AdsCompletePayload {
   reward_token: string;
+}
+
+
+
+/* _____ Friends _____ */
+
+export interface FriendsGet {
+  offset: number;
+  limit: number;
+}
+
+export interface FriendsCollect {
+
+}
+
+export interface FriendsUpgrade {
+  action: string | number;
+}
+
+export interface FriendsUpgradeGet {
+  user_id: number;
+  type: string;
 }

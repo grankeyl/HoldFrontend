@@ -17,6 +17,8 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { AppCache } from './stores/pinia';
 import { miniApp } from '@telegram-apps/sdk';
+import { usePlaceStore } from './stores/place.storage';
+import type { GameDataType } from './types/types';
 
 import * as authApi from '@/api/services/auth.service'
 import * as userApi from '@/api/services/user.service'
@@ -26,15 +28,15 @@ import * as gamesApi from '@/api/services/games.service'
 
 import Load from '@/components/Load/Load.vue'
 import Menu from '@/components/Menu/Menu.vue'
+import Toast from 'primevue/toast';
 import TelegramModule from './hooks/useTelegram';
 
-import type { GameDataType } from './types/types';
-import { usePlaceStore } from './stores/place.storage';
 
 export default {
   components: {
     Load,
     Menu,
+    Toast,
   },
 
   setup() {

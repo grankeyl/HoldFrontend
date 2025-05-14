@@ -245,7 +245,7 @@
               </div>
               <div class="contextRabsReferralsLeftRabsRight">
                 <div class="contextRabsReferralsLeftRabsRightTitle">
-                  <h4><span>{{ ReferralsInfo.ReferralsCountCurrent }}</span> рабов</h4>
+                  <h4><span>{{ UserData.referrals_count }}</span> рабов</h4>
                 </div>
                 <div class="contextRabsReferralsLeftRabsRightInfo">
                   <p>{{ GameInfo.ReferralsTokenPerHour }}</p>
@@ -308,6 +308,7 @@ import { copyToClipboard, getReferralLink } from '@/utils/useApp';
 
 import * as adsApi from '@/api/services/ads.service';
 import * as userApi from '@/api/services/user.service';
+import * as friendsApi from '@/api/services/friends.service';
 
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue';
@@ -398,7 +399,7 @@ export default {
       const adToken = adUse.reward_token;
       localStorage.setItem('ads_last', adToken);
 
-      // onReward();
+      onReward();
 
       await showAd();
     };
@@ -691,7 +692,7 @@ export default {
     },
 
     async getReferralsList() {
-      const result = await userApi.getFriends({
+      const result = await friendsApi.get({
         offset: 0,
         limit: 20,
       });
@@ -700,7 +701,7 @@ export default {
     },
 
     async collectReferral() {
-      const collect = await userApi.friendsCollect({});
+      const collect = await friendsApi.collect({});
       if (!collect) { return; }
       
       this.GameInfo.BalanceCurrent = collect.new_balance;

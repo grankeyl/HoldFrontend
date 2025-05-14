@@ -11,6 +11,7 @@
   "dependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "@primeuix/themes": "^1.1.1",
     "@telegram-apps/sdk": "^2.11.3",
     "@ton/core": "^0.60.1",
     "@tonconnect/ui": "^2.0.11",
@@ -21,11 +22,13 @@
     "js-cookie": "^3.0.5",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate": "^4.2.0",
+    "primevue": "^4.3.4",
     "process": "^0.11.10",
     "swiper": "^11.2.6",
     "ton-ui-vue": "^0.1.5",
     "vite-plugin-vue-devtools": "^7.7.5",
     "vue": "^3.5.13",
+    "vue3-toastify": "^0.2.8",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

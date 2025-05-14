@@ -239,14 +239,14 @@
 import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
 import { copyToClipboard, getReferralLink } from '@/utils/useApp';
+import { collectConfetti } from '@/utils/useConfetti';
 
-import * as userApi from '@/api/services/user.service';
+import * as friendsApi from '@/api/services/friends.service';
 
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue';
 import Loader from '@/components/Loader.vue';
 import Modal from '@/components/Modal/Modal.vue';
-import { collectConfetti } from '@/utils/useConfetti';
 
 const appCache = AppCache() as any;
 
@@ -416,7 +416,7 @@ export default {
           this.ReferralsInfo.ReferralsMoneyTake = target;
           clearInterval(interval);
         }
-      }, 30);
+      }, 6);
     },
 
     openHome() {
@@ -431,7 +431,7 @@ export default {
     },
 
     async getReferralsList() {
-      const result = await userApi.getFriends({
+      const result = await friendsApi.get({
         offset: 0,
         limit: 20,
       });
@@ -440,7 +440,7 @@ export default {
     },
     
     async fetchFriends() {
-      const friends = await userApi.getFriends({
+      const friends = await friendsApi.get({
         offset: this.FriendsOffset,
         limit: this.FriendsLimit
       });
@@ -510,7 +510,7 @@ export default {
     },
 
     async collectReferral() {
-      const collect = await userApi.friendsCollect({});
+      const collect = await friendsApi.collect({});
       if (!collect) { return; }
       
       this.UserData.balance = collect.new_balance;

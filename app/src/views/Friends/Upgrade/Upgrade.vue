@@ -202,12 +202,14 @@
 <script lang="ts">
 import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
+import { toast } from 'vue3-toastify';
+import { collectConfetti } from '@/utils/useConfetti';
 
-import * as userApi from '@/api/services/user.service'
+import * as friendsApi from '@/api/services/friends.service'
 
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
-import Loader from '@/components/Loader.vue'
+import Loader from '@/components/Loader.vue';
 
 const appCache = AppCache() as any;
 
@@ -261,7 +263,7 @@ export default {
       const params = this.$route.params as any;
       if (!params) { return; }
       
-      const getFriend = await userApi.friendsUpgradeGet({
+      const getFriend = await friendsApi.upgradeGet({
         user_id: params.user_id,
         type: 'user'
       });
@@ -304,13 +306,22 @@ export default {
     },
 
     async upgrade() {
-      console.log(this.FriendData);
-      const result = await userApi.friendsUpgrade({
+      const result = await friendsApi.upgrade({
         action: Number(this.FriendData.id)
       });
       if (!result) { return; }
 
-      this.$router.push('/');
+      if (result.type && result.type === 'no_cost') {
+        toast.error(`Нехватает ${result.value} токена`);
+      }
+
+      if (result.tokens_per_hour) {
+        this.UserData.tokens_per_hour = result.tokens_per_hour;
+        collectConfetti();
+        this.$router.push('/friends');
+      }
+
+      // this.$router.push('/');
     }
   },
 };

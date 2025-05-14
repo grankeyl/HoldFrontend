@@ -164,3 +164,11 @@ button:disabled {
   opacity: 0.4;
   pointer-events: none;
 }
+
+.Toastify__toast {
+  font-family: $font !important;
+  border-radius: 13px !important;
+  background-color: $app-bg-secondary !important;
+  font-size: 14px !important;
+  color: $app-h !important;
+}
