@@ -72,7 +72,10 @@ export const upgrade = async (payload: FriendsUpgrade) => {
     if (response.status === 200) {
       const responseData = response.data;
       const responseMessage = responseData.message;
-      return responseMessage;
+      return {
+        status: responseData.type,
+        data: responseMessage
+      }
     }
   } catch (e: any) {
     console.log(e);

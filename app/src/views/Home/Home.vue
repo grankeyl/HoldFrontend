@@ -174,17 +174,27 @@
           </div>
 
           <div @click="showAds()" class="contextInfoVideo" ref="ContextInfoVideo">
-            <div class="contextInfoVideoTitle">
-              <h4>Смотреть видео</h4>
-            </div>
-            <div class="loader-button"></div>
-            <div class="contextInfoVideoButton">
-              <span>+{{ GameData.ads.video }}</span>
-              <IconComp 
-                :icon="Icon.Token"
-                width="12px"
-                height="12px"
+            <div class="contextInfoBg">
+              <img 
+                src="/home/background-video.png"
+                alt="bg-video"
+                class="fade-in"
+                @load="onImageLoad"
               />
+            </div>
+            <div class="contextInfoContent">
+              <div class="contextInfoVideoTitle">
+                <h4>Смотреть видео</h4>
+              </div>
+              <div class="loader-button"></div>
+              <div class="contextInfoVideoButton">
+                <span>+{{ GameData.ads.video }}</span>
+                <IconComp 
+                  :icon="Icon.Token"
+                  width="12px"
+                  height="12px"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -462,6 +472,8 @@ export default {
       PropsSuccess: this.success,
       IsPageLoading: false,
 
+      IntervalId: null as ReturnType<typeof setInterval> | null,
+
       ReferralsCount: 0,
       ReferralsCountNeed: 29,
 
@@ -528,6 +540,13 @@ export default {
         this.userProgressInit();
       }
     });
+    
+  },
+
+  beforeUnmount() {
+    if (this.IntervalId) {
+      clearInterval(this.IntervalId);
+    }
   },
 
   methods: {
@@ -619,7 +638,7 @@ export default {
     },
 
     async cycleInitUserData() {
-      setInterval(async () => {
+      this.IntervalId = setInterval(async () => {
         const userGet = await userApi.get();
 
         if (userGet) {

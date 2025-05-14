@@ -67,7 +67,7 @@
                 <h4>{{ leader.first_name }} {{ leader.last_name }}</h4>
               </div>
               <div class="contextLeadersLeaderContextDescription">
-                <span>{{ leader.referrals_reward }}</span>
+                <span>{{ toUniqNumber(leader.referrals_reward) }}</span>
                 <IconComp
                   :icon="Icon.Token"
                   width="10px"
@@ -116,7 +116,7 @@
             <h4>ТЫ</h4>
           </div>
           <div class="contextPinnedLeaderContextDescription">
-            <span>{{ UserData.tokens_per_hour }}</span>
+            <span>{{ toUniqNumber(UserData.tokens_per_hour) }}</span>
             <IconComp
               :icon="Icon.Token"
               width="10px"
@@ -144,6 +144,7 @@
 import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
 import { getPlacesData } from '@/utils/usePlaces';
+import { toUniqNumber } from '@/utils/useGame';
 
 import * as leadersApi from '@/api/services/leaders.service';
 
@@ -182,6 +183,8 @@ export default {
       UserData: appCache.UserData,
 
       Icon,
+
+      toUniqNumber,
     };
   },
 

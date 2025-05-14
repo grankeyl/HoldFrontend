@@ -81,7 +81,7 @@
               <h4>Доход в час:</h4>
             </div>
             <div class="contextInfoLeftTitle">
-              <span>{{ ReferralsInfo.ReferralsMoneyToHour }}</span>
+              <span>{{ toUniqNumber(ReferralsInfo.ReferralsMoneyToHour) }}</span>
               <IconComp 
                 :icon="Icon.Token"
                 width="20px"
@@ -107,7 +107,7 @@
               <h4>Всего собрано:</h4>
             </div>
             <div class="contextInfoLeftTitle">
-              <span>{{ ReferralsInfo.ReferralsMoneyAll }}</span>
+              <span>{{ toUniqNumber(ReferralsInfo.ReferralsMoneyAll) }}</span>
               <IconComp 
                 :icon="Icon.Token"
                 width="20px"
@@ -129,7 +129,7 @@
             </button>
           </div>
           <div v-if="FriendsData && UserData.referrals_count > 0" class="contextButtonsButton primary">
-            <button @click="openUpgrade(1)">
+            <button @click="openUpgrade('all')">
               <IconComp 
                 :icon="Icon.Up"
                 width="24px"
@@ -155,7 +155,7 @@
                 <h4>Скоплено</h4>
               </div>
               <div class="contextRewardLeftContextTitle">
-                <span>{{ ReferralsInfo.ReferralsMoneyTake }}</span>
+                <span>{{ toUniqNumber(ReferralsInfo.ReferralsMoneyTake) }}</span>
                 <IconComp 
                   :icon="Icon.Token"
                   width="20px"
@@ -195,7 +195,7 @@
                 <h4>{{ referral.full_name }}</h4>
               </div>
               <div class="contextFriendsItemsItemContentReward">
-                <span>+{{ referral.tokens_per_hour }}</span>
+                <span>+{{ toUniqNumber(referral.tokens_per_hour) }}</span>
                 <IconComp 
                   :icon="Icon.Token"
                   width="16px"
@@ -209,7 +209,7 @@
                 <h4>Принес вам</h4>
               </div>
               <div class="contextFriendsItemsItemRewardingTitle">
-                <span>{{ referral.tokens_to_get }}</span>
+                <span>{{ toUniqNumber(referral.tokens_to_get) }}</span>
                 <IconComp 
                   :icon="Icon.Token"
                   width="21px"
@@ -218,7 +218,7 @@
               </div>
             </div>
             <div class="contextFriendsItemsItemButton claim">
-              <button @click="openUpgrade(referral.user_id)">
+              <button @click="openUpgrade('user', referral.user_id)">
                 <span>Улучшить</span>
               </button>
             </div>
@@ -240,6 +240,7 @@ import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
 import { copyToClipboard, getReferralLink } from '@/utils/useApp';
 import { collectConfetti } from '@/utils/useConfetti';
+import { toUniqNumber } from '@/utils/useGame';
 
 import * as friendsApi from '@/api/services/friends.service';
 
@@ -293,12 +294,14 @@ export default {
       UserData: appCache.UserData,
 
       Icon,
+
+      toUniqNumber,
     };
   },
 
   computed: {
     ReferralLink() {
-      return getReferralLink(this.UserData.referral_link);
+      return getReferralLink(this.UserData.referral_code);
     },
   },
 
@@ -423,11 +426,18 @@ export default {
       this.$router.push('/');
     },
 
-    openUpgrade(user_id: number) {
-      this.$router.push({ 
-        name: 'friends-upgrade', 
-        params: { user_id }
-      });
+    openUpgrade(type: 'all' | 'user', user_id?: number) {
+      if (type === 'all') {
+        this.$router.push({ 
+          name: 'friends-upgrade', 
+          params: { user_id: 0 }
+        });
+      } else if (type === 'user') {
+        this.$router.push({ 
+          name: 'friends-upgrade', 
+          params: { user_id }
+        });
+      }
     },
 
     async getReferralsList() {

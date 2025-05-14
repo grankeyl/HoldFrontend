@@ -354,6 +354,13 @@ export default {
       );
       this.UserProgress.NextPlaceId = nextPlace.placeNextId;
       this.UserProgress.NextPlaceType = nextPlace.placeNextType;
+
+      if (this.UserData.is_slaved) {
+        this.UserProgress.ReferralsCountCurrent = 0;
+        this.UserProgress.ReferralsCountNeed = this.UserData.slaved_need_referrals;
+        this.UserProgress.NextPlaceId = 0;
+        this.UserProgress.NextPlaceType = 'village';
+      }
     },
 
     userProgressGetNext() {

@@ -127,7 +127,7 @@
 
           <div class="contextTasksItems">
             <div 
-              v-for="(_, i) in TasksData" :key="i" 
+              v-for="(_, i) in TasksData" :key="i"
               class="contextTasksItemsItem"
               :style="{ animationDelay: `${i * 0.27}s` }"
             >
@@ -162,37 +162,6 @@
               :animationDelay="`${i * 0.27}s`"
               :rewardAmount="GameData.ads.task"
             />
-
-            <!-- <adsgram-task 
-              v-for="(_, i) in 1" :key="i" 
-              class="contextTasksItemsItem" 
-              :style="{ animationDelay: `${i * 0.27}s` }"
-              data-block-id='task-10264'
-              data-debug="true"
-            >
-              <div class="contextTasksItemsItemDeep">
-                <img src="/tasks/telegram.svg" alt="telegram" />
-              </div>
-              <div class="contextTasksItemsItemContent">
-                <div slot="reward" class="contextTasksItemsItemContentTitle">
-                  <h4>Подписаться в Телеграм</h4>
-                </div>
-                <div slot="reward" class="contextTasksItemsItemContentReward">
-                  <span>+100</span>
-                  <IconComp 
-                    :icon="Icon.Token"
-                    width="16px"
-                    height="16px"
-                  />
-                </div>
-              </div>
-              <div slot="button" class="contextTasksItemsItemButton">
-                <button>
-                  <span>Старт</span>
-                </button>
-              </div>
-            </adsgram-task> -->
-
 
           </div>
         </div>

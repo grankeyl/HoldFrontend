@@ -27,8 +27,8 @@
 
         <div class="contextInfo">
           <div class="contextInfoTitle">
-            <h4 v-if="PageType !== 'all'">Улучшить</h4>
             <h4 v-if="PageType === 'all'">Улучшить всех рабов</h4>
+            <h4 v-if="PageType === 'slave'">Улучшить</h4>
           </div>
           <div class="contextInfoImage">
             <img 
@@ -37,17 +37,16 @@
               class="fade-in"
               @load="onImageLoad"
             />
-            <span v-if="PageType !== 'all'">{{ FriendData.name }}</span>
+            <span v-if="PageType === 'slave'">{{ FriendData.name }}</span>
           </div>
           <div class="contextInfoLevel">
 
-            <div v-if="PageType !== 'all'" class="contextInfoLevelOld">
+            <div v-if="PageType === 'all'" class="contextInfoLevelOld">
               <div class="contextInfoLevelOldTitle">
-                <span>{{ FriendData.old_level }}</span>
-                <h4>Уровень</h4>
+                <h4>Доход сейчас</h4>
               </div>
               <div class="contextInfoLevelOldDescription">
-                <h4>{{ FriendData.old_tokens_per_hour }}</h4>
+                <h4>{{ toUniqNumber(AllFriendsData.old_tokens_per_hour) }}</h4>
                 <IconComp 
                   :icon="Icon.Token"
                   width="20px"
@@ -58,12 +57,13 @@
               </div>
             </div>
 
-            <div v-if="PageType === 'all'" class="contextInfoLevelOld">
+            <div v-if="PageType === 'slave'" class="contextInfoLevelOld">
               <div class="contextInfoLevelOldTitle">
-                <h4>Доход сейчас</h4>
+                <span>{{ FriendData.old_level }}</span>
+                <h4>Уровень</h4>
               </div>
               <div class="contextInfoLevelOldDescription">
-                <h4>111,000</h4>
+                <h4>{{ toUniqNumber(FriendData.old_tokens_per_hour) }}</h4>
                 <IconComp 
                   :icon="Icon.Token"
                   width="20px"
@@ -82,13 +82,12 @@
               />
             </div>
 
-            <div v-if="PageType !== 'all'" class="contextInfoLevelNew">
+            <div v-if="PageType === 'all'" class="contextInfoLevelNew">
               <div class="contextInfoLevelNewTitle">
-                <span>{{ FriendData.new_level }}</span>
-                <h4>Уровень</h4>
+                <h4>Доход после</h4>
               </div>
               <div class="contextInfoLevelNewDescription">
-                <h4>{{ FriendData.new_tokens_per_hour }}</h4>
+                <h4>{{ toUniqNumber(AllFriendsData.new_tokens_per_hour) }}</h4>
                 <IconComp 
                   :icon="Icon.Token"
                   width="20px"
@@ -99,12 +98,13 @@
               </div>
             </div>
 
-            <div v-if="PageType === 'all'" class="contextInfoLevelNew">
+            <div v-if="PageType === 'slave'" class="contextInfoLevelNew">
               <div class="contextInfoLevelNewTitle">
-                <h4>Доход после</h4>
+                <span>{{ FriendData.new_level }}</span>
+                <h4>Уровень</h4>
               </div>
               <div class="contextInfoLevelNewDescription">
-                <h4>211,000</h4>
+                <h4>{{ toUniqNumber(FriendData.new_tokens_per_hour) }}</h4>
                 <IconComp 
                   :icon="Icon.Token"
                   width="20px"
@@ -131,7 +131,8 @@
           />
           <span>Улучшить</span>
           <strong>
-            <p>{{ FriendData.tokens_to_upgrade }}</p>
+            <p v-if="PageType === 'all'">{{ toUniqNumber(AllFriendsData.tokens_to_upgrade) }}</p>
+            <p v-if="PageType === 'slave'">{{ toUniqNumber(FriendData.tokens_to_upgrade) }}</p>
             <IconComp 
               :icon="Icon.Token"
               width="16px"
@@ -150,7 +151,16 @@
               @load="onImageLoad"
             />
           </div>
-          <span>Улучшить за полцены</span>
+          <span>Улучшить</span>
+          <strong>
+            <p v-if="PageType === 'all'">{{ toUniqNumber(AllFriendsData.tokens_to_upgrade) }}</p>
+            <p v-if="PageType === 'slave'">{{ toUniqNumber(FriendData.tokens_to_upgrade) }}</p>
+            <IconComp 
+              :icon="Icon.Token"
+              width="16px"
+              height="16px"
+            />
+          </strong>
           <svg width="43" height="44" viewBox="0 0 43 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_dddddd_8110_12039)">
             <path d="M26.6199 19.3998L19.3799 15.2198C18.4529 14.6846 17.3111 14.6838 16.3834 15.2178C15.4557 15.7517 14.8828 16.7394 14.8799 17.8098V26.1898C14.8828 27.2602 15.4557 28.2479 16.3834 28.7818C17.3111 29.3158 18.4529 29.315 19.3799 28.7798L26.6199 24.5998C27.55 24.0644 28.1232 23.073 28.1232 21.9998C28.1232 20.9266 27.55 19.9352 26.6199 19.3998Z" fill="white"/>
@@ -204,6 +214,7 @@ import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
 import { toast } from 'vue3-toastify';
 import { collectConfetti } from '@/utils/useConfetti';
+import { toUniqNumber } from '@/utils/useGame';
 
 import * as friendsApi from '@/api/services/friends.service'
 
@@ -235,6 +246,14 @@ export default {
 
       UserData: appCache.UserData,
 
+      AllFriendsData: {
+        id: 0,
+        old_tokens_per_hour: 0,
+        new_tokens_per_hour: 0,
+        tokens_to_upgrade: 0,
+        tokens_to_upgrade_discount: 0
+      },
+
       FriendData: {
         id: 0,
         name: 'Empty',
@@ -243,9 +262,12 @@ export default {
         old_tokens_per_hour: 0,
         new_tokens_per_hour: 0,
         tokens_to_upgrade: 0,
+        tokens_to_upgrade_discount: 0
       },
 
       Icon,
+
+      toUniqNumber,
     };
   },
 
@@ -262,14 +284,26 @@ export default {
     async initUpgradeFriend() {
       const params = this.$route.params as any;
       if (!params) { return; }
-      
+
+      const userId = Number(params.user_id);
+
       const getFriend = await friendsApi.upgradeGet({
-        user_id: params.user_id,
-        type: 'user'
+        user_id: userId,
+        type: userId === 0 ? 'all' : 'user'
       });
       if (!getFriend) { return; }
 
-      this.FriendData.id = params.user_id;
+      if (userId === 0) {
+        this.PageType = 'all';
+        // this.AllFriendsData.id = userId;
+        // this.AllFriendsData.old_tokens_per_hour = getFriend.old_tokens_per_hour;
+        // this.AllFriendsData.new_tokens_per_hour = getFriend.new_tokens_per_hour;
+        // this.AllFriendsData.tokens_to_upgrade = getFriend.tokens_to_upgrade;
+        return;
+      }
+
+      this.PageType = 'slave';
+      this.FriendData.id = userId;
       this.FriendData.name = getFriend.name;
       this.FriendData.old_level = getFriend.old_level;
       this.FriendData.new_level = getFriend.new_level;
@@ -311,17 +345,17 @@ export default {
       });
       if (!result) { return; }
 
-      if (result.type && result.type === 'no_cost') {
-        toast.error(`Нехватает ${result.value} токена`);
+      if (result.status === "error" && result.data.type === 'no_cost') {
+        toast.error(`Нехватает ${result.data.value} токена`);
       }
 
-      if (result.tokens_per_hour) {
-        this.UserData.tokens_per_hour = result.tokens_per_hour;
+      if (result.status === "success") {
         collectConfetti();
+
+        this.UserData.balance = result.data.new_balance;
+        this.UserData.tokens_per_hour = result.data.tokens_per_hour;
         this.$router.push('/friends');
       }
-
-      // this.$router.push('/');
     }
   },
 };

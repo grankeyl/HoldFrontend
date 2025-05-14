@@ -592,6 +592,28 @@
           transform: translateY(20px);
           animation: fadeInUp 0.63s forwards;
 
+          &Deep {
+            width: 47px;
+            height: 47px;
+            min-width: 47px;
+            max-width: 47px;
+            min-height: 47px;
+            max-height: 47px;
+            background: $app-bg-secondary-h;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            gap: 10px;
+
+            & img {
+              width: 27px;
+              height: 27px;
+            }
+          }
+
           &Content {
             width: 100%;
             height: fit-content;
@@ -620,6 +642,33 @@
                 font-weight: 500;
                 color: $app-h;
                 text-align: left;
+              }
+            }
+
+            &Reward {
+              width: fit-content;
+              height: fit-content;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              z-index: 1;
+              gap: 5px;
+              opacity: .83;
+
+              & span {
+                font-size: 17px;
+                font-weight: 700;
+
+                @media screen and (max-width: 380px) {
+                  font-size: 14px;
+                }
+              }
+
+              & .kit-icon {
+                width: 16px;
+                height: 16px;
+                margin-top: 1px;
               }
             }
           }
@@ -652,9 +701,7 @@
             }
 
             & button {
-              width: 80px;
-              min-width: 80px;
-              max-width: 80px;
+              width: fit-content;
               height: 33px;
               background: $app-button;
               border-radius: 50px;

@@ -675,26 +675,35 @@
             gap: 4px;
 
             &Title {
-              width: 100%;
-              height: fit-content;
               display: flex;
               align-items: center;
-              justify-content: space-between;
+              gap: 10px;
               position: relative;
               z-index: 1;
-              gap: 10px;
+              flex: 1; // это норм, но h4 должен быть гибким внутри
+              min-width: 0;
+            }
 
-              & h4 {
-                width: 100%;
-                height: fit-content;
-                font-size: 14px;
-                font-weight: 500;
-                color: $app-h;
-                text-align: left;
+            &Title h4 {
+              max-width: 100px;
+              flex-grow: 1;
+              min-width: 0;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+
+              font-size: 14px;
+              font-weight: 500;
+              color: $app-h;
+              text-align: left;
+
+              @media screen and (max-width: 380px) {
+                max-width: 80px;
               }
             } 
 
             &Reward {
+              white-space: nowrap;
               width: fit-content;
               height: fit-content;
               display: flex;
@@ -710,7 +719,12 @@
                 height: fit-content;
                 font-size: 17px;
                 font-weight: 700;
+                white-space: nowrap;
                 color: $app-h;
+
+                @media screen and (max-width: 380px) {
+                  font-size: 14px;
+                }
               }
 
               & .kit-icon {
@@ -742,9 +756,14 @@
               gap: 10px;
 
               & h4 {
+                white-space: nowrap;
                 font-size: 14px;
                 font-weight: 500;
                 color: $app-color-tint;
+
+                @media screen and (max-width: 380px) {
+                  font-size: 12px;
+                }
               }
             } 
 
@@ -762,6 +781,10 @@
                 font-size: 24px;
                 font-weight: 700;
                 color: $app-h;
+
+                @media screen and (max-width: 380px) {
+                  font-size: 22px;
+                }
               }
 
               & .kit-icon {
