@@ -409,7 +409,7 @@ export default {
       const adToken = adUse.reward_token;
       localStorage.setItem('ads_last', adToken);
 
-      onReward();
+      // onReward();
 
       await showAd();
     };
