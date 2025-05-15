@@ -153,8 +153,8 @@
           </div>
           <span>Улучшить</span>
           <strong>
-            <p v-if="PageType === 'all'">{{ toUniqNumber(AllFriendsData.tokens_to_upgrade) }}</p>
-            <p v-if="PageType === 'slave'">{{ toUniqNumber(FriendData.tokens_to_upgrade) }}</p>
+            <p v-if="PageType === 'all'">{{ toUniqNumber(AllFriendsData.tokens_to_upgrade_discount) }}</p>
+            <p v-if="PageType === 'slave'">{{ toUniqNumber(FriendData.tokens_to_upgrade_discount) }}</p>
             <IconComp 
               :icon="Icon.Token"
               width="16px"
@@ -295,10 +295,11 @@ export default {
 
       if (userId === 0) {
         this.PageType = 'all';
-        // this.AllFriendsData.id = userId;
-        // this.AllFriendsData.old_tokens_per_hour = getFriend.old_tokens_per_hour;
-        // this.AllFriendsData.new_tokens_per_hour = getFriend.new_tokens_per_hour;
-        // this.AllFriendsData.tokens_to_upgrade = getFriend.tokens_to_upgrade;
+        this.AllFriendsData.id = userId;
+        this.AllFriendsData.old_tokens_per_hour = getFriend.old_tokens_per_hour;
+        this.AllFriendsData.new_tokens_per_hour = getFriend.new_tokens_per_hour;
+        this.AllFriendsData.tokens_to_upgrade = getFriend.tokens_to_upgrade;
+        this.AllFriendsData.tokens_to_upgrade_discount = getFriend.discount_video;
         return;
       }
 
@@ -310,6 +311,7 @@ export default {
       this.FriendData.old_tokens_per_hour = getFriend.old_tokens_per_hour;
       this.FriendData.new_tokens_per_hour = getFriend.new_tokens_per_hour;
       this.FriendData.tokens_to_upgrade = getFriend.tokens_to_upgrade;
+      this.FriendData.tokens_to_upgrade_discount = getFriend.discount_video;
     },
 
     onImageLoad(event: Event) {
