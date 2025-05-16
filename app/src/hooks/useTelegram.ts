@@ -1,6 +1,6 @@
-import { hapticFeedback, miniApp, on, postEvent, mockTelegramEnv, shareStory, disableVerticalSwipes, requestFullscreen } from '@telegram-apps/sdk';
+import { hapticFeedback, miniApp, on, postEvent, mockTelegramEnv, shareStory } from '@telegram-apps/sdk';
 import { backButton, invoice, initDataStartParam, openTelegramLink } from '@telegram-apps/sdk';
-import { init, viewport, requestWriteAccess, retrieveLaunchParams } from '@telegram-apps/sdk';
+import { init, retrieveLaunchParams } from '@telegram-apps/sdk';
 import { isDesktop } from '@/utils/checkDevice';
 import WebApp from "@twa-dev/sdk";
 
@@ -71,7 +71,7 @@ const TelegramModule = {
       if (!isDesktop()) {
         WebApp.requestFullscreen();
       }
-      
+
       WebApp.ready();
     },  
 

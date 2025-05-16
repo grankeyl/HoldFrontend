@@ -217,10 +217,10 @@ export default {
 
     initLevelUp() {
       const placesArray = Object.values(this.PlacesListData);
-
-      const oldName = placesArray.find(
+      const foundPlace = placesArray.find(
         (place: any) => place.id === this.UserData.place.place_id - 1
-      )?.name;
+      ) as { name?: string } | undefined;
+      const oldName = foundPlace?.name as any;
 
       this.LevelUpData.OldLevelId = this.UserData.place.place_id - 1;
       this.LevelUpData.OldLevelName = oldName;
