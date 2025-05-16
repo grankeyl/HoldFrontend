@@ -179,7 +179,7 @@
             v-for="(referral, i) in FriendsData" :key="i" 
             class="contextFriendsItemsItem" 
             :style="{ animationDelay: `${i * 0.07}s` }"
-            :ref="(el) => i === FriendsData.length - 1 ? setLastFriendsRef(el) : null"
+            :ref="(el: any) => i === FriendsData.length - 1 ? setLastFriendRef(el) : null"
           >
             <div class="contextFriendsItemsItemDeep">
               <img 
@@ -272,7 +272,7 @@ export default {
 
       FriendsData: [] as any,
       FriendsOffset: 0,
-      FriendsLimit: 3,
+      FriendsLimit: 100,
       FriendsObserver: null as IntersectionObserver | null,
       LastFriendRef: null as HTMLElement | null,
 
@@ -325,14 +325,18 @@ export default {
     });
   },
 
+  watch: {
+    LastFriendRef(newEl) {
+      if (newEl) {
+        this.initObserver();
+      }
+    }
+  },
+
   methods: {
     onImageLoad(event: Event) {
       const img = event.target as HTMLImageElement;
       img.classList.add('loaded');
-    },
-
-    setLastFriendsRef(el: HTMLElement | any) {
-      this.LastFriendRef = el;
     },
 
     async waitForAssets() {
@@ -450,20 +454,22 @@ export default {
     },
     
     async fetchFriends() {
-      const friends = await friendsApi.get({
+      const response = await friendsApi.get({
         offset: this.FriendsOffset,
-        limit: this.FriendsLimit
+        limit: this.FriendsLimit,
       });
 
-      if (friends.length) {
-        this.FriendsData.push(...friends);
+      if (response && response.referrals?.length) {
+        console.log(response.referrals);
+        console.log(this.FriendsOffset);
+        this.FriendsData.push(...response.referrals);
         this.FriendsOffset += this.FriendsLimit;
       } else {
         this.FriendsObserver?.disconnect();
       }
     },
 
-    setLastLeaderRef(el: HTMLElement | any) {
+    setLastFriendRef(el: HTMLElement | any) {
       this.LastFriendRef = el;
     },
 

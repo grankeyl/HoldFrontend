@@ -216,15 +216,15 @@
           
           & span {
             width: fit-content;
-            height: 44px;
+            height: fit-content;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             position: absolute;
             bottom: -20px;
             background: $app-bg-secondary;
             border-radius: 12px;
-            padding: 0 12px;
+            padding: 7px 12px;
             z-index: 1;
             gap: 4px;
             font-size: 17px;

@@ -21,7 +21,7 @@
           <div class="contextInfoLevel">
             <div class="contextInfoLevelOld">
               <div class="contextInfoLevelOldTitle">
-                <h4>I Village</h4>
+                <h4>{{ toRoman(LevelUpData.OldLevelId) }} {{ LevelUpData.OldLevelName }}</h4>
               </div>
             </div>
 
@@ -35,7 +35,7 @@
 
             <div class="contextInfoLevelNew">
               <div class="contextInfoLevelNewTitle">
-                <h4>II Town</h4>
+                <h4>{{ toRoman(LevelUpData.NewLevelId) }} {{ LevelUpData.NewLevelName }}</h4>
               </div>
             </div>
           </div>
@@ -53,14 +53,14 @@
                 width="28px"
                 height="28px"
               />
-              <span>20</span>
+              <span>{{ LevelUpData.FriendsCount }}</span>
             </div>
           </div>
 
           <div class="contextInfoDescription">
             <h4>
               You now earn
-              <span>+5%</span>
+              <span>+{{ LevelUpData.Percents }}%</span>
               more from your servants
             </h4>
           </div>
@@ -112,10 +112,15 @@
 
 <script lang="ts">
 import { Icon } from '@/components/Icons';
+import { AppCache } from '@/stores/pinia';
+import { getPlacesData } from '@/utils/usePlaces';
+import { toRoman } from '@/utils/useGame';
 
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue'
+
+const appCache = AppCache() as any;
 
 export default {
   props: {
@@ -137,7 +142,23 @@ export default {
 
       ShareStoryButtonLoading: false,
 
+      LevelUpData: {
+        OldLevelId: 1,
+        OldLevelName: 'Village',
+        NewLevelId: 2,
+        NewLevelName: 'City',
+        FriendsCount: 0,
+        Percents: 0,
+      },
+
+      UserData: appCache.UserData,
+      PlacesData: appCache.PlacesData,
+
+      PlacesListData: getPlacesData() as any,
+      
       Icon,
+
+      toRoman,
     };
   },
 
@@ -147,6 +168,7 @@ export default {
     });
     
     this.waitForAssets();
+    this.initLevelUp();
   },
 
   methods: {
@@ -191,6 +213,25 @@ export default {
         .catch(() => {
           this.ShareStoryButtonLoading = false;
         });
+    },
+
+    initLevelUp() {
+      const placesArray = Object.values(this.PlacesListData);
+
+      const oldName = placesArray.find(
+        (place: any) => place.id === this.UserData.place.place_id - 1
+      )?.name;
+
+      this.LevelUpData.OldLevelId = this.UserData.place.place_id - 1;
+      this.LevelUpData.OldLevelName = oldName;
+
+      this.LevelUpData.NewLevelId = this.UserData.place.place_id;
+
+      const placeType = this.UserData.place.place_type;
+      this.LevelUpData.NewLevelName = this.PlacesListData[placeType]?.name;
+
+      this.LevelUpData.FriendsCount = this.UserData.referrals_count;
+      this.LevelUpData.Percents = this.PlacesData[this.UserData.place.place_id].percents_add;
     }
   },
 };

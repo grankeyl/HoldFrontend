@@ -80,22 +80,11 @@ export default {
       }
     }
 
-    // const checkLevelUp = () => {
-    //   if (!storePlace.currentPlace) { return; }
-      
-    //   if (appCache.UserData.place.place_id > storePlace.currentPlace.placeId) {
-    //     storePlace.setCurrentPlace({
-    //       placeId: appCache.UserData.place.place_id,
-    //       placeType: appCache.UserData.place.place_type
-    //     });
-    //     router.push({ name: 'level-up' });
-    //   } else {
-    //     storePlace.setCurrentPlace({
-    //       placeId: appCache.UserData.place.place_id,
-    //       placeType: appCache.UserData.place.place_type
-    //     });
-    //   }
-    // }
+    const checkLevelUp = () => {
+      if (appCache.UserData.place.updated) {
+        router.push({ name: 'level-up' });
+      }
+    }
 
     const setNewPlaceStore = (status: string) => {
       if (status === 'registered') {
@@ -130,7 +119,7 @@ export default {
           pageSuccess.value = true;
 
           mountMiniApp();
-          // checkLevelUp();
+          checkLevelUp();
         }
 
         if (isAuthenticated.status) {

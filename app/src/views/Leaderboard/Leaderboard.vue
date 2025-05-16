@@ -34,7 +34,7 @@
             v-for="(leader, index) in LeadersData"
             :key="index"
             class="contextLeadersLeader"
-            :ref="(el) => index === LeadersData.length - 1 ? setLastLeaderRef(el) : null"
+            :ref="(el: any) => index === LeadersData.length - 1 ? setLastLeaderRef(el) : null"
           >
             <div class="contextLeadersLeaderNumber">
               <h1 v-if="leader.id < 10" class="big" :class="{ first: leader.id === 1, two: leader.id === 2, three: leader.id === 3 }">#{{ leader.id }}</h1>
@@ -94,9 +94,20 @@
       </div>
       
       <div class="contextPinnedLeader">
-        <!-- <div class="contextPinnedLeaderNumber">
-          <h1>#100</h1>
-        </div> -->
+        <div class="contextPinnedLeaderNumber">
+          <h1 v-if="UserData.leaderboard_number < 10" 
+            class="big" :class="{ 
+              first: UserData.leaderboard_number === 1, 
+              two: UserData.leaderboard_number === 2, 
+              three: UserData.leaderboard_number === 3 
+            }"
+          >#{{ UserData.leaderboard_number }}</h1>
+
+          <h1 v-if="UserData.leaderboard_number >= 10 && UserData.leaderboard_number < 100"
+            class="medium">#{{ UserData.leaderboard_number }}</h1>
+          <h1 v-if="UserData.leaderboard_number >= 100 && UserData.leaderboard_number < 1000" 
+            class="small">#{{ UserData.leaderboard_number }}</h1>
+        </div>
         <div class="contextPinnedLeaderImage">
           <img 
             :src="UserData.photo_link"

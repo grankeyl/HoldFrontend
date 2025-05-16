@@ -1,7 +1,8 @@
-import { hapticFeedback, miniApp, on, postEvent, mockTelegramEnv, shareStory, disableVerticalSwipes } from '@telegram-apps/sdk';
+import { hapticFeedback, miniApp, on, postEvent, mockTelegramEnv, shareStory, disableVerticalSwipes, requestFullscreen } from '@telegram-apps/sdk';
 import { backButton, invoice, initDataStartParam, openTelegramLink } from '@telegram-apps/sdk';
 import { init, viewport, requestWriteAccess, retrieveLaunchParams } from '@telegram-apps/sdk';
 import { isDesktop } from '@/utils/checkDevice';
+import WebApp from "@twa-dev/sdk";
 
 function mock(status: string = import.meta.env.VITE_APP_TEST) {
     if (status === 'development') {
@@ -62,20 +63,17 @@ mock();
 init();
 
 const TelegramModule = {
-    initMiniApp() {
-      init();
-      void viewport
-        .mount()
-        .then(() => {
-          requestWriteAccess();
-          disableVerticalSwipes();
-          viewport.expand();
-          if (!isDesktop()) {
-            viewport.requestFullscreen();
-          }
-        })
-        .catch(() => {})
-    },
+    async initMiniApp() {
+      WebApp.requestWriteAccess();
+      WebApp.disableVerticalSwipes();
+      WebApp.expand();
+
+      if (!isDesktop()) {
+        WebApp.requestFullscreen();
+      }
+      
+      WebApp.ready();
+    },  
 
     readyMiniApp() {
       if (miniApp.ready.isAvailable()) {
@@ -85,7 +83,6 @@ const TelegramModule = {
 
     initDataRaw() {
         this.initMiniApp();
-        this.readyMiniApp();
 
         const { initDataRaw } = retrieveLaunchParams()
         return initDataRaw;
@@ -93,7 +90,6 @@ const TelegramModule = {
 
     initData() {
         this.initMiniApp();
-        this.readyMiniApp();
 
         const { initData } = retrieveLaunchParams()
         return initData;
