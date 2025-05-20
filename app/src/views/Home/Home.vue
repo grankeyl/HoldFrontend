@@ -275,7 +275,7 @@
               <p>Скоплено</p>
             </div>
             <div class="contextRabsReferralsRightTitle">
-              <h4>{{ toUniqNumber(ReferralsInfo.ReferralsMoneyTake) }}</h4>
+              <h4>{{ toUniqNumber(ReferralsInfo.ReferralsMoneyTakeCurrent) }}</h4>
               <IconComp 
                 :icon="Icon.Token"
                 width="20px"

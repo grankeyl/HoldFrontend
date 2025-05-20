@@ -34,7 +34,7 @@ const router = createRouter({
       component: () => import('@/views/LevelUp/LevelUp.vue')
     },
     {
-      path: '/onborad/:type',
+      path: '/onborad/:type?',
       name: 'onborad',
       component: () => import('@/views/Onborad/Onborad.vue')
     },

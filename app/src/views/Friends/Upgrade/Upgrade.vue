@@ -22,7 +22,13 @@
       <div class="nulled"></div>
     </div>
 
-    <div class="_view">
+    <div v-if="PageLoading" class="_view">
+      <div class="context">
+        <div class="loader-button"></div>
+      </div>
+    </div>
+
+    <div v-if="!PageLoading" class="_view">
       <div class="context">
 
         <div class="contextInfo">
@@ -121,6 +127,8 @@
       </div>
     </div>
 
+  </section>
+
     <div class="buttons">
       <div class="buttonsButton">
         <button @click="upgrade()">
@@ -130,7 +138,7 @@
             height="24px"
           />
           <span>Улучшить</span>
-          <strong>
+          <strong v-if="!PageLoading">
             <p v-if="PageType === 'all'">{{ toUniqNumber(AllFriendsData.tokens_to_upgrade) }}</p>
             <p v-if="PageType === 'slave'">{{ toUniqNumber(FriendData.tokens_to_upgrade) }}</p>
             <IconComp 
@@ -139,10 +147,13 @@
               height="16px"
             />
           </strong>
+          <strong v-if="PageLoading">
+            <div class="loader-button"></div>
+          </strong>
         </button>
       </div>
       <div class="buttonsButton ads">
-        <button>
+        <button @click="upgradeAdsgram()">
           <div class="bg">
             <img 
               src="/friends/upgrade/ads.png"
@@ -152,7 +163,7 @@
             />
           </div>
           <span>Улучшить</span>
-          <strong>
+          <strong v-if="!PageLoading">
             <p v-if="PageType === 'all'">{{ toUniqNumber(AllFriendsData.tokens_to_upgrade_discount) }}</p>
             <p v-if="PageType === 'slave'">{{ toUniqNumber(FriendData.tokens_to_upgrade_discount) }}</p>
             <IconComp 
@@ -160,6 +171,9 @@
               width="16px"
               height="16px"
             />
+          </strong>
+          <strong v-if="PageLoading">
+            <div class="loader-button"></div>
           </strong>
           <svg width="43" height="44" viewBox="0 0 43 44" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g filter="url(#filter0_dddddd_8110_12039)">
@@ -205,8 +219,6 @@
         </button>
       </div>
     </div>
-
-  </section>
 </template>
 
 <script lang="ts">
@@ -216,11 +228,13 @@ import { toast } from 'vue3-toastify';
 import { collectConfetti } from '@/utils/useConfetti';
 import { toUniqNumber } from '@/utils/useGame';
 
-import * as friendsApi from '@/api/services/friends.service'
+import * as friendsApi from '@/api/services/friends.service';
+import * as adsApi from '@/api/services/ads.service';
 
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue';
+import { useAdsgram } from '@/utils/useAds';
 
 const appCache = AppCache() as any;
 
@@ -243,6 +257,7 @@ export default {
       IsPageLoading: false,
 
       PageType: 'slave',
+      PageLoading: true,
 
       UserData: appCache.UserData,
 
@@ -300,6 +315,7 @@ export default {
         this.AllFriendsData.new_tokens_per_hour = getFriend.new_tokens_per_hour;
         this.AllFriendsData.tokens_to_upgrade = getFriend.tokens_to_upgrade;
         this.AllFriendsData.tokens_to_upgrade_discount = getFriend.discount_video;
+        this.PageLoading = false;
         return;
       }
 
@@ -312,6 +328,7 @@ export default {
       this.FriendData.new_tokens_per_hour = getFriend.new_tokens_per_hour;
       this.FriendData.tokens_to_upgrade = getFriend.tokens_to_upgrade;
       this.FriendData.tokens_to_upgrade_discount = getFriend.discount_video;
+      this.PageLoading = false;
     },
 
     onImageLoad(event: Event) {
@@ -342,9 +359,11 @@ export default {
     },
 
     async upgrade() {
+      const actionUpgrade = this.PageType === 'all' ? "all" : Number(this.FriendData.id);
       const result = await friendsApi.upgrade({
-        action: Number(this.FriendData.id)
+        action: actionUpgrade
       });
+
       if (!result) { return; }
 
       if (result.status === "error" && result.data.type === 'no_cost') {
@@ -356,6 +375,47 @@ export default {
 
         this.UserData.balance = result.data.new_balance;
         this.UserData.tokens_per_hour = result.data.tokens_per_hour;
+        this.$router.push('/friends');
+      }
+    },
+
+    async upgradeAdsgram() {
+      const adUse = await adsApi.request({ task_type: 'upgrade_friends' })
+      if (!adUse) { return; }
+
+      const adToken = adUse.reward_token;
+      localStorage.setItem('ads_last_upgrade_friends', adToken);
+
+      const onReward = () => this.upgradeAll();
+      const onError = () => toast.error("Вр");
+
+      const showAd = useAdsgram({
+        blockId: import.meta.env.VITE_APP_ADSGRAM_HOME_PAGE_VIDEO_BLOCK_ID,
+        onReward: onReward,
+        onError: onError
+      });
+
+      await showAd();
+    },
+    
+    async upgradeAll() {
+      const result = await adsApi.complete({ 
+        reward_token: localStorage.getItem('ads_last_upgrade_friends') || ''
+      });
+
+      if (!result) { return; }
+
+      console.log(result);
+
+      if (result.status === "error" && result.type === 'no_cost') {
+        toast.error(`Нехватает ${result.data.value} токена`);
+      }
+
+      if (result.status === "success") {
+        collectConfetti();
+
+        this.UserData.balance = result.new_balance;
+        this.UserData.tokens_per_hour = result.tokens_per_hour;
         this.$router.push('/friends');
       }
     }

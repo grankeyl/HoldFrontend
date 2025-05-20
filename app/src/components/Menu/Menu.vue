@@ -29,6 +29,7 @@ const openRoute = (routePath: string) => {
         >
           <div @click="openRoute(item.Route)" class="menu__route">
             <div class="kit-icon" v-html="item.Icon"></div>
+            <p>{{ item.Text }}</p>
           </div>
         </div>
       </div>

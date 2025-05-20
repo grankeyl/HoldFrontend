@@ -1,7 +1,7 @@
 @use '@/assets/styles/variables.scss' as *;
 
 .menu {
-  max-width: 290px;
+  max-width: fit-content;
   width: 100%;
   height: $app-menu-height;
   background: $app-bg-secondary;
@@ -36,6 +36,14 @@
     transition: opacity 0.3s ease;
     height: 100%;
 
+    &:first-child, &:last-child {
+      padding: 0 6px;
+
+      @media screen and (max-width: 390px) {
+        padding: 0;
+      }
+    }
+
     &:active {
       transform: scale(0.97);
     }
@@ -61,7 +69,8 @@
   }
 
   &__route {
-    width: 73px;
+    width: fit-content;
+    padding: 0 20px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -82,6 +91,15 @@
         width: 20px;
         height: 20px;
       }
+    }
+
+    p {
+      font-size: 12px;
+      font-weight: 500;
+      color: $app-h;
+      text-align: center;
+      transition: color 0.2s ease;
+      will-change: color;
     }
   }
 }

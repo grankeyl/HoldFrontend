@@ -326,6 +326,8 @@
       }
     }
   }
+}
+
 
   .buttons {
     display: flex;
@@ -430,6 +432,11 @@
               z-index: 1;
               gap: 4px;
 
+              .loader-button {
+                width: 16px;
+                height: 16px;
+              }
+
               & p {
                 font-size: 14px;
                 font-weight: 600;
@@ -446,4 +453,3 @@
     }
 
   }
-}

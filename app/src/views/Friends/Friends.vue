@@ -272,7 +272,7 @@ export default {
 
       FriendsData: [] as any,
       FriendsOffset: 0,
-      FriendsLimit: 100,
+      FriendsLimit: 10,
       FriendsObserver: null as IntersectionObserver | null,
       LastFriendRef: null as HTMLElement | null,
 
@@ -311,18 +311,7 @@ export default {
     });
     
     this.waitForAssets();
-
-    this.getReferralsList().then(getFriends => {
-      if (getFriends) {
-        console.log(getFriends);
-        this.FriendsData = getFriends.referrals;
-        this.initReferralsInfo({
-          ReferralsMoneyTakeCurrent: getFriends.total_income,
-          ReferralsMoneyToHourCurrent: getFriends.tokens_per_hour,
-          ReferralsMoneyAllCurrent: getFriends.total_collected,
-        });
-      }
-    });
+    this.fetchFriends();
   },
 
   watch: {
@@ -443,15 +432,6 @@ export default {
         });
       }
     },
-
-    async getReferralsList() {
-      const result = await friendsApi.get({
-        offset: 0,
-        limit: 20,
-      });
-      if (!result) { return; }
-      return result;
-    },
     
     async fetchFriends() {
       const response = await friendsApi.get({
@@ -459,9 +439,10 @@ export default {
         limit: this.FriendsLimit,
       });
 
+      console.log("offset", this.FriendsOffset, "limit", this.FriendsLimit);
+      console.log(response.referrals);
+
       if (response && response.referrals?.length) {
-        console.log(response.referrals);
-        console.log(this.FriendsOffset);
         this.FriendsData.push(...response.referrals);
         this.FriendsOffset += this.FriendsLimit;
       } else {

@@ -51,6 +51,7 @@ export interface UserFriendsUpgradeGet {
 
 export interface AdsRequestPayload {
   task_type: string;
+  user_id?: number;
 }
 
 export interface AdsCompletePayload {
@@ -77,4 +78,21 @@ export interface FriendsUpgrade {
 export interface FriendsUpgradeGet {
   user_id: number;
   type: string;
+}
+
+
+
+/* _____ Tasks _____ */
+
+export interface TasksUsePayload {
+  taskId: string;
+  taskProgress: any;
+}
+
+
+
+/* _____ Telegram _____ */
+
+export interface TelegramCheckUserChannelPayload {
+  channel_id: string;
 }

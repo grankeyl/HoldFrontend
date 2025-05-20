@@ -470,6 +470,10 @@
                 font-size: 42px;
                 font-weight: 700;
                 color: $app-h;
+
+                @media screen and (max-width: 400px) {
+                  font-size: 32px;
+                }
             }
 
             & .kit-icon {
@@ -503,6 +507,10 @@
           padding: 11px 12px;
           transition: transform 0.2s linear, opacity 0.2s linear;
           will-change: transform, opacity;
+
+          @media screen and (max-width: 400px) {
+            max-width: 140px;
+          }
 
           &:active {
             opacity: .79;
@@ -542,6 +550,11 @@
             & img {
               width: 100%;
               object-fit: contain;
+
+              @media screen and (max-width: 400px) {
+                object-fit: fill;
+                height: 94px;
+              }
             }
           }
 
@@ -800,14 +813,14 @@
           }
           
           &Title {
-            width: fit-content;
+            width: 100%;
             height: fit-content;
             display: flex;
             align-items: center;
             gap: 6px;
             
             & h4 {
-              width: 100%;
+              width: fit-content;
               height: fit-content;
               font-size: 24px;
               font-weight: 700;

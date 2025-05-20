@@ -111,8 +111,9 @@ export default {
 
         appCache.UserData = { ...userGet };
         appCache.PlacesData = { ...placesGet };
-        appCache.TasksData = { ...tasksGet };
         appCache.GameData = { ...gameGet } as GameDataType;
+
+        appCache.TasksData = [ ...tasksGet];
 
         if (userGet) {
           loadingPage.value = false;

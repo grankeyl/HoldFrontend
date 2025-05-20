@@ -4,7 +4,7 @@
   </div>
 
   <section 
-    v-if="OnboradStep === 3" 
+    v-if="OnboradStep === 3"
     class="_wrap _onborad _slaved" 
     :class="{ show: !IsPageLoading }"
   >
@@ -53,7 +53,7 @@
   </section>
 
   <section 
-    v-if="IsSlavePage === 'registered'"
+    v-if="IsSlavePage"
     class="_wrap _onborad" 
     :class="{ show: !IsPageLoading }"
   >
@@ -164,7 +164,7 @@ export default {
   setup() {
     const Route = useRoute();
 
-    const TypePage = Route.params.type as string;
+    const TypePage = Route.params.type as string | 'registration';
     const IsSlavePage = ref(TypePage || 'registration');
 
     return {
@@ -219,10 +219,27 @@ export default {
     },
 
     setPageToHome() {
-      if (this.OnboradStep >= 3) { return this.$router.push('/'); }
-      if (this.IsSlavePage === 'slaved') { this.OnboradStep++; return; }
+      if (this.IsSlavePage === 'registration' && this.OnboradStep >= 2) {
+        this.$router.push('/');
+        return;
+      }
+
+      if (this.IsSlavePage === 'slaved') {
+        if (this.OnboradStep >= 3) {
+          this.$router.push('/');
+        } else {
+          this.OnboradStep++;
+        }
+        return;
+      }
+
+      if (this.OnboradStep >= 3) {
+        this.$router.push('/');
+        return;
+      }
+
       this.$router.push('/');
-    },
+    }
   },
 };
 </script>

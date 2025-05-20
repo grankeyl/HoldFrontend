@@ -127,19 +127,24 @@
 
           <div class="contextTasksItems">
             <div 
-              v-for="(_, i) in TasksData" :key="i"
+              v-for="(task, i) in TasksData" :key="i"
               class="contextTasksItemsItem"
               :style="{ animationDelay: `${i * 0.27}s` }"
             >
               <div class="contextTasksItemsItemDeep">
-                <img src="/tasks/telegram.svg" alt="telegram" />
+                <img 
+                  :src="task.condition_value.ChannelPhoto"
+                  alt="image"
+                  class="fade-in"
+                  @load="onImageLoad"
+                >
               </div>
               <div class="contextTasksItemsItemContent">
                 <div slot="reward" class="contextTasksItemsItemContentTitle">
                   <h4>Подписаться в Телеграм</h4>
                 </div>
                 <div slot="reward" class="contextTasksItemsItemContentReward">
-                  <span>+{{ GameData.ads.task }}</span>
+                  <span>+{{ task.reward_value }}</span>
                   <IconComp 
                     :icon="Icon.Token"
                     width="16px"
@@ -147,9 +152,24 @@
                   />
                 </div>
               </div>
-              <div slot="button" class="contextTasksItemsItemButton">
-                <button>
+              <div v-if="task.isLoading" slot="button" class="contextTasksItemsItemButton loading">
+                <button @click="clickTask(task)">
+                  <div class="loader-button"></div>
+                </button>
+              </div>
+              <div v-if="!task.isLoading && !task.isClaimed && !task.isDone" slot="button" class="contextTasksItemsItemButton">
+                <button @click="clickTask(task)">
                   <span>Старт</span>
+                </button>
+              </div>
+              <div v-if="!task.isLoading && task.isClaimed && !task.isDone" slot="button" class="contextTasksItemsItemButton claim">
+                <button @click="useTask(task)">
+                  <span>Забрать</span>
+                </button>
+              </div>
+              <div v-if="!task.isLoading && task.isClaimed && task.isDone" slot="button" class="contextTasksItemsItemButton done">
+                <button>
+                  <span>Готово</span>
                 </button>
               </div>
             </div>
@@ -177,9 +197,14 @@ import { Icon } from '@/components/Icons';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay } from 'swiper/modules';
 import { AppCache } from '@/stores/pinia';
+import { toast } from 'vue3-toastify';
+import { collectConfetti } from '@/utils/useConfetti';
 
 // @ts-ignore
 import 'swiper/css';
+
+import * as tasksApi from '@/api/services/tasks.service';
+import * as telegramApi from '@/api/services/telegram.service';
 
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
@@ -246,6 +271,10 @@ export default {
       GameData: appCache.GameData,
       UserData: appCache.UserData,
       TasksData: appCache.TasksData,
+
+      isCheckSubscribeChannelInterval: false,
+      checkSubscribeChannelInterval: null as any,
+      checkSubscribeChannelTimeout: null as any,
     };
   },
 
@@ -299,6 +328,93 @@ export default {
     openHome() {
       this.$router.push('/');
     },
+
+    startCheckSubscribeChannel(ChannelId: any) {
+      return new Promise((resolve) => {
+        this.isCheckSubscribeChannelInterval = true;
+
+        this.checkSubscribeChannelInterval = setInterval(async () => {
+          const data = await telegramApi.checkUserChannel({ channel_id: ChannelId });
+          if (data.status === "success") {
+            this.stopCheckSubscribeChannel();
+            resolve(true);
+          }
+        }, 2000);
+
+        this.checkSubscribeChannelTimeout = setTimeout(() => {
+          this.stopCheckSubscribeChannel();
+          resolve(false);
+        }, 30000);
+      });
+    },
+
+    stopCheckSubscribeChannel() {
+      if (this.checkSubscribeChannelInterval) clearInterval(this.checkSubscribeChannelInterval);
+      if (this.checkSubscribeChannelTimeout) clearTimeout(this.checkSubscribeChannelTimeout);
+      this.isCheckSubscribeChannelInterval = false;
+    },
+
+    async clickTask(task: any) {
+      const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
+      if (!taskToUpdate) { return; }
+
+      if (task.condition_type === "SubscribeChannel") {
+        if (this.isCheckSubscribeChannelInterval) return;
+
+        taskToUpdate.isLoading = true;
+        const check = await this.startCheckSubscribeChannel(task.condition_value.ChannelId);
+
+        if (check) {
+          taskToUpdate.isLoading = false;
+          await this.useTask(task);
+        }
+      }
+    },
+    
+    async useTask(task: any) {
+      let isClaimed = task.isClaimed;
+      let isDone = task.isDone;
+
+      const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
+      if (!taskToUpdate) { return; }
+
+      if (task.condition_type === "SubscribeChannel") {
+        isClaimed = true;
+        taskToUpdate.isClaimed = true;
+        taskToUpdate.isDone = isDone;
+      }
+
+      if (isClaimed && !isDone) { isDone = true; }
+
+      const use = await tasksApi.use({ 
+        taskId: task.id,
+        taskProgress: { isClaimed, isDone }
+      });
+
+      if (!use) { return; }
+
+      console.log("use:", use);
+
+      if (use.status === "already_received") {
+        toast.error(`Вы уже выполнили это задание`);
+        return;
+      }
+
+      if (use.status === "claimed") {
+        taskToUpdate.isClaimed = true;
+        taskToUpdate.isDone = false;
+      }
+
+      if (use.status === "done") {
+        taskToUpdate.isClaimed = true;
+        taskToUpdate.isDone = true;
+
+        appCache.UserData.balance += use.tickets;
+
+        collectConfetti();
+        toast.success(`Вы успешно заработали ${use.tickets} токенов`);
+      }
+    }
   },
 };
 </script>
