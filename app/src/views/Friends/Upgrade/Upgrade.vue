@@ -390,7 +390,7 @@ export default {
       const onError = () => toast.error("Вр");
 
       const showAd = useAdsgram({
-        blockId: import.meta.env.VITE_APP_ADSGRAM_HOME_PAGE_VIDEO_BLOCK_ID,
+        blockId: import.meta.env.VITE_APP_ADSGRAM_UPGRADE_PAGE_VIDEO_BLOCK_ID,
         onReward: onReward,
         onError: onError
       });
@@ -404,8 +404,6 @@ export default {
       });
 
       if (!result) { return; }
-
-      console.log(result);
 
       if (result.status === "error" && result.type === 'no_cost') {
         toast.error(`Нехватает ${result.data.value} токена`);

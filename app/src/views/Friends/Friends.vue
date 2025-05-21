@@ -435,12 +435,9 @@ export default {
     
     async fetchFriends() {
       const response = await friendsApi.get({
-        offset: this.FriendsOffset,
-        limit: this.FriendsLimit,
+        offset: Number(this.FriendsOffset),
+        limit: Number(this.FriendsLimit),
       });
-
-      console.log("offset", this.FriendsOffset, "limit", this.FriendsLimit);
-      console.log(response.referrals);
 
       if (response && response.referrals?.length) {
         this.FriendsData.push(...response.referrals);

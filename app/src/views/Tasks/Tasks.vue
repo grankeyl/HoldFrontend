@@ -141,7 +141,9 @@
               </div>
               <div class="contextTasksItemsItemContent">
                 <div slot="reward" class="contextTasksItemsItemContentTitle">
-                  <h4>Подписаться в Телеграм</h4>
+                  <h4 v-if="task.condition_type === 'SubscribeChannel'">{{ task.condition_value.ChannelName }}</h4>
+                  <h4 v-if="task.condition_type === 'JoinMiniapp'">{{ task.condition_value.MiniAppName }}</h4>
+                  <h4 v-if="task.condition_type === 'JoinSite'">{{ task.condition_value.SiteName }}</h4>
                 </div>
                 <div slot="reward" class="contextTasksItemsItemContentReward">
                   <span>+{{ task.reward_value }}</span>
@@ -153,7 +155,7 @@
                 </div>
               </div>
               <div v-if="task.isLoading" slot="button" class="contextTasksItemsItemButton loading">
-                <button @click="clickTask(task)">
+                <button>
                   <div class="loader-button"></div>
                 </button>
               </div>
@@ -163,7 +165,7 @@
                 </button>
               </div>
               <div v-if="!task.isLoading && task.isClaimed && !task.isDone" slot="button" class="contextTasksItemsItemButton claim">
-                <button @click="useTask(task)">
+                <button @click="claimTask(task)">
                   <span>Забрать</span>
                 </button>
               </div>
@@ -354,67 +356,221 @@ export default {
       this.isCheckSubscribeChannelInterval = false;
     },
 
-    async clickTask(task: any) {
+    async useTaskSubscribeChannel(task: any) {
       const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
       if (!taskToUpdate) { return; }
+      
+      if (task.isClaimed && !task.isDone) {
+        const use = await tasksApi.use({ 
+          taskId: task.id,
+          taskProgress: { isClaimed: true, isDone: false }
+        });
 
-      if (task.condition_type === "SubscribeChannel") {
-        if (this.isCheckSubscribeChannelInterval) return;
+        if (use.status === "claimed") {
+          task.isClaimed = true;
+          task.isDone = false;
+          taskToUpdate.isClaimed = true;
+          taskToUpdate.isDone = false;
+          TelegramModule.useMediumHaptic();
+        }
+      }
 
-        taskToUpdate.isLoading = true;
-        const check = await this.startCheckSubscribeChannel(task.condition_value.ChannelId);
+      if (task.isClaimed && task.isDone) {
+        const use = await tasksApi.use({ 
+          taskId: task.id,
+          taskProgress: { isClaimed: true, isDone: true }
+        });
 
-        if (check) {
-          taskToUpdate.isLoading = false;
-          await this.useTask(task);
+        if (use.status === "done") {
+          task.isClaimed = true;
+          task.isDone = true;
+          taskToUpdate.isClaimed = true;
+          taskToUpdate.isDone = true;
+
+          collectConfetti();
+          TelegramModule.useMediumHaptic();
+
+          appCache.UserData.balance += use.tickets;
+          toast.success(`Вы успешно заработали ${use.tickets} токенов`);
         }
       }
     },
-    
-    async useTask(task: any) {
-      let isClaimed = task.isClaimed;
-      let isDone = task.isDone;
 
+    async useTaskJoinMiniApp(task: any) {
       const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
       if (!taskToUpdate) { return; }
+      
+      if (task.isClaimed && !task.isDone) {
+        const use = await tasksApi.use({ 
+          taskId: task.id,
+          taskProgress: { isClaimed: true, isDone: false }
+        });
+
+        if (use && use.status === 'claimed') {
+          task.isClaimed = true;
+          task.isDone = false;
+          taskToUpdate.isClaimed = true;
+          taskToUpdate.isDone = false;
+
+          TelegramModule.useMediumHaptic();
+        }
+      }
+
+      if (task.isClaimed && task.isDone) {
+        const use = await tasksApi.use({ 
+          taskId: task.id,
+          taskProgress: { isClaimed: true, isDone: true }
+        });
+
+        if (use && use.status === 'done') {
+          taskToUpdate.isLoading = true;
+
+          task.isClaimed = true;
+          task.isDone = true;
+          taskToUpdate.isClaimed = true;
+          taskToUpdate.isDone = true;
+
+          collectConfetti();
+          TelegramModule.useMediumHaptic();
+
+          appCache.UserData.balance += use.tickets;
+          toast.success(`Вы успешно заработали ${use.tickets} токенов`);
+
+          taskToUpdate.isLoading = false;
+        }
+      }
+    },
+
+    async useTaskJoinSite(task: any) {
+      const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
+      if (!taskToUpdate) { return; }
+      
+      if (task.isClaimed && !task.isDone) {
+        const use = await tasksApi.use({ 
+          taskId: task.id,
+          taskProgress: { isClaimed: true, isDone: false }
+        });
+
+        if (use && use.status === 'claimed') {
+          task.isClaimed = true;
+          task.isDone = false;
+          taskToUpdate.isClaimed = true;
+          taskToUpdate.isDone = false;
+
+          TelegramModule.useMediumHaptic();
+        }
+      }
+
+      if (task.isClaimed && task.isDone) {
+        const use = await tasksApi.use({ 
+          taskId: task.id,
+          taskProgress: { isClaimed: true, isDone: true }
+        });
+
+        if (use && use.status === 'done') {
+          taskToUpdate.isLoading = true;
+
+          task.isClaimed = true;
+          task.isDone = true;
+          taskToUpdate.isClaimed = true;
+          taskToUpdate.isDone = true;
+
+          collectConfetti();
+          TelegramModule.useMediumHaptic();
+
+          appCache.UserData.balance += use.tickets;
+          toast.success(`Вы успешно заработали ${use.tickets} токенов`);
+
+          taskToUpdate.isLoading = false;
+        }
+      }
+    },
+
+
+    async clickTask(task: any) {
+      const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
+      if (!taskToUpdate) { return; }
+      if (task.isClaimed) { return; }
 
       if (task.condition_type === "SubscribeChannel") {
-        isClaimed = true;
-        taskToUpdate.isClaimed = true;
-        taskToUpdate.isDone = isDone;
+        taskToUpdate.isLoading = true;
+
+        TelegramModule.useLink(task.condition_value.ChannelLink);
+        const check = await this.startCheckSubscribeChannel(
+          task.condition_value.ChannelId
+        );
+
+        if (check) { 
+          task.isClaimed = true;
+          taskToUpdate.isClaimed = true;
+          this.useTaskSubscribeChannel(task);
+        }
+
+        taskToUpdate.isLoading = false;
       }
 
-      if (isClaimed && !isDone) { isDone = true; }
+      if (task.condition_type === 'JoinMiniapp') {
+        taskToUpdate.isLoading = true;
 
-      const use = await tasksApi.use({ 
-        taskId: task.id,
-        taskProgress: { isClaimed, isDone }
-      });
+        TelegramModule.useLink(task.condition_value.MiniAppLink);
 
-      if (!use) { return; }
+        setTimeout(() => { 
+          task.isClaimed = true;
+          taskToUpdate.isClaimed = true;
 
-      console.log("use:", use);
-
-      if (use.status === "already_received") {
-        toast.error(`Вы уже выполнили это задание`);
-        return;
+          const check = this.useTaskJoinMiniApp(task) as any;
+          if (check) { taskToUpdate.isLoading = false; }
+        }, 1680);
       }
 
-      if (use.status === "claimed") {
-        taskToUpdate.isClaimed = true;
-        taskToUpdate.isDone = false;
+      if (task.condition_type === 'JoinSite') {
+        taskToUpdate.isLoading = true;
+
+        window.open(task.condition_value.SiteLink, '_blank');
+
+        setTimeout(() => { 
+          task.isClaimed = true;
+          taskToUpdate.isClaimed = true;
+
+          const check = this.useTaskJoinSite(task) as any;
+          if (check) { taskToUpdate.isLoading = false; }
+        }, 1680);
+      }
+    },
+
+    async claimTask(task: any) {
+      if (task.condition_type === 'SubscribeChannel') {
+        if (task.isClaimed && task.isDone) {
+          TelegramModule.useLink(task.condition_value.ChannelLink);
+          return;
+        };
+
+        setTimeout(() => {
+          task.isClaimed = true;
+          task.isDone = true;
+
+          this.useTaskSubscribeChannel(task);
+        }, 200);
       }
 
-      if (use.status === "done") {
-        taskToUpdate.isClaimed = true;
-        taskToUpdate.isDone = true;
+      if (task.condition_type === 'JoinMiniapp') {
+        setTimeout(() => {
+          task.isClaimed = true;
+          task.isDone = true;
 
-        appCache.UserData.balance += use.tickets;
-
-        collectConfetti();
-        toast.success(`Вы успешно заработали ${use.tickets} токенов`);
+          this.useTaskJoinMiniApp(task);
+        }, 200);
       }
-    }
+
+      if (task.condition_type === 'JoinSite') {
+        setTimeout(() => {
+          task.isClaimed = true;
+          task.isDone = true;
+
+          this.useTaskJoinSite(task);
+        }, 200);
+      }
+    },
   },
 };
 </script>

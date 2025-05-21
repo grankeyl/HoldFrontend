@@ -18,19 +18,22 @@ export const get = async (payload: FriendsGet) => {
     }
 
     const response = await api.post(
-      '/friends/get',
-      { ...payload },
-      { headers: { Authorization: `Bearer ${tokenAuth}` } }
+      `/friends/get?offset=${payload.offset}&limit=${payload.limit}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${tokenAuth}`,
+        },
+      }
     );
 
     if (response.status === 200) {
-      const responseData = response.data;
-      return responseData.message;
+      return response.data.message;
     }
   } catch (e: any) {
     throw new Error("Friends get failed");
   }
-}
+};
 
 export const collect = async (payload: FriendsCollect) => {
   try {
