@@ -129,13 +129,14 @@
             </button>
           </div>
           <div v-if="FriendsData && UserData.referrals_count > 0" class="contextButtonsButton primary">
-            <button @click="openUpgrade('all')">
+            <button @click="openUpgrade('all')" :class="{ loading: LoadingUpgradeAllButton }">
               <IconComp 
                 :icon="Icon.Up"
                 width="24px"
                 height="24px"
               />
               <span>Улучшить всех</span>
+              <div class="loader-button"></div>
             </button>
           </div>
         </div>
@@ -291,10 +292,11 @@ export default {
         ReferralsMoneyTakeCurrent: 0,
       },
 
+      LoadingUpgradeAllButton: false,
+
       UserData: appCache.UserData,
 
       Icon,
-
       toUniqNumber,
     };
   },
@@ -421,6 +423,7 @@ export default {
 
     openUpgrade(type: 'all' | 'user', user_id?: number) {
       if (type === 'all') {
+        this.LoadingUpgradeAllButton = true;
         this.$router.push({ 
           name: 'friends-upgrade', 
           params: { user_id: 0 }
@@ -432,6 +435,20 @@ export default {
         });
       }
     },
+
+    async fetchFriendsInfo() {
+      const response = await friendsApi.get({
+        offset: Number(this.FriendsOffset),
+        limit: Number(this.FriendsLimit),
+      });
+
+      if (response && response.referrals?.length) {
+        this.FriendsData.push(...response.referrals);
+        this.FriendsOffset += this.FriendsLimit;
+      } else {
+        this.FriendsObserver?.disconnect();
+      }
+    },
     
     async fetchFriends() {
       const response = await friendsApi.get({
@@ -440,6 +457,11 @@ export default {
       });
 
       if (response && response.referrals?.length) {
+        this.initReferralsInfo({
+          ReferralsMoneyTakeCurrent: response.total_income,
+          ReferralsMoneyToHourCurrent: response.tokens_per_hour,
+          ReferralsMoneyAllCurrent: response.total_collected,
+        });
         this.FriendsData.push(...response.referrals);
         this.FriendsOffset += this.FriendsLimit;
       } else {

@@ -222,6 +222,7 @@
 </template>
 
 <script lang="ts">
+import { ref } from 'vue';
 import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
 import { toast } from 'vue3-toastify';
@@ -236,7 +237,6 @@ import * as adsApi from '@/api/services/ads.service';
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue';
-import { ref } from 'vue';
 
 const appCache = AppCache() as any;
 
@@ -304,14 +304,15 @@ export default {
 
       if (!result) return;
 
-      console.log(result);
-
-      if (result.status === "error" && result.type === 'no_cost') {
+      if (result.status === "success" && result.data.type === 'no_cost') {
         toast.error(`Нехватает ${result.data.value} токена`);
+        return;
       }
 
       if (result.status === "success") {
         collectConfetti();
+        TelegramModule.useMediumHaptic();
+
         appCache.UserData.balance = result.new_balance;
         appCache.tokens_per_hour = result.tokens_per_hour;
         router.push('/friends');
@@ -326,7 +327,7 @@ export default {
       localStorage.setItem('ads_last_upgrade_friends', adToken);
 
       const onReward = () => upgradeAll();
-      const onError = () => toast.error("Ошибка показа рекламы, попробуйте позже");
+      const onError = () => toast.warn("Ошибка показа рекламы, попробуйте позже");
 
       const showAd = await useAdsgram({
         blockId: import.meta.env.VITE_APP_ADSGRAM_UPGRADE_PAGE_VIDEO_BLOCK_ID,
@@ -422,12 +423,14 @@ export default {
 
       if (!result) { return; }
 
-      if (result.status === "error" && result.data.type === 'no_cost') {
+      if (result.status === "success" && result.data.type === 'no_cost') {
         toast.error(`Нехватает ${result.data.value} токена`);
+        return;
       }
 
       if (result.status === "success") {
         collectConfetti();
+        TelegramModule.useMediumHaptic();
 
         this.UserData.balance = result.data.new_balance;
         this.UserData.tokens_per_hour = result.data.tokens_per_hour;

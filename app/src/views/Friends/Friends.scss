@@ -374,6 +374,18 @@
               gap: 10px;
               cursor: pointer;
               position: relative;
+
+              &.loading {
+                pointer-events: none;
+
+                .kit-icon, span {
+                  display: none;
+                }
+
+                .loader-button {
+                  display: flex;
+                }
+              }
     
               &:active {
                   opacity: 0.87;
@@ -389,6 +401,12 @@
                   font-size: 15px;
                   font-weight: $font-bold;
                   color: $app-button-text;
+              }
+
+              .loader-button {
+                width: 18px;
+                height: 18px;
+                display: none;
               }
           }
         }

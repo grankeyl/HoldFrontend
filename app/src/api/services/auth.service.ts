@@ -5,6 +5,8 @@ import type { AuthPayload } from '@/api/types/api.types'
 
 export const login = async (payload: AuthPayload) => {
   try {
+    console.log(payload);
+    
     const response = await api.post(
       '/user/auth',
       { ...payload }

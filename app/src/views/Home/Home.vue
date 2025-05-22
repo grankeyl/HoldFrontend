@@ -312,9 +312,11 @@ import { ref } from 'vue';
 import { AppCache } from '@/stores/pinia';
 import { useAdsgram } from '@/utils/useAds';
 import { Icon } from '@/components/Icons';
+import { toast } from 'vue3-toastify';
 import { toRoman, toUniqNumber } from '@/utils/useGame';
 import { getPlacesData } from '@/utils/usePlaces';
 import { copyToClipboard, getReferralLink } from '@/utils/useApp';
+import { collectConfetti } from '@/utils/useConfetti';
 
 import * as adsApi from '@/api/services/ads.service';
 import * as userApi from '@/api/services/user.service';
@@ -323,7 +325,6 @@ import * as friendsApi from '@/api/services/friends.service';
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue';
 import Modal from '@/components/Modal/Modal.vue';
-import { collectConfetti } from '@/utils/useConfetti';
 
 const appCache = AppCache() as any;
 
@@ -388,7 +389,9 @@ export default {
     const onError = (result: any) => {
       if (ContextInfoVideo.value) {
         ContextInfoVideo.value.classList.remove('loading');
-      } 
+      }
+
+      toast.warn("Ошибка показа рекламы, попробуйте позже");
 
       return result;
     };
