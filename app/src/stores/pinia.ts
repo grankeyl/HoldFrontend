@@ -6,6 +6,10 @@ export const AppCache = defineStore('App', {
     PlacesData: {} as any,
     GameData: {} as any,
 
-    TasksData: [] as any[],
+    TasksData: {
+      Banners: [] as any[],
+      Referrals: [] as any[],
+      Tasks: [] as any[],
+    },
   }),
 });

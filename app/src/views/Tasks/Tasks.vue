@@ -1,16 +1,56 @@
 <template>
+  <div class="head-balance">
+    <h4>{{ UserData.balance }}</h4>
+    <IconComp 
+      :icon="Icon.Token"
+      width="16px"
+      height="16px"
+    />
+  </div>
+
   <section 
     class="_wrap _tasks" 
     :class="{ show: !IsPageLoading }"
   >
-    <div class="head-balance">
-      <h4>{{ UserData.balance }}</h4>
-      <IconComp 
-        :icon="Icon.Token"
-        width="16px"
-        height="16px"
-      />
-    </div>
+
+    <Modal
+      :isVisible="ShareReferralModal"
+      @update:isVisible="ShareReferralModal = $event"
+    >
+      <div class="modalTitle">
+        <IconComp
+          :icon="Icon.Friends"
+          width="22px"
+          height="22px"
+        /> 
+        <h4>Catch a slave</h4>
+      </div>
+      
+      <div class="modalDescription">
+        <p>Copy the link or share directly</p>
+      </div>
+
+      <div class="modalReferral">
+        <h4>{{ ReferralLink }}</h4>
+        <div 
+          @click="copyShareReferral(ReferralLink)"
+          class="modalReferralCopy"
+        >
+          <p>{{ ShareReferralCopied ? 'Copied!' : 'Copy' }}</p>
+        </div>
+      </div>
+
+      <div class="modalButton">
+        <button @click="sendShareReferral()">
+          <IconComp 
+            :icon="Icon.ArrowRightTo"
+            width="24px"
+            height="24px"
+          />
+          <span>Share</span>
+        </button>
+      </div>
+    </Modal>
 
     <div class="_view">
       <div class="context">
@@ -27,10 +67,10 @@
 
         <div class="contextBanners">
           <swiper v-bind="SwiperBannersOptions">
-            <swiper-slide v-for="index in 2" :key="index">
+            <swiper-slide v-for="(task, i) in BannersData" :key="i">
               <div class="contextBannersBanner">
                 <div class="contextBannersBannerReward">
-                  <span>+200</span>
+                  <span>+{{ task.reward_value }}</span>
                   <IconComp 
                     :icon="Icon.Token"
                     width="12px"
@@ -39,7 +79,7 @@
                 </div>
                 <div class="contextBannersBannerBg">
                   <img 
-                    src="/tasks/banner-1.png"
+                    :src="task.condition_value.BannerUrl"
                     alt="banner-1"
                     class="fade-in"
                     @load="onImageLoad"
@@ -61,11 +101,26 @@
                     />
                   </div>
                   <div class="contextBannersBannerContentTitle">
-                    <h1>Как заработать на крипте?</h1>
+                    <h1>{{ task.condition_value.BannerTitle }}</h1>
                   </div>
-                  <div class="contextBannersBannerContentButton">
+                  <div v-if="task.isLoading" slot="button" class="contextBannersBannerContentButton loading">
                     <button>
+                      <div class="loader-button"></div>
+                    </button>
+                  </div>
+                  <div v-if="!task.isLoading && !task.isClaimed && !task.isDone" slot="button" class="contextBannersBannerContentButton">
+                    <button @click="clickTask(task, 'Banner')">
                       <span>Подписаться</span>
+                    </button>
+                  </div>
+                  <div v-if="!task.isLoading && task.isClaimed && !task.isDone" slot="button" class="contextBannersBannerContentButton claim">
+                    <button @click="claimTask(task, 'Banner')">
+                      <span>Забрать</span>
+                    </button>
+                  </div>
+                  <div v-if="!task.isLoading && task.isClaimed && task.isDone" slot="button" class="contextBannersBannerContentButton done">
+                    <button>
+                      <span>Готово</span>
                     </button>
                   </div>
                 </div>
@@ -80,10 +135,10 @@
           </div>
 
           <swiper v-bind="SwiperRabsOptions">
-            <swiper-slide v-for="index in 2" :key="index">
+            <swiper-slide v-for="(task, i) in ReferralsData" :key="i">
               <div class="contextBannersBanner">
                 <div class="contextBannersBannerReward">
-                  <span>+200</span>
+                  <span>+{{ task.reward_value }}</span>
                   <IconComp 
                     :icon="Icon.Token"
                     width="12px"
@@ -106,12 +161,30 @@
                       class="fade-in"
                       @load="onImageLoad"
                     />
-                    <h1>Пригласите 5 человек</h1>
-                    <span>0/5</span>
+                    <h1>Пригласите {{ task.condition_value.ReferralsCount }} человек</h1>
+                    <span>
+                      {{ Math.min(task.condition_value.ReferralsCount, UserData.referrals_count) }}/{{ task.condition_value.ReferralsCount }}
+                    </span>
                   </div>
-                  <div class="contextBannersBannerContentButton">
+
+                  <div v-if="task.isLoading" slot="button" class="contextBannersBannerContentButton loading">
                     <button>
+                      <div class="loader-button"></div>
+                    </button>
+                  </div>
+                  <div v-if="!task.isLoading && !task.isClaimed && !task.isDone" slot="button" class="contextBannersBannerContentButton">
+                    <button @click="openShareReferral()">
                       <span>Пригласить</span>
+                    </button>
+                  </div>
+                  <div v-if="!task.isLoading && task.isClaimed && !task.isDone" slot="button" class="contextBannersBannerContentButton claim">
+                    <button @click="claimTask(task)">
+                      <span>Забрать</span>
+                    </button>
+                  </div>
+                  <div v-if="!task.isLoading && task.isClaimed && task.isDone" slot="button" class="contextBannersBannerContentButton done">
+                    <button>
+                      <span>Готово</span>
                     </button>
                   </div>
                 </div>
@@ -201,6 +274,7 @@ import { Autoplay } from 'swiper/modules';
 import { AppCache } from '@/stores/pinia';
 import { toast } from 'vue3-toastify';
 import { collectConfetti } from '@/utils/useConfetti';
+import { copyToClipboard, getReferralLink } from '@/utils/useApp';
 
 // @ts-ignore
 import 'swiper/css';
@@ -212,6 +286,7 @@ import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue'
 import Task from '@/components/Task/Task.vue';
+import Modal from '@/components/Modal/Modal.vue';
 
 
 export default {
@@ -228,6 +303,7 @@ export default {
     Swiper,
     SwiperSlide,
     Task,
+    Modal,
   },
 
   data() {
@@ -255,6 +331,9 @@ export default {
         speed: 700,
       } as any,
 
+      ShareReferralModal: false,
+      ShareReferralCopied: false,
+
       PropsSuccess: this.success,
       IsPageLoading: false,
 
@@ -273,12 +352,20 @@ export default {
 
       GameData: appCache.GameData,
       UserData: appCache.UserData,
-      TasksData: appCache.TasksData,
+      BannersData: appCache.TasksData.Banners,
+      ReferralsData: appCache.TasksData.Referrals,
+      TasksData: appCache.TasksData.Tasks,
 
       isCheckSubscribeChannelInterval: false,
       checkSubscribeChannelInterval: null as any,
       checkSubscribeChannelTimeout: null as any,
     };
+  },
+
+  computed: {
+    ReferralLink() {
+      return getReferralLink(this.UserData.referral_code);
+    },
   },
 
   mounted() {
@@ -357,10 +444,14 @@ export default {
       this.isCheckSubscribeChannelInterval = false;
     },
 
-    async useTaskSubscribeChannel(task: any) {
+    async useTaskSubscribeChannel(task: any, type?: string) {
       const appCache = AppCache();
 
-      const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
+      let taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
+      if (type && type === 'Banner') {
+        taskToUpdate = this.BannersData.find((t: any) => String(t.id) === String(task.id));
+      }
+
       if (!taskToUpdate) { return; }
       
       if (task.isClaimed && !task.isDone) {
@@ -368,6 +459,8 @@ export default {
           taskId: task.id,
           taskProgress: { isClaimed: true, isDone: false }
         });
+
+        console.log(use);
 
         if (use.status === "claimed") {
           task.isClaimed = true;
@@ -493,9 +586,44 @@ export default {
       }
     },
 
+    async useTaskRefCount(task: any) {
+      const appCache = AppCache();
 
-    async clickTask(task: any) {
-      const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
+      const taskToUpdate = this.ReferralsData.find((t: any) => String(t.id) === String(task.id));
+      if (!taskToUpdate) { return; }
+
+      if (task.isClaimed && task.isDone) {
+        const use = await tasksApi.use({ 
+          taskId: task.id,
+          taskProgress: { isClaimed: true, isDone: true }
+        });
+
+        if (use && use.status === 'done') {
+          taskToUpdate.isLoading = true;
+
+          task.isClaimed = true;
+          task.isDone = true;
+          taskToUpdate.isClaimed = true;
+          taskToUpdate.isDone = true;
+
+          collectConfetti();
+          TelegramModule.useMediumHaptic();
+
+          appCache.UserData.balance += use.tickets;
+          toast.success(`Вы успешно заработали ${use.tickets} токенов`);
+
+          taskToUpdate.isLoading = false;
+        }
+      }
+    },
+
+    async clickTask(task: any, type?: any) {
+      let taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
+
+      if (type && type === 'Banner') {
+        taskToUpdate = this.BannersData.find((t: any) => String(t.id) === String(task.id));
+      }
+
       if (!taskToUpdate) { return; }
       if (task.isClaimed) { return; }
 
@@ -510,7 +638,7 @@ export default {
         if (check) { 
           task.isClaimed = true;
           taskToUpdate.isClaimed = true;
-          this.useTaskSubscribeChannel(task);
+          this.useTaskSubscribeChannel(task, type);
         }
 
         taskToUpdate.isLoading = false;
@@ -545,7 +673,7 @@ export default {
       }
     },
 
-    async claimTask(task: any) {
+    async claimTask(task: any, type?: any) {
       if (task.condition_type === 'SubscribeChannel') {
         if (task.isClaimed && task.isDone) {
           TelegramModule.useLink(task.condition_value.ChannelLink);
@@ -556,7 +684,7 @@ export default {
           task.isClaimed = true;
           task.isDone = true;
 
-          this.useTaskSubscribeChannel(task);
+          this.useTaskSubscribeChannel(task, type);
         }, 200);
       }
 
@@ -577,6 +705,39 @@ export default {
           this.useTaskJoinSite(task);
         }, 200);
       }
+    
+      if (task.condition_type === 'RefCount') {
+        setTimeout(() => {
+          task.isClaimed = true;
+          task.isDone = true;
+
+          this.useTaskRefCount(task);
+        }, 200);
+      }
+    },
+
+    openShareReferral() {
+      this.ShareReferralModal = true;
+      TelegramModule.useMediumHaptic();
+    },
+    
+    copyShareReferral(text: string) {
+      if (this.ShareReferralCopied) return;
+
+      copyToClipboard(text);
+      this.ShareReferralCopied = true;
+      TelegramModule.useMediumHaptic();
+
+      setTimeout(() => {
+        this.ShareReferralCopied = false;
+      }, 1500);
+    },
+
+    sendShareReferral() {
+      const link = this.ReferralLink;
+      const text = "123"
+      TelegramModule.useMediumHaptic();
+      TelegramModule.useSendMessage(link, text);
     },
   },
 };
@@ -584,4 +745,5 @@ export default {
 
 <style scoped lang="scss">
 @use './Tasks.scss' as *;
+@use '@/components/Modal/Modal.scss' as *;
 </style>
