@@ -1,57 +1,69 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+// Импорты компонентов
+import Home from '@/views/Home/Home.vue'
+import Place from '@/views/Place/Place.vue'
+import Tasks from '@/views/Tasks/Tasks.vue'
+import Friends from '@/views/Friends/Friends.vue'
+import FriendsUpgrade from '@/views/Friends/Upgrade/Upgrade.vue'
+import LevelUp from '@/views/LevelUp/LevelUp.vue'
+import Onborad from '@/views/Onborad/Onborad.vue'
+import Leaderboard from '@/views/Leaderboard/Leaderboard.vue'
+import Wallet from '@/views/Wallet/Wallet.vue'
+import ErrorPage from '@/views/Error/Error.vue'
+
 const router = createRouter({
-  history: createWebHistory('/'),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'home',
-      component: () => import('@/views/Home/Home.vue')
+      component: Home
     },
     {
       path: '/places',
       name: 'place',
-      component: () => import('@/views/Place/Place.vue')
+      component: Place
     },
     {
       path: '/tasks',
       name: 'tasks',
-      component: () => import('@/views/Tasks/Tasks.vue')
+      component: Tasks
     },
     {
       path: '/friends',
       name: 'friends',
-      component: () => import('@/views/Friends/Friends.vue')
+      component: Friends
     },
     {
       path: '/friends/upgrade/:user_id',
       name: 'friends-upgrade',
-      component: () => import('@/views/Friends/Upgrade/Upgrade.vue')
+      component: FriendsUpgrade
     },
     {
       path: '/level-up',
       name: 'level-up',
-      component: () => import('@/views/LevelUp/LevelUp.vue')
+      component: LevelUp
     },
     {
       path: '/onborad/:type?',
       name: 'onborad',
-      component: () => import('@/views/Onborad/Onborad.vue')
+      component: Onborad
     },
     {
       path: '/leaderboard',
       name: 'leaderboard',
-      component: () => import('@/views/Leaderboard/Leaderboard.vue')
+      component: Leaderboard
     },
     {
       path: '/wallet',
       name: 'wallet',
-      component: () => import('@/views/Wallet/Wallet.vue')
+      component: Wallet
     },
     {
       path: '/error',
       name: 'error',
-      component: () => import('@/views/Error/Error.vue')
+      component: ErrorPage
     }
   ]
 })

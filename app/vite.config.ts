@@ -9,12 +9,20 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 export default defineConfig({
-  base: '/',
-  plugins: [vue(), vueDevTools()],
+  esbuild: {
+    target: 'esnext',
+  },
+
+  plugins: [
+    vue(), 
+    vueDevTools()
+  ],
+  
   server: {
     port: 10,
     host: '0.0.0.0',
   },
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
