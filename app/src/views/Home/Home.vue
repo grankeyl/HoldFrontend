@@ -393,12 +393,6 @@ export default {
       return result;
     };
 
-    const showAd = useAdsgram({
-      blockId: import.meta.env.VITE_APP_ADSGRAM_HOME_PAGE_VIDEO_BLOCK_ID,
-      onReward,
-      onError
-    });
-
     const showAds = async () => {
       if (!ContextInfoVideo.value) return;
       ContextInfoVideo.value.classList.add('loading');
@@ -410,6 +404,12 @@ export default {
       localStorage.setItem('ads_last', adToken);
 
       // onReward();
+
+      const showAd = await useAdsgram({
+        blockId: import.meta.env.VITE_APP_ADSGRAM_HOME_PAGE_VIDEO_BLOCK_ID,
+        onReward,
+        onError
+      });
 
       await showAd();
     };

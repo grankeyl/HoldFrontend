@@ -318,12 +318,12 @@ export default {
       localStorage.setItem('ads_last_upgrade_friends', adToken);
 
       const onReward = () => upgradeAll();
-      const onError = () => toast.error("Ошибка показа рекламы");
+      const onError = () => toast.error("Ошибка показа рекламы, попробуйте позже");
 
-      const showAd = useAdsgram({
+      const showAd = await useAdsgram({
         blockId: import.meta.env.VITE_APP_ADSGRAM_UPGRADE_PAGE_VIDEO_BLOCK_ID,
-        onReward: onReward,
-        onError: onError
+        onReward,
+        onError
       });
 
       await showAd();

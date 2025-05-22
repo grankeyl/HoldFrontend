@@ -14,25 +14,24 @@ interface UseAdsgramOptions {
   onError?: (result: ShowPromiseResult) => void
 }
 
-export function useAdsgram({ blockId, onReward, onError }: UseAdsgramOptions) {
+export async function useAdsgram({ blockId, onReward, onError }: UseAdsgramOptions) {
   const AdController = ref<any>(null)
 
-  onMounted(() => {
-    AdController.value = (window as any).Adsgram?.init({ blockId })
-  })
+  while (!(window as any).Adsgram) {
+    await new Promise(resolve => setTimeout(resolve, 100))
+  }
 
-  watch(() => blockId, () => {
-    AdController.value = (window as any).Adsgram?.init({ blockId })
-  })
+  AdController.value = (window as any).Adsgram.init({ blockId })
 
   const showAd = async () => {
     if (AdController.value) {
       try {
         const showPromise: Promise<ShowPromiseResult> = AdController.value.show();
-        
+
         showPromise
           .then((result) => {
             if (result.error) {
+              console.log(result);
               onError?.(result)
               return false
             }
@@ -45,21 +44,18 @@ export function useAdsgram({ blockId, onReward, onError }: UseAdsgramOptions) {
             return false
           })
           .catch((result) => {
+            console.log(result);
             onError?.(result)
             return false
           })
 
       } catch (result) {
+        console.log(result);
         onError
         return false;
       }
     } else {
-      onError?.({
-        error: true,
-        done: false,
-        state: 'load',
-        description: 'Adsgram script not loaded',
-      })
+      onError
     }
   }
 
