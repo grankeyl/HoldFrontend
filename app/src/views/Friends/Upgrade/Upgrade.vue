@@ -227,6 +227,8 @@ import { AppCache } from '@/stores/pinia';
 import { toast } from 'vue3-toastify';
 import { collectConfetti } from '@/utils/useConfetti';
 import { toUniqNumber } from '@/utils/useGame';
+import { useAdsgram } from '@/utils/useAds';
+import { useRoute, useRouter } from 'vue-router';
 
 import * as friendsApi from '@/api/services/friends.service';
 import * as adsApi from '@/api/services/ads.service';
@@ -234,8 +236,7 @@ import * as adsApi from '@/api/services/ads.service';
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue';
-import { useAdsgram } from '@/utils/useAds';
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 const appCache = AppCache() as any;
 
@@ -288,14 +289,20 @@ export default {
   },
 
   setup() {
+    const route = useRoute();
     const router = useRouter();
 
-    const upgradeAll = async () => {
-      const result = await adsApi.complete({ 
-        reward_token: localStorage.getItem('ads_last_upgrade_friends') || ''
-      });
+    const params = route.params as any;
+    const PageType = ref('slave');
 
-      if (!result) { return; }
+    const userId = Number(params?.user_id ?? 0);
+    if (userId === 0) PageType.value = 'all';
+
+    const upgradeAll = async () => {
+      const actionUpgrade = PageType.value === 'all' ? "all" : userId;
+      const result = await friendsApi.upgrade({ action: actionUpgrade }) as any;
+
+      if (!result) return;
 
       if (result.status === "error" && result.type === 'no_cost') {
         toast.error(`Нехватает ${result.data.value} токена`);
@@ -303,16 +310,15 @@ export default {
 
       if (result.status === "success") {
         collectConfetti();
-
         appCache.UserData.balance = result.new_balance;
         appCache.tokens_per_hour = result.tokens_per_hour;
         router.push('/friends');
       }
-    }
+    };
 
     const upgradeAllAds = async () => {
-      const adUse = await adsApi.request({ task_type: 'upgrade_friends' })
-      if (!adUse) { return; }
+      const adUse = await adsApi.request({ task_type: 'upgrade_friends' });
+      if (!adUse) return;
 
       const adToken = adUse.reward_token;
       localStorage.setItem('ads_last_upgrade_friends', adToken);
@@ -331,7 +337,7 @@ export default {
 
     return {
       upgradeAllAds
-    }
+    };
   },
 
   mounted() {
