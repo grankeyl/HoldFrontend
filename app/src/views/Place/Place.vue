@@ -196,8 +196,6 @@ import { Icon } from '@/components/Icons';
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue';
 
-const appCache = AppCache() as any;
-
 export default {
   props: {
     success: {
@@ -211,6 +209,8 @@ export default {
   },
 
   data() {
+    const appCache = AppCache();
+
     return {
       PropsSuccess: this.success,
       IsPageLoading: false,
@@ -225,10 +225,9 @@ export default {
       },
 
       PlacesListData: getPlacesData() as any,
-      PlacesList: appCache.PlacesData,
-
-      UserData: appCache.UserData,
-      UserPlace: appCache.UserData.place,
+      PlacesList: appCache.PlacesData as any,
+      UserData: appCache.UserData as any,
+      UserPlace: appCache.UserData.place as any,
 
       Icon,
       toRoman,
@@ -344,6 +343,7 @@ export default {
     },
 
     userProgressInit() {
+      const appCache = AppCache();
       const userReferralsCountCurrent = appCache.UserData.referrals_count;
       const nextPlace = this.userProgressGetNext();
 

@@ -326,8 +326,6 @@ import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue';
 import Modal from '@/components/Modal/Modal.vue';
 
-const appCache = AppCache() as any;
-
 export default {
   props: {
     success: {
@@ -341,7 +339,16 @@ export default {
     Modal,
   },
 
+  created() {
+    const appCache = AppCache()
+    this.GameData = appCache.GameData
+    this.UserPlace = appCache.UserData.place
+    this.PlacesList = appCache.PlacesData
+    this.UserData = appCache.UserData
+  },
+
   setup() {
+    const appCache = AppCache();
     const UserData = ref(appCache.UserData);
     const GameInfo = ref({
       Balance: 0,
@@ -391,7 +398,7 @@ export default {
         ContextInfoVideo.value.classList.remove('loading');
       }
 
-      toast.warn("Ошибка показа рекламы, попробуйте позже");
+      toast.success("Ошибка показа рекламы, попробуйте позже");
 
       return result;
     };
@@ -424,6 +431,51 @@ export default {
       AddBalanceAnimation,
       showAds
     };
+  },
+
+
+  data() {
+    const appCache = AppCache();
+
+    return {
+      GameData: appCache.GameData as any,
+      UserPlace: appCache.UserData.place as any,
+      PlacesList: appCache.PlacesData as any,
+      UserData: appCache.UserData as any,
+
+      Icon,
+      toRoman,
+      toUniqNumber,
+      getReferralLink,
+
+      Slaved: true,
+      ShareReferralModal: false,
+      ShareReferralCopied: false,
+      PropsSuccess: this.success,
+      IsPageLoading: false,
+      IntervalId: null as ReturnType<typeof setInterval> | null,
+
+      ReferralsCount: 0,
+      ReferralsCountNeed: 29,
+
+      ReferralsInfo: {
+        ReferralsCountCurrent: 0,
+        ReferralsMoneyToHour: 0,
+        ReferralsMoneyTake: 0,
+        ReferralsMoneyTakeCurrent: 0
+      },
+
+      UserProgressTotalLines: 25,
+      UserProgressCurrentAnimatedReferrals: 0,
+      UserProgress: {
+        ReferralsCountCurrent: 0,
+        ReferralsCountNeed: 1,
+        NextPlaceId: 0,
+        NextPlaceType: 'village',
+      },
+
+      PlacesListData: getPlacesData() as any,
+    }
   },
 
   computed: {
@@ -463,50 +515,6 @@ export default {
         place => place.type && place.referrals_need !== undefined
       );
     }
-  },
-
-  data() {
-    return {
-      Slaved: true,
-
-      ShareReferralModal: false,
-      ShareReferralCopied: false,
-
-      PropsSuccess: this.success,
-      IsPageLoading: false,
-
-      IntervalId: null as ReturnType<typeof setInterval> | null,
-
-      ReferralsCount: 0,
-      ReferralsCountNeed: 29,
-
-      ReferralsInfo: {
-        ReferralsCountCurrent: 0,
-        ReferralsMoneyToHour: 0,
-        ReferralsMoneyTake: 0,
-        ReferralsMoneyTakeCurrent: 0
-      },
-
-      UserProgressTotalLines: 25,
-      UserProgressCurrentAnimatedReferrals: 0,
-      UserProgress: {
-        ReferralsCountCurrent: 0,
-        ReferralsCountNeed: 1,
-        NextPlaceId: 0,
-        NextPlaceType: 'village',
-      },
-
-      PlacesListData: getPlacesData() as any,
-
-      GameData: appCache.GameData,
-      UserPlace: appCache.UserData.place,
-      PlacesList: appCache.PlacesData,
-
-      Icon,
-      toRoman,
-      toUniqNumber,
-      getReferralLink
-    };
   },
 
   mounted() {
@@ -634,6 +642,7 @@ export default {
     },
 
     initGame() {
+      const appCache = AppCache();
       this.GameInfo.BalanceCurrent = appCache.UserData.balance;
       this.GameInfo.Level = appCache.UserData.level + 1;
       this.GameInfo.ReferralsTokenPerHour = appCache.UserData.tokens_per_hour;
@@ -641,6 +650,7 @@ export default {
     },
 
     async cycleInitUserData() {
+      const appCache = AppCache();
       this.IntervalId = setInterval(async () => {
         const userGet = await userApi.get();
 
@@ -651,6 +661,7 @@ export default {
     },
 
     userProgressInit() {
+      const appCache = AppCache();
       const userReferralsCountCurrent = appCache.UserData.referrals_count;
       const nextPlace = this.userProgressGetNext();
 

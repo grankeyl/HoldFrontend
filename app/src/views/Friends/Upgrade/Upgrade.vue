@@ -238,8 +238,6 @@ import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue';
 
-const appCache = AppCache() as any;
-
 export default {
   props: {
     success: {
@@ -254,6 +252,8 @@ export default {
   },
 
   data() {
+    const appCache = AppCache() as any;
+
     return {
       PropsSuccess: this.success,
       IsPageLoading: false,
@@ -299,6 +299,7 @@ export default {
     if (userId === 0) PageType.value = 'all';
 
     const upgradeAll = async () => {
+      const appCache = AppCache() as any;
       const actionUpgrade = PageType.value === 'all' ? "all" : userId;
       const result = await friendsApi.upgrade({ action: actionUpgrade }) as any;
 

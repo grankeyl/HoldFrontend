@@ -250,8 +250,6 @@ import IconComp from '@/components/IconComp.vue';
 import Loader from '@/components/Loader.vue';
 import Modal from '@/components/Modal/Modal.vue';
 
-const appCache = AppCache() as any;
-
 export default {
   props: {
     success: {
@@ -267,6 +265,8 @@ export default {
   },
 
   data() {
+    const appCache = AppCache();
+
     return {
       PropsSuccess: this.success,
       IsPageLoading: false,

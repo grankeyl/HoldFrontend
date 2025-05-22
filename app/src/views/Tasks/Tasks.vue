@@ -213,7 +213,6 @@ import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue'
 import Task from '@/components/Task/Task.vue';
 
-const appCache = AppCache() as any;
 
 export default {
   props: {
@@ -232,6 +231,8 @@ export default {
   },
 
   data() {
+    const appCache = AppCache();
+
     return {
       SwiperBannersOptions: {
         modules: [Autoplay],
@@ -357,6 +358,8 @@ export default {
     },
 
     async useTaskSubscribeChannel(task: any) {
+      const appCache = AppCache();
+
       const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
       if (!taskToUpdate) { return; }
       
@@ -397,6 +400,8 @@ export default {
     },
 
     async useTaskJoinMiniApp(task: any) {
+      const appCache = AppCache();
+
       const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
       if (!taskToUpdate) { return; }
       
@@ -442,6 +447,8 @@ export default {
     },
 
     async useTaskJoinSite(task: any) {
+      const appCache = AppCache();
+      
       const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
       if (!taskToUpdate) { return; }
       
