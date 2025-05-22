@@ -305,7 +305,7 @@ export default {
 
       if (!result) return;
 
-      if (result.status === "success" && result.data.type === 'no_cost') {
+      if (result.status === "error" && result.data.type === 'no_cost') {
         toast.error(`Нехватает ${result.data.value} токена`);
         return;
       }
@@ -424,7 +424,7 @@ export default {
 
       if (!result) { return; }
 
-      if (result.status === "success" && result.data.type === 'no_cost') {
+      if (result.status === "error" && result.data.type === 'no_cost') {
         toast.error(`Нехватает ${result.data.value} токена`);
         return;
       }

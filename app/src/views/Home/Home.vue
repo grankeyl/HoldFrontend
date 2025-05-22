@@ -398,7 +398,7 @@ export default {
         ContextInfoVideo.value.classList.remove('loading');
       }
 
-      toast.success("Ошибка показа рекламы, попробуйте позже");
+      toast.warn("Ошибка показа рекламы, попробуйте позже");
 
       return result;
     };

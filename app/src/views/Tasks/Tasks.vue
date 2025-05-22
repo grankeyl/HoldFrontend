@@ -133,7 +133,7 @@
             >
               <div class="contextTasksItemsItemDeep">
                 <img 
-                  :src="task.condition_value.ChannelPhoto"
+                  :src="task.condition_value.PhotoUrl"
                   alt="image"
                   class="fade-in"
                   @load="onImageLoad"
