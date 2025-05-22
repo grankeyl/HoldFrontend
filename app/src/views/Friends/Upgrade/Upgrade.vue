@@ -304,6 +304,8 @@ export default {
 
       if (!result) return;
 
+      console.log(result);
+
       if (result.status === "error" && result.type === 'no_cost') {
         toast.error(`Нехватает ${result.data.value} токена`);
       }
