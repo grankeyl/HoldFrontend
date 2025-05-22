@@ -153,7 +153,7 @@
         </button>
       </div>
       <div class="buttonsButton ads">
-        <button @click="upgradeAdsgram()">
+        <button @click="upgradeAllAds()">
           <div class="bg">
             <img 
               src="/friends/upgrade/ads.png"
@@ -235,6 +235,7 @@ import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue';
 import { useAdsgram } from '@/utils/useAds';
+import { useRouter } from 'vue-router';
 
 const appCache = AppCache() as any;
 
@@ -284,6 +285,53 @@ export default {
 
       toUniqNumber,
     };
+  },
+
+  setup() {
+    const router = useRouter();
+
+    const upgradeAll = async () => {
+      const result = await adsApi.complete({ 
+        reward_token: localStorage.getItem('ads_last_upgrade_friends') || ''
+      });
+
+      if (!result) { return; }
+
+      if (result.status === "error" && result.type === 'no_cost') {
+        toast.error(`Нехватает ${result.data.value} токена`);
+      }
+
+      if (result.status === "success") {
+        collectConfetti();
+
+        appCache.UserData.balance = result.new_balance;
+        appCache.tokens_per_hour = result.tokens_per_hour;
+        router.push('/friends');
+      }
+    }
+
+    const upgradeAllAds = async () => {
+      const adUse = await adsApi.request({ task_type: 'upgrade_friends' })
+      if (!adUse) { return; }
+
+      const adToken = adUse.reward_token;
+      localStorage.setItem('ads_last_upgrade_friends', adToken);
+
+      const onReward = () => upgradeAll();
+      const onError = () => toast.error("Ошибка показа рекламы");
+
+      const showAd = useAdsgram({
+        blockId: import.meta.env.VITE_APP_ADSGRAM_UPGRADE_PAGE_VIDEO_BLOCK_ID,
+        onReward: onReward,
+        onError: onError
+      });
+
+      await showAd();
+    };
+
+    return {
+      upgradeAllAds
+    }
   },
 
   mounted() {
@@ -375,45 +423,6 @@ export default {
 
         this.UserData.balance = result.data.new_balance;
         this.UserData.tokens_per_hour = result.data.tokens_per_hour;
-        this.$router.push('/friends');
-      }
-    },
-
-    async upgradeAdsgram() {
-      const adUse = await adsApi.request({ task_type: 'upgrade_friends' })
-      if (!adUse) { return; }
-
-      const adToken = adUse.reward_token;
-      localStorage.setItem('ads_last_upgrade_friends', adToken);
-
-      const onReward = () => this.upgradeAll();
-      const onError = () => toast.error("Вр");
-
-      const showAd = useAdsgram({
-        blockId: import.meta.env.VITE_APP_ADSGRAM_UPGRADE_PAGE_VIDEO_BLOCK_ID,
-        onReward: onReward,
-        onError: onError
-      });
-
-      await showAd();
-    },
-    
-    async upgradeAll() {
-      const result = await adsApi.complete({ 
-        reward_token: localStorage.getItem('ads_last_upgrade_friends') || ''
-      });
-
-      if (!result) { return; }
-
-      if (result.status === "error" && result.type === 'no_cost') {
-        toast.error(`Нехватает ${result.data.value} токена`);
-      }
-
-      if (result.status === "success") {
-        collectConfetti();
-
-        this.UserData.balance = result.new_balance;
-        this.UserData.tokens_per_hour = result.tokens_per_hour;
         this.$router.push('/friends');
       }
     }
