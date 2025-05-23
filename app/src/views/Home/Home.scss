@@ -97,7 +97,7 @@
   width: fit-content;
   height: 22px;
   position: absolute;
-  top: calc(env(safe-area-inset-top) + 10px);
+  top: calc(var(--safe-area-inset-top) + 10px);
   left: 50%;
   transform: translateX(-50%);
   display: flex;

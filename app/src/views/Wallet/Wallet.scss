@@ -80,7 +80,7 @@
     width: fit-content;
     height: 36px;
     position: absolute;
-    top: calc(env(safe-area-inset-top) + 20px);
+    top: calc(var(--safe-area-inset-top) + 20px);
     left: 50%;
     transform: translateX(-50%);
     background: $app-bg-secondary-h;
