@@ -174,5 +174,5 @@ button:disabled {
 }
 
 :root {
-    --safe-area-inset-top: calc(100vh - var(--tg-viewport-stable-height, 100vh));
+    --safe-area-inset-top: env(safe-area-inset-top, 0px);
 }
