@@ -252,7 +252,7 @@
             <Task 
               v-for="(task, i) in TasksAdsgram"
               :key="i"
-              :debug="false" 
+              :debug="true" 
               :blockId="task"
               :animationDelay="`${i * 0.27}s`"
               :rewardAmount="GameData.ads.task"
