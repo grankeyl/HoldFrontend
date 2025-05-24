@@ -73,10 +73,9 @@
   width: fit-content;
   height: 36px;
   position: absolute;
-  top: calc(
-    var(--tg-viewport-safe-area-inset-top, 0px) +
-    var(--tg-viewport-content-safe-area-inset-top) +
-    20px
+  margin-top: calc(
+    var(--tg-viewport-safe-area-inset-top, 10px) +
+    var(--tg-viewport-content-safe-area-inset-top, 10px)
   );
   left: 50%;
   transform: translateX(-50%);
