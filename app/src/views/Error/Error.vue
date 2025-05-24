@@ -5,7 +5,7 @@
   >
     <div class="_errorSymbols no-animation">
       <img 
-        src="/error/bg.png"
+        src="/error/bg.webp"
         alt="bg"
         class="fade-in"
         @load="onImageLoad"
@@ -17,7 +17,7 @@
 
         <div class="contextImage">
           <img 
-            src="/error/link.png"
+            src="/error/link.webp"
             alt="coin"
             class="fade-in"
             @load="onImageLoad"

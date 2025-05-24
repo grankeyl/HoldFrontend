@@ -57,7 +57,7 @@
   width: fit-content;
   height: 36px;
   position: absolute;
-  top: calc(var(--safe-area-inset-top) + 20px);
+  top: calc(1.3rem + var(--tg-safe-area-inset-top) + var(--tg-content-safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
   background: $app-bg-secondary-h;
@@ -524,8 +524,8 @@
               }
 
               &.done button {
-                background: $app-bg-secondary-h;
-                border: 1px solid rgba($app-bg-secondary-h, 0.1);
+                background: $app-bg-noise;
+                border: 1px solid rgba($app-bg-noise, 0.1);
 
                 span {
                   color: $app-color-primary;

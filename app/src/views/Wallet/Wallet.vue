@@ -62,7 +62,7 @@
 
         <div class="contextCoin">
           <img 
-            src="/wallet/coin.png"
+            src="/wallet/coin.webp"
             alt="coin"
             class="fade-in"
             @load="onImageLoad"

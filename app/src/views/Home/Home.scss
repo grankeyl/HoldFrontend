@@ -97,7 +97,7 @@
   width: fit-content;
   height: 22px;
   position: absolute;
-  top: calc(var(--safe-area-inset-top) + 10px);
+  margin-top: calc(1.1rem + var(--safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
   display: flex;
