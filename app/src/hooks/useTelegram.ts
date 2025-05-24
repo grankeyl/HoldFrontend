@@ -68,10 +68,9 @@ const TelegramModule = {
       WebApp.disableVerticalSwipes();
       WebApp.expand();
 
-      // if (!isDesktop()) {
-        WebApp.requestFullscreen();
-      // }
-
+      if (!isDesktop()) {
+      }
+      WebApp.requestFullscreen();
       WebApp.ready();
     },  
 
