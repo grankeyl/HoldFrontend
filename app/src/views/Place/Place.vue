@@ -15,7 +15,7 @@
 
     <div class="_placeSymbols no-animation">
       <img v-if="SlavedPage" 
-        src="/places/slaved.png"
+        src="/places/slaved.webp"
         alt="bg"
         class="fade-in"
         @load="onImageLoad"

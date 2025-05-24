@@ -73,7 +73,7 @@
   width: fit-content;
   height: 36px;
   position: absolute;
-  top: calc(1.3rem + var(--tg-safe-area-inset-top) + var(--tg-content-safe-area-inset-top));
+  top: calc(1.3rem + var(--tg-viewport-content-safe-area-inset-top) + var(--tg-viewport-safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
   background: $app-bg-secondary-h;
