@@ -351,7 +351,7 @@ import { Icon } from '@/components/Icons';
 import { toast } from 'vue3-toastify';
 import { toRoman, toUniqNumber } from '@/utils/useGame';
 import { getPlacesData } from '@/utils/usePlaces';
-import { copyToClipboard, getCurrentLanguage, getReferralLink, pluralize } from '@/utils/useApp';
+import { copyToClipboard, getReferralLink, pluralize } from '@/utils/useApp';
 import { collectConfetti } from '@/utils/useConfetti';
 import { getCurrentInstance } from 'vue';
 
