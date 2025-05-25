@@ -1,0 +1,134 @@
+{
+    "App": {
+        "PluralizeSlaves": "['slave', 'slaves', 'slaves']",
+
+        "Hour": "hour"
+    },
+
+    "Modal": {
+        "CatchSlave": {
+            "Title": "Catch a slave",
+            "Description": "Copy the link or share directly",
+            "Copy": "Copy",
+            "Copied": "Copied!",
+            "Button": "Share"
+        },
+
+        "DisconnectWallet": {
+            "Title": "Disconnect wallet",
+            "Description": "By disconnecting your wallet, you will lose the ability to receive rewards earned by your slaves and activities",
+            "Button": "Disconnect wallet"
+        }
+    },
+
+    "Toasts": {
+        "ErrorShowAds": "Error showing ads, try again later",
+        "NotEnoughTokens": "Not enough {tokens} tokens",
+        "SuccessEarnTokens": "You have successfully earned {tokens} tokens"
+    },
+
+    "Onborad": {
+        "Title_Step1": "It’s Time<br>to Build <span class='highlight'>Empire</span>!",
+        "Description_Step1": "Enslave your friends<span class='muted'>, collect rewards, expand your influence and earn</span> real money",
+        "Button_Step1": "OMG",
+
+        "Title_Step2": "Real Profits,<br><span class='highlight'>No Scams.</span>",
+        "Description_Step2": "We earn<span class='muted'> from ads and </span>share with you.<span class='muted'> The bigger you grow, the more you make. Save tokens for the </span>Airdrop<span class='muted'>!</span>",
+        "Button_Step2": "Wow!",
+
+        "Title_Step3": "Simple Rules,<br><span class='highlight'>Big Rewards</span>",
+        "Description_Step3": "<span class='muted'>Earn tokens by</span> watching ads<span class='muted'>, strengthen your empire with new recruits, and </span>boost <span class='muted'>your income by </span>upgrading<span class='muted'> them.</span>",
+        "Button_Step3": "Lets Go!",
+
+        "Title_Step4": "You’ve Been Enslaved by <span class='highlight'>{name}</span>!",
+        "Description_Step4": "Watch ads <span class='muted'>or buy your freedom by inviting new slaves to start earning</span> real money <span class='muted'>and building your</span> own empire<span class='muted'>!</span>",
+        "Button_Step4": "Go!"
+    },
+
+    "Home": {
+        "BeforePayoff": "Before the payoff:",
+        "YourTreasury": "Your Treasury",
+        "WatchAds": "Watch video",
+        
+        "ConditionsForFreedom": "To be released, invite <strong class='strong'>{referrals}</strong> friends",
+        "TurnFriends": "Turn your friends into slaves and make money!",
+        "FriendsTitle": "Friends",
+        "FriendsDescription": "Increase your income per hour by improving your slaves",
+        "Hoarded": "Hoarded",
+        "Collect": "Collect",
+
+        "CatchSlave": "Catch a slave"
+    },
+
+    "Place": {
+        "Slaved": "<span class='muted'>You are in bondage to the </span> <strong class='strong'>{name}</strong>",
+        "Tip": "To advance to a new level, gain a certain number of slaves. The higher your level, the more you get from each person you invite",
+        "ButtonBack": "Back"
+    },
+
+    "Friends": {
+        "Title": "Friends",
+        "IncomeHour": "Income per hour:",
+        "TotalCollected": "Total collected:",
+
+        "CatchSlave": "Catch a slave",
+        "UpgradeAll": "Upgrade all",
+
+        "Hoarded": "Hoarded",
+        "Collect": "Collect",
+        "BroughtYou": "Brought to you",
+        "Upgrade": "Upgrade",
+        "Tip": "Invite your friends over to turn them into your slaves and raise goldfish"
+    },
+
+    "FriendsUpgrade": {
+        "Title": "Upgrade",
+        "TitleAll": "Upgrade all slaves",
+        "IncomeNow": "Income now",
+        "IncomeAfter": "Income after",
+        "Level": "Level",
+        "Button": "Upgrade"
+    },
+
+    "Wallet": {
+        "Title": "Withdraw",
+        "Description": "Watch ads, invite friends, and collect tokens. Connect your wallet and join the Airdrop. The more you grow, the more you earn.",
+        "Title_Map1": "Build the hype",
+        "Description_Map1": "Invite friends & grow your kingdom",
+        "Title_Map2": "Earn from activity",
+        "Description_Map2": "Watch ads, complete tasks, earn tokens from your slaves",
+        "Title_Map3": "Withdraw real money",
+        "Description_Map3": "Convert tokens & cash out",
+        "ConnectWallet": "Connect wallet",
+        "Connected": "Connected: {address}"
+    },
+
+    "Leaderboard": {
+        "Title": "Leaders",
+        "Description": "Top 100 masters earn exclusive rewards. The more slaves you bring — the higher you rise."
+    },
+
+    "Tasks": {
+        "Title": "Earn",
+        "Subscribe": "Subscribe",
+        "Invite": "Invite",
+        "Start": "Start",
+        "Claim": "Claim",
+        "Ready": "Ready",
+        "SlaveFarm": "Slave Farm",
+        "Socials": "Socials",
+        "InviteFriends": "Invite {referrals} peoples"
+    },
+
+    "LevelUp": {
+        "Description": "You now earn <span class='descrPercents'>+{percents}%</span> more from your servants",
+        "Button": "Okay",
+        "ButtonStories": "Share to stories"
+    },
+
+    "Error": {
+        "Title": "There was an error",
+        "Description": "Try again later",
+        "Button": "Back to home"
+    }
+}

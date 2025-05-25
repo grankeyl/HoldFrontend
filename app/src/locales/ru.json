@@ -1,0 +1,134 @@
+{
+    "App": {
+        "PluralizeSlaves": "['раб', 'раба', 'рабов']",
+
+        "Hour": "час"
+    },
+
+    "Modal": {
+        "CatchSlave": {
+            "Title": "Поймать раба",
+            "Description": "Скопируйте ссылку или поделитесь напрямую",
+            "Copy": "Копировать",
+            "Copied": "Скопировано!",
+            "Button": "Поделиться"
+        },
+
+        "DisconnectWallet": {
+            "Title": "Отключить кошелек",
+            "Description": "Отключив свой кошелек, вы потеряете возможность к выводу реальных средств, также можете привязать кошелек в любой момент",
+            "Button": "Отключить кошелек"
+        }
+    },
+
+    "Toasts": {
+        "ErrorShowAds": "Ошибка показа рекламы, попробуйте позже",
+        "NotEnoughTokens": "Нехватает {tokens} токена",
+        "SuccessEarnTokens": "Вы успешно получили {tokens} токенов"
+    },
+
+    "Onborad": {
+        "Title_Step1": "Пришло время<br><span class='highlight'>строить империю!</span>",
+        "Description_Step1": "Порабощайте своих друзей,<span class='muted'> получайте награды, расширяйте свое влияние и зарабатывайте</span> реальные деньги",
+        "Button_Step1": "Супер!",
+
+        "Title_Step2": "Реальная прибыль,<br><span class='highlight'>Никакого мошенничества.</span>",
+        "Description_Step2": "Мы зарабатываем<span class='muted'> на рекламе и </span>делимся с вами.<span class='muted'> Чем больше вы растете, тем больше зарабатываете. Копите токены для </span>Airdrop<span class='muted'>!</span>",
+        "Button_Step2": "Вау!",
+
+        "Title_Step3": "Простые правила,<br><span class='highlight'>Большие награды</span>",
+        "Description_Step3": "<span class='muted'>Зарабатывайте токены за</span> просмотр рекламы<span class='muted'>, укрепите свою империю новыми рекрутами, и </span>увеличивайте <span class='muted'>свой доход </span><span class='muted'> с их помощью.</span>",
+        "Button_Step3": "Поехали!",
+
+        "Title_Step4": "Вы попали в рабство к <span class='highlight'>{name}</span>!",
+        "Description_Step4": "Смотрите рекламу <span class='muted'>или покупайте свободу, приглашая </span> новых рабов, <span class='muted'>чтобы начать зарабатывать</span> реальные деньги <span class='muted'>и строить свою</span> собственную империю!",
+        "Button_Step4": "Вперед!"
+    },
+
+    "Home": {
+        "BeforePayoff": "До откупа осталось:",
+        "YourTreasury": "Ваша Казна",
+        "WatchAds": "Смотреть видео",
+        
+        "ConditionsForFreedom": "Чтобы освободиться, пригласите <strong class='strong'>{referrals}</strong> друзей",
+        "TurnFriends": "Превращайте своих друзей в рабов и зарабатывайте деньги!",
+        "FriendsTitle": "Друзья",
+        "FriendsDescription": "Повышайте свой доход в час, улучшая своих рабов",
+        "Hoarded": "Скоплено",
+        "Collect": "Собрать",
+
+        "CatchSlave": "Поймать раба"
+    },
+
+    "Place": {
+        "Slaved": "<span class='muted'>Вы в рабстве у </span> <strong class='strong'>{name}</strong>",
+        "Tip": "Чтобы перейти на новый уровень наберите опредленное количество рабов. Больше ваш уровень, тем больше вы получаете с каждого приглашенного",
+        "ButtonBack": "Назад"
+    },
+
+    "Friends": {
+        "Title": "Друзья",
+        "IncomeHour": "Доход в час:",
+        "TotalCollected": "Всего собрано:",
+
+        "CatchSlave": "Поймать раба",
+        "UpgradeAll": "Улучшить всех",
+
+        "Hoarded": "Скоплено",
+        "Collect": "Собрать",
+        "BroughtYou": "Принес вам",
+        "Upgrade": "Улучшить",
+        "Tip": "Пригласи друзей, чтобы превратить их в своих рабов и поднять золотишка"
+    },
+
+    "FriendsUpgrade": {
+        "Title": "Улучшить",
+        "TitleAll": "Улучшить всех рабов",
+        "IncomeNow": "Доход сейчас",
+        "IncomeAfter": "Доход после",
+        "Level": "Уровень",
+        "Button": "Улучшить"
+    },
+
+    "Wallet": {
+        "Title": "Вывести",
+        "Description": "Смотрите рекламу, приглашайте друзей и собирайте токены. Подключите свой кошелек и присоединяйтесь к Airdrop. Чем больше вы развиваетесь, тем больше зарабатываете.",
+        "Title_Map1": "Создайте ажиотаж",
+        "Description_Map1": "Приглашайте друзей и развивайте свое королевство",
+        "Title_Map2": "Зарабатывайте на активности",
+        "Description_Map2": "Смотрите рекламу, выполняйте задания, получайте токены от своих рабов",
+        "Title_Map3": "Вывод реальных денег",
+        "Description_Map3": "Конвертируйте токены и обналичивайте деньги",
+        "ConnectWallet": "Подключить кошелек",
+        "Connected": "Подключено: {address}"
+    },
+
+    "Leaderboard": {
+        "Title": "Лидеры",
+        "Description": "100 лучших мастеров получают эксклюзивные награды. Чем больше рабов вы приведете, тем выше подниметесь."
+    },
+
+    "Tasks": {
+        "Title": "Заработать",
+        "Subscribe": "Подписаться",
+        "Invite": "Пригласить",
+        "Start": "Старт",
+        "Claim": "Забрать",
+        "Ready": "Готово",
+        "SlaveFarm": "Ферма Рабов",
+        "Socials": "Социальные сети",
+        "InviteFriends": "Пригласить {referrals} друзей"
+    },
+
+    "LevelUp": {
+        "Description": "Теперь вы зарабатываете на <span class='descrPercents'>+{percents}%</span> больше от своих слуг",
+        "Button": "Отлично!",
+        "ButtonStories": "Выложить историю"
+    },
+
+    "Error": {
+        "Title": "Произошла ошибка",
+        "Description": "Попробуйте еще раз",
+        "Button": "Вернуться домой"
+    }
+}

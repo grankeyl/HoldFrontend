@@ -29,7 +29,8 @@ const openRoute = (routePath: string) => {
         >
           <div @click="openRoute(item.Route)" class="menu__route">
             <div class="kit-icon" v-html="item.Icon"></div>
-            <p>{{ item.Text }}</p>
+            <p v-if="$i18n.locale === 'en'">{{ item.Text }}</p>
+            <p v-if="$i18n.locale === 'ru'">{{ item.TextRu }}</p>
           </div>
         </div>
       </div>

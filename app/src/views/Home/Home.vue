@@ -1,6 +1,41 @@
 <template>
   <div class="head">
     <img src="/logotype.svg" alt="logotype" />
+
+    <div @click="openLanguageModal()" class="language">
+      <IconComp
+        :icon="Icon.Network"
+        width="24px"
+        height="24px"
+      />
+    </div>
+
+    <div class="language-select" :class="{ active: IsActiveLanguageModal }">
+      <div @click="setLanguage('ru')" class="language-select-item">
+        <div class="language-select-item-text">
+          <p>🇷🇺 RU</p>
+          <div v-if="$i18n.locale === 'ru'" class="selected">
+            <IconComp
+              :icon="Icon.Selected"
+              width="17px"
+              height="17px"
+            />
+          </div>
+        </div>
+      </div>
+      <div @click="setLanguage('en')" class="language-select-item">
+        <div class="language-select-item-text">
+          <p>🇺🇸 EN</p>
+          <div v-if="$i18n.locale === 'en'" class="selected">
+            <IconComp
+              :icon="Icon.Selected"
+              width="17px"
+              height="17px"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <section 
@@ -18,11 +53,11 @@
           width="22px"
           height="22px"
         /> 
-        <h4>Catch a slave</h4>
+        <h4 v-html="$t('Modal.CatchSlave.Title')"></h4>
       </div>
       
       <div class="modalDescription">
-        <p>Copy the link or share directly</p>
+        <p v-html="$t('Modal.CatchSlave.Description')"></p>
       </div>
 
       <div class="modalReferral">
@@ -31,7 +66,7 @@
           @click="copyShareReferral(ReferralLink)"
           class="modalReferralCopy"
         >
-          <p>{{ ShareReferralCopied ? 'Copied!' : 'Copy' }}</p>
+          <p>{{ ShareReferralCopied ? $t('Modal.CatchSlave.Copied') : $t('Modal.CatchSlave.Copy') }}</p>
         </div>
       </div>
 
@@ -42,7 +77,7 @@
             width="24px"
             height="24px"
           />
-          <span>Share</span>
+          <span v-html="$t('Modal.CatchSlave.Button')"></span>
         </button>
       </div>
     </Modal>
@@ -80,10 +115,7 @@
             />
             <div class="kit-icon" v-html="Icon.InfoSmall"></div>
           </div>
-          <p>
-            <span>Вы в рабстве у </span>
-            <strong>{{ UserData.refer_name }}</strong>
-          </p>
+          <p v-html="$t('Place.Slaved', { name: UserData.refer_name })"></p>
         </div>
 
         <div 
@@ -101,7 +133,12 @@
             <div class="kit-icon" v-html="Icon.InfoSmall"></div>
           </div>
           <p>
-            <strong>
+            <strong v-if="$i18n.locale === 'en'">
+              {{ toRoman(UserPlace.place_id) }}
+              {{ PlacesListData[UserPlace.place_type].nameEn }}
+            </strong>
+            
+            <strong v-if="$i18n.locale === 'ru'">
               {{ toRoman(UserPlace.place_id) }}
               {{ PlacesListData[UserPlace.place_type].name }}
             </strong>
@@ -164,8 +201,8 @@
         <div class="contextInfo">
           <div class="contextInfoBalance">
             <div class="contextInfoBalanceLabel">
-              <p v-if="SlavedPage">До откупа осталось:</p>
-              <p v-if="!SlavedPage">Ваша Казна</p>
+              <p v-if="SlavedPage" v-html="$t('Home.BeforePayoff')"></p>
+              <p v-if="!SlavedPage" v-html="$t('Home.YourTreasury')"></p>
             </div>
             <div class="contextInfoBalanceTitle">
               <h1>{{ toUniqNumber(GameInfo.Balance) }}</h1>
@@ -184,7 +221,7 @@
             </div>
             <div class="contextInfoContent">
               <div class="contextInfoVideoTitle">
-                <h4>Смотреть видео</h4>
+                <h4 v-html="$t('Home.WatchAds')"></h4>
               </div>
               <div class="loader-button"></div>
               <div class="contextInfoVideoButton">
@@ -206,11 +243,7 @@
           class="fade-in"
           @load="onImageLoad"
         />
-          <p>
-            Чтобы освободиться, пригласите 
-            <strong>{{ UserData.slaved_need_referrals }}</strong>
-            друзей
-          </p>
+          <p v-html="$t('Home.ConditionsForFreedom', { referrals: UserData.slaved_need_referrals })"></p>
         </div>
 
         <div v-if="!SlavedPage && UserData.referrals_count === 0" class="contextRabs">
@@ -220,7 +253,7 @@
             class="fade-in"
             @load="onImageLoad"
           />
-          <p>Превращай друзей в рабов и зарабатывай!</p>
+          <p v-html="$t('Home.TurnFriends')"></p>
         </div>
 
         <div 
@@ -234,7 +267,7 @@
                 width="16px"
                 height="16px"
               />
-              <h4>Друзья</h4>
+              <h4 v-html="$t('Home.FriendsTitle')"></h4>
               <IconComp 
                 :icon="Icon.ChevroneRight"
                 width="16px"
@@ -242,7 +275,7 @@
               />
             </div>
             <div class="contextRabsReferralsLeftDescription">
-              <p>Повышайте доход в час, улучшая своих рабов</p>
+              <p v-html="$t('Home.FriendsDescription')"></p>
             </div>
             <div class="contextRabsReferralsLeftRabs">
               <div class="contextRabsReferralsLeftRabsImage">
@@ -255,7 +288,10 @@
               </div>
               <div class="contextRabsReferralsLeftRabsRight">
                 <div class="contextRabsReferralsLeftRabsRightTitle">
-                  <h4><span>{{ UserData.referrals_count }}</span> рабов</h4>
+                  <h4>
+                    <span>{{ UserData.referrals_count }}</span>
+                    {{ pluralize(UserData.referrals_count, $t('App.PluralizeSlaves')) }}
+                  </h4>
                 </div>
                 <div class="contextRabsReferralsLeftRabsRightInfo">
                   <p>{{ GameInfo.ReferralsTokenPerHour }}</p>
@@ -264,7 +300,7 @@
                     width="18px"
                     height="18px"
                   />
-                  <p>/час</p>
+                  <p>/{{ $t('App.Hour') }}</p>
                 </div>
               </div>
             </div>
@@ -272,7 +308,7 @@
           <div class="contextRabsReferralsBorder"></div>
           <div class="contextRabsReferralsRight">
             <div class="contextRabsReferralsRightLabel">
-              <p>Скоплено</p>
+              <p v-html="$t('Home.Hoarded')"></p>
             </div>
             <div class="contextRabsReferralsRightTitle">
               <h4>{{ toUniqNumber(ReferralsInfo.ReferralsMoneyTakeCurrent) }}</h4>
@@ -284,7 +320,7 @@
             </div>
             <div class="contextRabsReferralsRightButton">
               <button @click="collectReferral()" :disabled="ReferralsInfo.ReferralsMoneyTakeCurrent === 0">
-                <span>Собрать</span>
+                <span v-html="$t('Home.Collect')"></span>
               </button>
             </div>
           </div>
@@ -297,7 +333,7 @@
               width="24px"
               height="24px"
             />
-            <span>Поймать раба</span>
+            <span v-html="$t('Home.CatchSlave')"></span>
           </button>
         </div>
         
@@ -315,8 +351,9 @@ import { Icon } from '@/components/Icons';
 import { toast } from 'vue3-toastify';
 import { toRoman, toUniqNumber } from '@/utils/useGame';
 import { getPlacesData } from '@/utils/usePlaces';
-import { copyToClipboard, getReferralLink } from '@/utils/useApp';
+import { copyToClipboard, getCurrentLanguage, getReferralLink, pluralize } from '@/utils/useApp';
 import { collectConfetti } from '@/utils/useConfetti';
+import { getCurrentInstance } from 'vue';
 
 import * as adsApi from '@/api/services/ads.service';
 import * as userApi from '@/api/services/user.service';
@@ -348,6 +385,8 @@ export default {
   },
 
   setup() {
+    const { proxy } = getCurrentInstance()! as any;
+    
     const appCache = AppCache();
     const UserData = ref(appCache.UserData);
     const GameInfo = ref({
@@ -398,7 +437,7 @@ export default {
         ContextInfoVideo.value.classList.remove('loading');
       }
 
-      toast.warn("Ошибка показа рекламы, попробуйте позже");
+      toast.warn(proxy.$t('Toasts.ErrorShowAds'));
 
       return result;
     };
@@ -412,8 +451,6 @@ export default {
 
       const adToken = adUse.reward_token;
       localStorage.setItem('ads_last', adToken);
-
-      // onReward();
 
       const showAd = await useAdsgram({
         blockId: import.meta.env.VITE_APP_ADSGRAM_HOME_PAGE_VIDEO_BLOCK_ID,
@@ -438,6 +475,8 @@ export default {
     const appCache = AppCache();
 
     return {
+      IsActiveLanguageModal: false,
+
       GameData: appCache.GameData as any,
       UserPlace: appCache.UserData.place as any,
       PlacesList: appCache.PlacesData as any,
@@ -447,6 +486,7 @@ export default {
       toRoman,
       toUniqNumber,
       getReferralLink,
+      pluralize,
 
       Slaved: true,
       ShareReferralModal: false,
@@ -719,7 +759,10 @@ export default {
 
     sendShareReferral() {
       const link = this.ReferralLink;
-      const text = "123"
+      const text = this.$i18n.locale === 'ru' ? 
+      '🔗 Ты стал рабом. Проверьте, или вы пожалеете об этом.' : 
+      "🔗 You've become a slave. Check or you'll regret it.";
+
       TelegramModule.useMediumHaptic();
       TelegramModule.useSendMessage(link, text);
     },
@@ -744,6 +787,21 @@ export default {
       this.ReferralsInfo.ReferralsMoneyTakeCurrent = 0;
 
       collectConfetti();
+    },
+
+    openLanguageModal() {
+      !this.IsActiveLanguageModal ? 
+      this.IsActiveLanguageModal = true : 
+      this.IsActiveLanguageModal = false;
+      TelegramModule.useMediumHaptic();
+    },
+
+    setLanguage(lang: string) {
+      this.$i18n.locale = lang;
+      localStorage.setItem('language', lang);
+
+      this.IsActiveLanguageModal = false;
+      TelegramModule.useMediumHaptic();
     }
   },
 };

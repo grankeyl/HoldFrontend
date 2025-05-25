@@ -25,11 +25,11 @@
         </div>
 
         <div class="contextTitle">
-          <h4>Произошла ошибка</h4>
+          <h4 v-html="$t('Error.Title')"></h4>
         </div>
 
         <div class="contextDescrption">
-          <p>Попробуйте еще раз </p>
+          <p v-html="$t('Error.Description')"></p>
         </div>
 
       </div>
@@ -43,7 +43,7 @@
         width="22px"
         height="22px"
       />
-      <span>Вернуться домой</span>
+      <span v-html="$t('Error.Button')"></span>
     </button>
   </div>
 </template>

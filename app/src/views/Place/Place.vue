@@ -45,10 +45,7 @@
               @load="onImageLoad"
             />
           </div>
-          <p>
-            <span>Вы в рабстве у </span>
-            <strong>{{ UserData.refer_name }}</strong>
-          </p>
+          <p v-html="$t('Place.Slaved', { name: UserData.refer_name })"></p>
         </div>
 
         <div 
@@ -64,7 +61,12 @@
             />
           </div>
           <p>
-            <strong>
+            <strong v-if="$i18n.locale === 'en'">
+              {{ toRoman(UserPlace.place_id) }}
+              {{ PlacesListData[UserPlace.place_type].nameEn }}
+            </strong>
+
+            <strong v-if="$i18n.locale === 'ru'">
               {{ toRoman(UserPlace.place_id) }}
               {{ PlacesListData[UserPlace.place_type].name }}
             </strong>
@@ -147,7 +149,8 @@
                 />
               </div>
               <div class="contextPlaceContextTitle">
-                <h4>{{ toRoman(place.id) }} {{ PlacesListData[place.type].name }}</h4>
+                <h4 v-if="$i18n.locale === 'en'">{{ toRoman(place.id) }} {{ PlacesListData[place.type].nameEn }}</h4>
+                <h4 v-if="$i18n.locale === 'ru'">{{ toRoman(place.id) }} {{ PlacesListData[place.type].name }}</h4>
               </div>
               <div class="contextPlaceContextInfo">
                 <IconComp 
@@ -168,7 +171,7 @@
             width="18px"
             height="18px"
           />
-          <p>Чтобы перейти на новый уровень наберите опредленное количество рабов. Больше ваш уровень, тем больше вы получаете с каждого приглашенного</p>
+          <p v-html="$t('Place.Tip')"></p>
         </div>
 
       </div>
@@ -182,7 +185,7 @@
       width="24px"
       height="24px"
     />
-    <span>Назад</span>
+    <span v-html="$t('Place.ButtonBack')"></span>
   </button>
 </div>
 </template>

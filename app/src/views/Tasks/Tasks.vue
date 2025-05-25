@@ -23,11 +23,11 @@
           width="22px"
           height="22px"
         /> 
-        <h4>Catch a slave</h4>
+        <h4 v-html="$t('Modal.CatchSlave.Title')"></h4>
       </div>
       
       <div class="modalDescription">
-        <p>Copy the link or share directly</p>
+        <p v-html="$t('Modal.CatchSlave.Description')"></p>
       </div>
 
       <div class="modalReferral">
@@ -36,7 +36,7 @@
           @click="copyShareReferral(ReferralLink)"
           class="modalReferralCopy"
         >
-          <p>{{ ShareReferralCopied ? 'Copied!' : 'Copy' }}</p>
+          <p>{{ ShareReferralCopied ? $t('Modal.CatchSlave.Copied') : $t('Modal.CatchSlave.Copy') }}</p>
         </div>
       </div>
 
@@ -47,7 +47,7 @@
             width="24px"
             height="24px"
           />
-          <span>Share</span>
+          <span v-html="$t('Modal.CatchSlave.Button')"></span>
         </button>
       </div>
     </Modal>
@@ -62,7 +62,7 @@
             height="27px"
             pathColor="#fff"
           />
-          <h4>Заработать</h4>
+          <h4 v-html="$t('Tasks.Title')"></h4>
         </div>
 
         <div class="contextBanners">
@@ -101,7 +101,8 @@
                     />
                   </div>
                   <div class="contextBannersBannerContentTitle">
-                    <h1>{{ task.condition_value.BannerTitle }}</h1>
+                    <h1 v-if="$i18n.locale === 'en'">{{ task.condition_value.BannerTitle }}</h1>
+                    <h1 v-if="$i18n.locale === 'ru'">{{ task.condition_value.BannerTitleRu }}</h1>
                   </div>
                   <div v-if="task.isLoading" slot="button" class="contextBannersBannerContentButton loading">
                     <button>
@@ -110,17 +111,17 @@
                   </div>
                   <div v-if="!task.isLoading && !task.isClaimed && !task.isDone" slot="button" class="contextBannersBannerContentButton">
                     <button @click="clickTask(task, 'Banner')">
-                      <span>Подписаться</span>
+                      <span v-html="$t('Tasks.Subscribe')"></span>
                     </button>
                   </div>
                   <div v-if="!task.isLoading && task.isClaimed && !task.isDone" slot="button" class="contextBannersBannerContentButton claim">
                     <button @click="claimTask(task, 'Banner')">
-                      <span>Забрать</span>
+                      <span v-html="$t('Tasks.Claim')"></span>
                     </button>
                   </div>
                   <div v-if="!task.isLoading && task.isClaimed && task.isDone" slot="button" class="contextBannersBannerContentButton done">
                     <button>
-                      <span>Готово</span>
+                      <span v-html="$t('Tasks.Ready')"></span>
                     </button>
                   </div>
                 </div>
@@ -131,7 +132,7 @@
 
         <div class="contextFerm">
           <div class="contextFermTitle">
-            <h4>Ферма Рабов</h4>
+            <h4 v-html="$t('Tasks.SlaveFarm')"></h4>
           </div>
 
           <swiper v-bind="SwiperRabsOptions">
@@ -161,7 +162,7 @@
                       class="fade-in"
                       @load="onImageLoad"
                     />
-                    <h1>Пригласите {{ task.condition_value.ReferralsCount }} человек</h1>
+                    <h1 v-html="$t('Tasks.InviteFriends', { referrals: task.condition_value.ReferralsCount })"></h1>
                     <span>
                       {{ Math.min(task.condition_value.ReferralsCount, UserData.referrals_count) }}/{{ task.condition_value.ReferralsCount }}
                     </span>
@@ -174,17 +175,17 @@
                   </div>
                   <div v-if="!task.isLoading && !task.isClaimed && !task.isDone" slot="button" class="contextBannersBannerContentButton">
                     <button @click="openShareReferral()">
-                      <span>Пригласить</span>
+                      <span v-html="$t('Tasks.Invite')"></span>
                     </button>
                   </div>
                   <div v-if="!task.isLoading && task.isClaimed && !task.isDone" slot="button" class="contextBannersBannerContentButton claim">
                     <button @click="claimTask(task)">
-                      <span>Забрать</span>
+                      <span v-html="$t('Tasks.Claim')"></span>
                     </button>
                   </div>
                   <div v-if="!task.isLoading && task.isClaimed && task.isDone" slot="button" class="contextBannersBannerContentButton done">
                     <button>
-                      <span>Готово</span>
+                      <span v-html="$t('Tasks.Ready')"></span>
                     </button>
                   </div>
                 </div>
@@ -195,7 +196,7 @@
         
         <div class="contextTasks">
           <div class="contextTasksTitle">
-            <h4>Socials</h4>
+            <h4 v-html="$t('Tasks.Socials')"></h4>
           </div>
 
           <div class="contextTasksItems">
@@ -234,17 +235,17 @@
               </div>
               <div v-if="!task.isLoading && !task.isClaimed && !task.isDone" slot="button" class="contextTasksItemsItemButton">
                 <button @click="clickTask(task)">
-                  <span>Старт</span>
+                  <span v-html="$t('Tasks.Start')"></span>
                 </button>
               </div>
               <div v-if="!task.isLoading && task.isClaimed && !task.isDone" slot="button" class="contextTasksItemsItemButton claim">
                 <button @click="claimTask(task)">
-                  <span>Забрать</span>
+                  <span v-html="$t('Tasks.Claim')"></span>
                 </button>
               </div>
               <div v-if="!task.isLoading && task.isClaimed && task.isDone" slot="button" class="contextTasksItemsItemButton done">
                 <button>
-                  <span>Готово</span>
+                  <span v-html="$t('Tasks.Ready')"></span>
                 </button>
               </div>
             </div>
@@ -275,6 +276,7 @@ import { AppCache } from '@/stores/pinia';
 import { toast } from 'vue3-toastify';
 import { collectConfetti } from '@/utils/useConfetti';
 import { copyToClipboard, getReferralLink } from '@/utils/useApp';
+import { getCurrentInstance } from 'vue';
 
 // @ts-ignore
 import 'swiper/css';
@@ -304,6 +306,14 @@ export default {
     SwiperSlide,
     Task,
     Modal,
+  },
+
+  setup() {
+    const { proxy } = getCurrentInstance()! as any;
+
+    return {
+      proxy,
+    };
   },
 
   data() {
@@ -487,7 +497,7 @@ export default {
           TelegramModule.useMediumHaptic();
 
           appCache.UserData.balance += use.tickets;
-          toast.success(`Вы успешно заработали ${use.tickets} токенов`);
+          toast.success(this.proxy.$t('Toasts.SuccessEarnTokens', { tokens: use.tickets }));
         }
       }
     },
@@ -532,7 +542,7 @@ export default {
           TelegramModule.useMediumHaptic();
 
           appCache.UserData.balance += use.tickets;
-          toast.success(`Вы успешно заработали ${use.tickets} токенов`);
+          toast.success(this.proxy.$t('Toasts.SuccessEarnTokens', { tokens: use.tickets }));
 
           taskToUpdate.isLoading = false;
         }
@@ -579,7 +589,7 @@ export default {
           TelegramModule.useMediumHaptic();
 
           appCache.UserData.balance += use.tickets;
-          toast.success(`Вы успешно заработали ${use.tickets} токенов`);
+          toast.success(this.proxy.$t('Toasts.SuccessEarnTokens', { tokens: use.tickets }));
 
           taskToUpdate.isLoading = false;
         }
@@ -603,6 +613,7 @@ export default {
 
           task.isClaimed = true;
           task.isDone = true;
+          
           taskToUpdate.isClaimed = true;
           taskToUpdate.isDone = true;
 
@@ -610,7 +621,7 @@ export default {
           TelegramModule.useMediumHaptic();
 
           appCache.UserData.balance += use.tickets;
-          toast.success(`Вы успешно заработали ${use.tickets} токенов`);
+          toast.success(this.proxy.$t('Toasts.SuccessEarnTokens', { tokens: use.tickets }));
 
           taskToUpdate.isLoading = false;
         }
@@ -735,7 +746,10 @@ export default {
 
     sendShareReferral() {
       const link = this.ReferralLink;
-      const text = "123"
+      const text = this.$i18n.locale === 'ru' ? 
+      '🔗 Ты стал рабом. Проверьте, или вы пожалеете об этом.' : 
+      "🔗 You've become a slave. Check or you'll regret it.";
+
       TelegramModule.useMediumHaptic();
       TelegramModule.useSendMessage(link, text);
     },

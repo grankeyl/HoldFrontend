@@ -29,22 +29,16 @@
             />
           </div>
           <div class="contextTitle">
-            <h4>You’ve Been Enslaved by <span>{{ UserData.refer_name }}</span>!</h4>
+            <h4 v-html="$t('Onborad.Title_Step4', { name: UserData.refer_name })"></h4>
           </div>
           <div class="contextDescription">
-            <p>
-              Watch ads 
-              <span>or buy your freedom by inviting new slaves to start earning</span>
-              real money 
-              <span>and building your</span>
-              own empire<span>!</span>
-            </p>
+            <p v-html="$t('Onborad.Description_Step4')"></p>
           </div>
         </div>
 
         <div class="button">
           <button @click="setPageToHome()">
-            <span>Lets Go!</span>
+            <span v-html="$t('Onborad.Button_Step4')"></span>
           </button>
         </div>
       </div>
@@ -78,16 +72,16 @@
             />
           </div>
           <div class="contextTitle">
-            <h4>It’s Time<br>to Build <span>Empire</span>!</h4>
+            <h4 v-html="$t('Onborad.Title_Step1')"></h4>
           </div>
           <div class="contextDescription">
-            <p>Enslave your friends<span>, collect rewards, expand your influence and earn</span> real money</p>
+            <p v-html="$t('Onborad.Description_Step1')"></p>
           </div>
         </div>
 
         <div class="button">
           <button @click="setOnboradStep(1)">
-            <span>OMG</span>
+            <span v-html="$t('Onborad.Button_Step1')"></span>
           </button>
         </div>
       </div>
@@ -103,16 +97,16 @@
             />
           </div>
           <div class="contextTitle">
-            <h4>Real Profits,<br><span>No Scams.</span></h4>
+            <h4 v-html="$t('Onborad.Title_Step2')"></h4>
           </div>
           <div class="contextDescription">
-            <p>We earn<span> from ads and </span>share with you.<span> The bigger you grow, the more you make. Save tokens for the </span>Airdrop<span>!</span></p>
+            <p v-html="$t('Onborad.Description_Step2')"></p>
           </div>
         </div>
 
         <div class="button">
           <button @click="setOnboradStep(2)">
-            <span>Wow!</span>
+            <span v-html="$t('Onborad.Button_Step2')"></span>
           </button>
         </div>
       </div>
@@ -128,16 +122,16 @@
             />
           </div>
           <div class="contextTitle">
-            <h4>Simple Rules,<br><span>Big Rewards</span></h4>
+            <h4 v-html="$t('Onborad.Title_Step3')"></h4>
           </div>
           <div class="contextDescription">
-            <p><span>Earn tokens by</span> watching ads<span>, strengthen your empire with new recruits, and </span>boost <span>your income by </span>upgrading<span> them.</span></p>
+            <p v-html="$t('Onborad.Description_Step3')"></p>
           </div>
         </div>
 
         <div class="button">
           <button @click="setPageToHome()">
-            <span>Lets Go!</span>
+            <span v-html="$t('Onborad.Button_Step3')"></span>
           </button>
         </div>
       </div>

@@ -18,6 +18,8 @@ import { useRouter } from 'vue-router';
 import { AppCache } from './stores/pinia';
 import { miniApp } from '@telegram-apps/sdk';
 import { usePlaceStore } from './stores/place.storage';
+import { getCurrentLanguage } from './utils/useApp';
+
 import type { GameDataType } from './types/types';
 
 import * as authApi from '@/api/services/auth.service'
@@ -140,6 +142,7 @@ export default {
       loadingPage,
       pageSuccess,
       miniAppLoading,
+      initDataRaw,
     };
   },
 
@@ -150,6 +153,7 @@ export default {
   },
 
   mounted() {
+    this.$i18n.locale = getCurrentLanguage(this.initDataRaw.language);
   },
 
   methods: {

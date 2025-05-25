@@ -33,8 +33,8 @@
 
         <div class="contextInfo">
           <div class="contextInfoTitle">
-            <h4 v-if="PageType === 'all'">Улучшить всех рабов</h4>
-            <h4 v-if="PageType === 'slave'">Улучшить</h4>
+            <h4 v-if="PageType === 'all'" v-html="$t('FriendsUpgrade.TitleAll')"></h4>
+            <h4 v-if="PageType === 'slave'" v-html="$t('FriendsUpgrade.Title')"></h4>
           </div>
           <div class="contextInfoImage">
             <img 
@@ -49,7 +49,7 @@
 
             <div v-if="PageType === 'all'" class="contextInfoLevelOld">
               <div class="contextInfoLevelOldTitle">
-                <h4>Доход сейчас</h4>
+                <h4 v-html="$t('FriendsUpgrade.IncomeNow')"></h4>
               </div>
               <div class="contextInfoLevelOldDescription">
                 <h4>{{ toUniqNumber(AllFriendsData.old_tokens_per_hour) }}</h4>
@@ -59,14 +59,14 @@
                   height="20px"
                   pathColor="#AAAAAA"
                 />
-                <p>/час</p>
+                <p>/{{ $t('App.Hour') }}</p>
               </div>
             </div>
 
             <div v-if="PageType === 'slave'" class="contextInfoLevelOld">
               <div class="contextInfoLevelOldTitle">
                 <span>{{ FriendData.old_level }}</span>
-                <h4>Уровень</h4>
+                <h4 v-html="$t('FriendsUpgrade.Level')"></h4>
               </div>
               <div class="contextInfoLevelOldDescription">
                 <h4>{{ toUniqNumber(FriendData.old_tokens_per_hour) }}</h4>
@@ -76,7 +76,7 @@
                   height="20px"
                   pathColor="#AAAAAA"
                 />
-                <p>/час</p>
+                <p>/{{ $t('App.Hour') }}</p>
               </div>
             </div>
 
@@ -90,7 +90,7 @@
 
             <div v-if="PageType === 'all'" class="contextInfoLevelNew">
               <div class="contextInfoLevelNewTitle">
-                <h4>Доход после</h4>
+                <h4 v-html="$t('FriendsUpgrade.IncomeAfter')"></h4>
               </div>
               <div class="contextInfoLevelNewDescription">
                 <h4>{{ toUniqNumber(AllFriendsData.new_tokens_per_hour) }}</h4>
@@ -100,14 +100,14 @@
                   height="20px"
                   pathColor="#AAAAAA"
                 />
-                <p>/час</p>
+                <p>/{{ $t('App.Hour') }}</p>
               </div>
             </div>
 
             <div v-if="PageType === 'slave'" class="contextInfoLevelNew">
               <div class="contextInfoLevelNewTitle">
                 <span>{{ FriendData.new_level }}</span>
-                <h4>Уровень</h4>
+                <h4 v-html="$t('FriendsUpgrade.Level')"></h4>
               </div>
               <div class="contextInfoLevelNewDescription">
                 <h4>{{ toUniqNumber(FriendData.new_tokens_per_hour) }}</h4>
@@ -117,7 +117,7 @@
                   height="20px"
                   pathColor="#AAAAAA"
                 />
-                <p>/час</p>
+                <p>/{{ $t('App.Hour') }}</p>
               </div>
             </div>
 
@@ -137,7 +137,7 @@
             width="24px"
             height="24px"
           />
-          <span>Улучшить</span>
+          <span v-html="$t('FriendsUpgrade.Button')"></span>
           <strong v-if="!PageLoading">
             <p v-if="PageType === 'all'">{{ toUniqNumber(AllFriendsData.tokens_to_upgrade) }}</p>
             <p v-if="PageType === 'slave'">{{ toUniqNumber(FriendData.tokens_to_upgrade) }}</p>
@@ -162,7 +162,7 @@
               @load="onImageLoad"
             />
           </div>
-          <span>Улучшить</span>
+          <span v-html="$t('FriendsUpgrade.Button')"></span>
           <strong v-if="!PageLoading">
             <p v-if="PageType === 'all'">{{ toUniqNumber(AllFriendsData.tokens_to_upgrade_discount) }}</p>
             <p v-if="PageType === 'slave'">{{ toUniqNumber(FriendData.tokens_to_upgrade_discount) }}</p>
@@ -230,6 +230,7 @@ import { collectConfetti } from '@/utils/useConfetti';
 import { toUniqNumber } from '@/utils/useGame';
 import { useAdsgram } from '@/utils/useAds';
 import { useRoute, useRouter } from 'vue-router';
+import { getCurrentInstance } from 'vue';
 
 import * as friendsApi from '@/api/services/friends.service';
 import * as adsApi from '@/api/services/ads.service';
@@ -289,6 +290,8 @@ export default {
   },
 
   setup() {
+    const { proxy } = getCurrentInstance()! as any;
+
     const route = useRoute();
     const router = useRouter();
 
@@ -300,13 +303,12 @@ export default {
 
     const upgradeAll = async () => {
       const appCache = AppCache() as any;
-      const actionUpgrade = PageType.value === 'all' ? "all" : userId;
-      const result = await friendsApi.upgrade({ action: actionUpgrade }) as any;
+      const result = await adsApi.complete({ reward_token: localStorage.getItem('ads_last_upgrade_friends') || '' });
 
       if (!result) return;
 
       if (result.status === "error" && result.data.type === 'no_cost') {
-        toast.error(`Нехватает ${result.data.value} токена`);
+        toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.data.value }));
         return;
       }
 
@@ -328,7 +330,7 @@ export default {
       localStorage.setItem('ads_last_upgrade_friends', adToken);
 
       const onReward = () => upgradeAll();
-      const onError = () => toast.warn("Ошибка показа рекламы, попробуйте позже");
+      const onError = () => toast.warn(proxy.$t('Toasts.ErrorShowAds'));
 
       const showAd = await useAdsgram({
         blockId: import.meta.env.VITE_APP_ADSGRAM_UPGRADE_PAGE_VIDEO_BLOCK_ID,
@@ -340,6 +342,8 @@ export default {
     };
 
     return {
+      proxy,
+
       upgradeAllAds
     };
   },
@@ -425,7 +429,7 @@ export default {
       if (!result) { return; }
 
       if (result.status === "error" && result.data.type === 'no_cost') {
-        toast.error(`Нехватает ${result.data.value} токена`);
+        toast.error(this.proxy.$t('Toasts.NotEnoughTokens', { tokens: result.data.value }));
         return;
       }
 

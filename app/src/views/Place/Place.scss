@@ -621,3 +621,11 @@
         }
     }
 }
+
+:deep(.muted) {
+  color: $app-color-tint;
+}
+
+:deep(.strong) {
+  color: $app-h;
+}

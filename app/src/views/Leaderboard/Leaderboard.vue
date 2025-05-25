@@ -22,11 +22,11 @@
             height="27px"
             pathColor="#fff"
           />
-          <h4>Leaders</h4>
+          <h4 v-html="$t('Leaderboard.Title')"></h4>
         </div>
 
         <div class="contextDescrption">
-          <p>Top 100 masters earn exclusive rewards. The more slaves you bring — the higher you rise.</p>
+          <p v-html="$t('Leaderboard.Description')"></p>
         </div>
 
         <div v-if="LeadersData && LeadersData.length > 0" class="contextLeaders">

@@ -23,11 +23,11 @@
           width="22px"
           height="22px"
         /> 
-        <h4>Catch a slave</h4>
+        <h4 v-html="$t('Modal.CatchSlave.Title')"></h4>
       </div>
       
       <div class="modalDescription">
-        <p>Copy the link or share directly</p>
+        <p v-html="$t('Modal.CatchSlave.Description')"></p>
       </div>
 
       <div class="modalReferral">
@@ -36,7 +36,7 @@
           @click="copyShareReferral(ReferralLink)"
           class="modalReferralCopy"
         >
-          <p>{{ ShareReferralCopied ? 'Copied!' : 'Copy' }}</p>
+          <p>{{ ShareReferralCopied ? $t('Modal.CatchSlave.Copied') : $t('Modal.CatchSlave.Copy') }}</p>
         </div>
       </div>
 
@@ -47,7 +47,7 @@
             width="24px"
             height="24px"
           />
-          <span>Share</span>
+          <span v-html="$t('Modal.CatchSlave.Button')"></span>
         </button>
       </div>
     </Modal>
@@ -72,13 +72,13 @@
             height="27px"
             pathColor="#fff"
           />
-          <h4>Друзья</h4>
+          <h4 v-html="$t('Friends.Title')"></h4>
         </div>
         
         <div class="contextInfo">
           <div class="contextInfoLeft">
             <div class="contextInfoLeftLabel">
-              <h4>Доход в час:</h4>
+              <h4 v-html="$t('Friends.IncomeHour')"></h4>
             </div>
             <div class="contextInfoLeftTitle">
               <span>{{ toUniqNumber(ReferralsInfo.ReferralsMoneyToHour) }}</span>
@@ -99,12 +99,12 @@
               />
             </div>
             <div class="contextInfoCenterTitle">
-              <h1><strong>{{ UserData.referrals_count }}</strong> Рабов</h1>
+              <h1><strong>{{ UserData.referrals_count }}</strong> {{ pluralize(UserData.referrals_count, $t('App.PluralizeSlaves')) }}</h1>
             </div>
           </div>
           <div class="contextInfoRight">
             <div class="contextInfoLeftLabel">
-              <h4>Всего собрано:</h4>
+              <h4 v-html="$t('Friends.TotalCollected')"></h4>
             </div>
             <div class="contextInfoLeftTitle">
               <span>{{ toUniqNumber(ReferralsInfo.ReferralsMoneyAll) }}</span>
@@ -125,7 +125,7 @@
                 width="24px"
                 height="24px"
               />
-              <span>Поймать раба</span>
+              <span v-html="$t('Friends.CatchSlave')"></span>
             </button>
           </div>
           <div v-if="FriendsData && UserData.referrals_count > 0" class="contextButtonsButton primary">
@@ -135,7 +135,7 @@
                 width="24px"
                 height="24px"
               />
-              <span>Улучшить всех</span>
+              <span v-html="$t('Friends.UpgradeAll')"></span>
               <div class="loader-button"></div>
             </button>
           </div>
@@ -153,7 +153,7 @@
             </div>
             <div class="contextRewardLeftContext">
               <div class="contextRewardLeftContextLabel">
-                <h4>Скоплено</h4>
+                <h4 v-html="$t('Friends.Hoarded')"></h4>
               </div>
               <div class="contextRewardLeftContextTitle">
                 <span>{{ toUniqNumber(ReferralsInfo.ReferralsMoneyTake) }}</span>
@@ -169,7 +169,7 @@
           <div class="contextRewardRight">
             <div class="contextRewardRightButton">
               <button @click="collectReferral()" :disabled="ReferralsInfo.ReferralsMoneyTake === 0">
-                <span>Собрать</span>
+                <span v-html="$t('Friends.Collect')"></span>
               </button>
             </div>
           </div>
@@ -202,12 +202,12 @@
                   width="16px"
                   height="16px"
                 />
-                <span>/час</span>
+                <span>/{{ $t('App.Hour') }}</span>
               </div>
             </div>
             <div class="contextFriendsItemsItemRewarding">
               <div class="contextFriendsItemsItemRewardingLabel">
-                <h4>Принес вам</h4>
+                <h4 v-html="$t('Friends.BroughtYou')"></h4>
               </div>
               <div class="contextFriendsItemsItemRewardingTitle">
                 <span>{{ toUniqNumber(referral.tokens_to_get) }}</span>
@@ -220,14 +220,14 @@
             </div>
             <div class="contextFriendsItemsItemButton claim">
               <button @click="openUpgrade('user', referral.user_id)">
-                <span>Улучшить</span>
+                <span v-html="$t('Friends.Upgrade')"></span>
               </button>
             </div>
           </div>
         </div>
 
         <div v-if="FriendsData && FriendsData.length === 0" class="contextFriendsNull">
-          <strong>Пригласи друзей, чтобы превратить их в своих рабов и поднять золотишка</strong>
+          <strong v-html="$t('Friends.Tip')"></strong>
         </div>
 
       </div>
@@ -239,7 +239,7 @@
 <script lang="ts">
 import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
-import { copyToClipboard, getReferralLink } from '@/utils/useApp';
+import { copyToClipboard, getReferralLink, pluralize } from '@/utils/useApp';
 import { collectConfetti } from '@/utils/useConfetti';
 import { toUniqNumber } from '@/utils/useGame';
 
@@ -298,6 +298,7 @@ export default {
 
       Icon,
       toUniqNumber,
+      pluralize,
     };
   },
 
@@ -503,7 +504,10 @@ export default {
 
     sendShareReferral() {
       const link = this.ReferralLink;
-      const text = "123"
+      const text = this.$i18n.locale === 'ru' ? 
+      '🔗 Ты стал рабом. Проверьте, или вы пожалеете об этом.' : 
+      "🔗 You've become a slave. Check or you'll regret it.";
+      
       TelegramModule.useMediumHaptic();
       TelegramModule.useSendMessage(link, text);
     },

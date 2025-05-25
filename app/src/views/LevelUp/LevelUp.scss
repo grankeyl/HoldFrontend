@@ -293,7 +293,7 @@
 
         &Description {
           width: 100%;
-          max-width: 250px;
+          max-width: 300px;
           text-align: center;
           margin: auto;
           margin-bottom: 10%;
@@ -463,4 +463,18 @@
       }
     }
   }
+}
+
+:deep(.descrPercents) {
+  display: inline-block;
+  height: 28px;
+  line-height: 28px;
+  font-size: 20px;
+  font-weight: 700;
+  color: $app-b;
+  background: $app-color-primary;
+  border-radius: 12px;
+  white-space: nowrap;
+  text-align: center;
+  padding: 0 6px;
 }

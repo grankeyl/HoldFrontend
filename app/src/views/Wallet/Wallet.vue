@@ -15,11 +15,11 @@
           height="22px"
           pathColor="#fff"
         />
-        <h4>Disconnect wallet</h4>
+        <h4 v-html="$t('Modal.DisconnectWallet.Title')"></h4>
       </div>
       
       <div class="modalDescription">
-        <p>By disconnecting your wallet, you will lose the ability to receive rewards earned by your slaves and activities</p>
+        <p v-html="$t('Modal.DisconnectWallet.Description')"></p>
       </div>
 
       <div class="modalButton">
@@ -29,7 +29,7 @@
             width="24px"
             height="24px"
           />
-          <span>Отключить кошелек</span>
+          <span v-html="$t('Modal.DisconnectWallet.Button')"></span>
         </button>
       </div>
     </Modal>
@@ -53,11 +53,11 @@
             height="27px"
             pathColor="#fff"
           />
-          <h4>Withdraw</h4>
+          <h4 v-html="$t('Wallet.Title')"></h4>
         </div>
 
         <div class="contextDescrption">
-          <p>Watch ads, invite friends, and collect tokens. Connect your wallet and join the Airdrop. The more you grow, the more you earn.</p>
+          <p v-html="$t('Wallet.Description')"></p>
         </div>
 
         <div class="contextCoin">
@@ -85,16 +85,16 @@
           </div>
           <div class="contextMapInfo">
             <div class="contextMapInfoItem">
-              <h4>Build the hype</h4>
-              <p>Invite friends & grow your kingdom</p>
+              <h4 v-html="$t('Wallet.Title_Map1')"></h4>
+              <p v-html="$t('Wallet.Description_Map1')"></p>
             </div>
             <div class="contextMapInfoItem">
-              <h4>Earn from activity</h4>
-              <p>Watch ads, complete tasks, earn tokens from your slaves</p>
+              <h4 v-html="$t('Wallet.Title_Map2')"></h4>
+              <p v-html="$t('Wallet.Description_Map2')"></p>
             </div>
             <div class="contextMapInfoItem">
-              <h4>Withdraw real money</h4>
-              <p>Convert tokens & cash out</p>
+              <h4 v-html="$t('Wallet.Title_Map3')"></h4>
+              <p v-html="$t('Wallet.Description_Map3')"></p>
             </div>
           </div>
         </div>
@@ -110,7 +110,7 @@
         width="24px"
         height="24px"
       />
-      <span>Подключить кошелек</span>
+      <span v-html="$t('Wallet.ConnectWallet')"></span>
     </button>
     <button v-if="walletConnected" @click="modalOpenWalletDisconnect()">
       <IconComp 
@@ -119,7 +119,7 @@
         height="24px"
         pathColor="#fff"
       />
-      <span>Connected: {{ obfuscateAddress(walletAddress) }}</span>
+      <span v-html="$t('Wallet.Connected', { address: obfuscateAddress(walletAddress) })"></span>
     </button>
   </div>
 </template>

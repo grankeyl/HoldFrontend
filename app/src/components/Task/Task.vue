@@ -56,10 +56,10 @@ onUnmounted(() => {
         />
     </div>
     <div slot="button" :class="taskStyles.button">
-        <span>Старт</span>
+        <span v-html="$t('Tasks.Start')"></span>
     </div>
     <div slot="done" :class="taskStyles.done">
-        <span>Готово</span>
+        <span v-html="$t('Tasks.Ready')"></span>
     </div>
   </adsgram-task>
 </template>

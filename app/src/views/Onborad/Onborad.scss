@@ -251,3 +251,11 @@
     }
   }
 }
+
+:deep(.highlight) {
+  color: $app-color-primary;
+}
+
+:deep(.muted) {
+  color: $app-color-tint;
+}

@@ -58,11 +58,7 @@
           </div>
 
           <div class="contextInfoDescription">
-            <h4>
-              You now earn
-              <span>+{{ LevelUpData.Percents }}%</span>
-              more from your servants
-            </h4>
+            <h4 v-html="$t('LevelUp.Description', { percents: LevelUpData.Percents })"></h4>
           </div>
         </div>
 
@@ -80,7 +76,7 @@
               @load="onImageLoad"
             />
           </div>
-          <span>Okay</span>
+          <span v-html="$t('LevelUp.Button')"></span>
         </button>
       </div>
       <div class="buttonsButton">
@@ -93,7 +89,7 @@
             width="24px"
             height="24px"
           />
-          <span>Share to stories</span>
+          <span v-html="$t('LevelUp.ButtonStories')"></span>
           <strong>
             <p>+23,000</p>
             <IconComp 
@@ -114,6 +110,7 @@
 import { Icon } from '@/components/Icons';
 import { AppCache } from '@/stores/pinia';
 import { getPlacesData } from '@/utils/usePlaces';
+import { getCurrentInstance } from 'vue';
 import { toRoman } from '@/utils/useGame';
 
 import TelegramModule from '@/hooks/useTelegram';
@@ -133,6 +130,14 @@ export default {
   components: {
     IconComp,
     Loader,
+  },
+
+  setup() {
+    const { proxy } = getCurrentInstance()! as any;
+
+    return {
+      proxy,
+    };
   },
 
   data() {
@@ -219,8 +224,18 @@ export default {
       const placesArray = Object.values(this.PlacesListData);
       const foundPlace = placesArray.find(
         (place: any) => place.id === this.UserData.place.place_id - 1
-      ) as { name?: string } | undefined;
-      const oldName = foundPlace?.name as any;
+      ) as { name?: string, nameEn?: string } | undefined;
+
+      let oldName = '';
+      let newName = '';
+
+      if (this.proxy.$i18n.locale === 'ru') {
+        oldName = foundPlace?.name as any;
+        this.LevelUpData.OldLevelName = oldName;
+      } else {
+        oldName = foundPlace?.nameEn as any;
+        this.LevelUpData.OldLevelName = oldName;
+      }
 
       this.LevelUpData.OldLevelId = this.UserData.place.place_id - 1;
       this.LevelUpData.OldLevelName = oldName;
@@ -228,7 +243,14 @@ export default {
       this.LevelUpData.NewLevelId = this.UserData.place.place_id;
 
       const placeType = this.UserData.place.place_type;
-      this.LevelUpData.NewLevelName = this.PlacesListData[placeType]?.name;
+
+      if (this.proxy.$i18n.locale === 'ru') {
+        newName = this.PlacesListData[placeType]?.name;
+        this.LevelUpData.NewLevelName = newName;
+      } else {
+        newName = this.PlacesListData[placeType]?.nameEn;
+        this.LevelUpData.NewLevelName = newName;
+      }
 
       this.LevelUpData.FriendsCount = this.UserData.referrals_count;
       this.LevelUpData.Percents = this.PlacesData[this.UserData.place.place_id].percents_add;
