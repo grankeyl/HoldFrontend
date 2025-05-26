@@ -16,7 +16,6 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { AppCache } from './stores/pinia';
-import { miniApp } from '@telegram-apps/sdk';
 import { usePlaceStore } from './stores/place.storage';
 import { getCurrentLanguage } from './utils/useApp';
 
