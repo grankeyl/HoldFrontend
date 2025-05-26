@@ -55,7 +55,7 @@ export default {
     const loadingPage = ref(true);
     const pageSuccess = ref(false);
 
-    const miniAppMounted = ref(false);
+    // const miniAppMounted = ref(false);
     const miniAppLoading = ref(true);
 
     const authenticate = async () => {
@@ -70,16 +70,17 @@ export default {
 
     const mountMiniApp = () => {
       TelegramModule.initMiniApp();
-      TelegramModule.useHeavyHaptic();
+      miniAppLoading.value = false;
+      // TelegramModule.useHeavyHaptic();
       
-      if (miniApp.mount.isAvailable()) {
-        miniApp.mount();
-        miniAppMounted.value = miniApp.isMounted();
-        setTimeout(() => { miniAppLoading.value = false; }, 300);
-      } else {
-        miniAppMounted.value = true;
-        setTimeout(() => { miniAppLoading.value = false; }, 300);
-      }
+      // if (miniApp.mount.isAvailable()) {
+      //   miniApp.mount();
+      //   miniAppMounted.value = miniApp.isMounted();
+      //   setTimeout(() => { miniAppLoading.value = false; }, 300);
+      // } else {
+      //   miniAppMounted.value = true;
+      //   setTimeout(() => { miniAppLoading.value = false; }, 300);
+      // }
     }
 
     const checkLevelUp = () => {

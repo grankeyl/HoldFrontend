@@ -1,75 +1,12 @@
-import { hapticFeedback, miniApp, on, postEvent, mockTelegramEnv, shareStory } from '@telegram-apps/sdk';
+import { hapticFeedback, on, postEvent, shareStory } from '@telegram-apps/sdk';
 import { backButton, invoice, initDataStartParam, openTelegramLink } from '@telegram-apps/sdk';
-import { init, retrieveLaunchParams } from '@telegram-apps/sdk';
 import { isDesktop } from '@/utils/checkDevice';
-import { viewport } from '@telegram-apps/sdk';
 
 import WebApp from "@twa-dev/sdk";
 
-function mock(status: string = import.meta.env.VITE_APP_TEST) {
-    if (status === 'development') {
-      mockTelegramEnv({
-        themeParams: {
-          accentTextColor: '#2ea6ff',
-          bgColor: '#000000',
-          buttonColor: '#2ea6ff',
-          buttonTextColor: '#ffffff',
-          destructiveTextColor: '#ef5b5b',
-          headerBgColor: '#000000',
-          hintColor: '#b1c3d5',
-          linkColor: '#62bcf9',
-          secondaryBgColor: '#131415',
-          sectionBgColor: '#18222d',
-          sectionHeaderTextColor: '#b1c3d5',
-          subtitleTextColor: '#b1c3d5',
-          textColor: '#ffffff',
-        },
-        initData: {
-          user: {
-            id: 2200247226,
-            firstName: 'wwt',
-            lastName: '',
-            languageCode: 'ru',
-            isPremium: true,
-            allowsWriteToPm: true,
-            photoUrl: 'https://a-ttgme.stel.com/i/userpic/320/OERv8lzDgDAie_Vug0fWgGKrGbilJE23xIyDJ0x0FcNpibvL9mFLSOkM7Dszycw_.svg',
-          },
-          hash: '488b3c2ebb52f3d29f9f6478c97c8fbf75c49a06425ac6371f172c358be703d0',
-          authDate: new Date(1738006494000),
-          signature: 'G327NYDx2mn6BzMyWirsvYUUMSPR9DAJUAacYo7AK56irlFGX21LTSttRIb7kAWlieCfhDLFybwEUis-hhZyDQ',
-          chatType: 'sender',
-          chatInstance: '8428209589180549439',
-        },
-        initDataRaw: new URLSearchParams([
-          ['user', JSON.stringify({
-            id: 2200247226,
-            first_name: 'wwt',
-            last_name: '',
-            language_code: 'ru',
-            is_premium: true,
-            allows_write_to_pm: true,
-          })],
-          ['hash', '488b3c2ebb52f3d29f9f6478c97c8fbf75c49a06425ac6371f172c358be703d0'],
-          ['auth_date', '1738006494'],
-          ['signature', 'G327NYDx2mn6BzMyWirsvYUUMSPR9DAJUAacYo7AK56irlFGX21LTSttRIb7kAWlieCfhDLFybwEUis-hhZyDQ'],
-          ['chat_type', 'sender'],
-          ['chat_instance', '8428209589180549439'],
-        ]).toString(),
-        version: '8.0',
-        platform: 'tdesktop',
-      });
-    }
-  }
-
-mock();
-init();
 
 const TelegramModule = {
-    async initMiniApp() {
-      if (viewport.bindCssVars.isAvailable()) {
-        viewport.bindCssVars();
-      }
-
+    async initMiniApp() { 
       WebApp.requestWriteAccess();
       WebApp.disableVerticalSwipes();
       WebApp.expand();
@@ -78,26 +15,14 @@ const TelegramModule = {
         WebApp.requestFullscreen();
       }
       WebApp.ready();
-    },  
-
-    readyMiniApp() {
-      if (miniApp.ready.isAvailable()) {
-        miniApp.ready();
-      }
     },
 
     initDataRaw() {
-        this.initMiniApp();
-
-        const { initDataRaw } = retrieveLaunchParams()
-        return initDataRaw;
+        return WebApp.initData;
     },
 
     initData() {
-        this.initMiniApp();
-
-        const { initData } = retrieveLaunchParams()
-        return initData;
+        return WebApp.initDataUnsafe;
     },
 
     checkStartParam() {
