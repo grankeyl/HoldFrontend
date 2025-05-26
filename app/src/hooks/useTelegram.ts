@@ -171,19 +171,28 @@ const TelegramModule = {
         }
     },
 
-    async useShareStory(storyMedia: string) {
+    async useShareStory(storyMedia: string, language: string, referralLink: string) {
       if (!shareStory.isSupported()) return;
       if (!shareStory.isAvailable()) return;
 
-      shareStory(storyMedia, {
-        text: "123" + ' ' 
-        + import.meta.env.VITE_APP_MINI_APP_USERNAME,
-        widgetLink: {
-          url: import.meta.env.VITE_APP_MINI_APP_LINK,
-          name: import.meta.env.VITE_APP_MINI_APP_USERNAME,
-        },
-      });
-      
+      if (language === 'ru') {
+        shareStory(storyMedia, {
+          text: `${referralLink} Зарабатывайте, ничего не делая. Пусть рабы работают на вас в холде.`,
+          widgetLink: {
+            url: referralLink,
+            name: import.meta.env.VITE_APP_MINI_APP_USERNAME,
+          },
+        });
+      } else {
+        shareStory(storyMedia, {
+          text: `${referralLink} Earn by doing nothing. Let the slaves work for you in Hold.`,
+          widgetLink: {
+            url: referralLink,
+            name: import.meta.env.VITE_APP_MINI_APP_USERNAME,
+          },
+        });
+      }
+
       return true;
     },
 

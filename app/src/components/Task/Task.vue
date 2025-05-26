@@ -63,3 +63,10 @@ onUnmounted(() => {
     </div>
   </adsgram-task>
 </template>
+
+<style>
+  ::slotted(img) {
+    opacity: 0;
+    display: none;
+  }
+</style>

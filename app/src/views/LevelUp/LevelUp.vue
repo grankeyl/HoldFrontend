@@ -116,6 +116,7 @@ import { toRoman } from '@/utils/useGame';
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue'
+import { getReferralLink } from '@/utils/useApp';
 
 const appCache = AppCache() as any;
 
@@ -205,9 +206,15 @@ export default {
     },
 
     shareStory() {
+      const language = this.$i18n.locale;
+      const referralLink = getReferralLink(this.UserData.referral_code);
+
       this.ShareStoryButtonLoading = true;
 
-      TelegramModule.useShareStory(import.meta.env.VITE_APP_STORIES_PREMIUM)
+      TelegramModule.useShareStory(
+        import.meta.env.VITE_APP_STORIES_PREMIUM,
+        language, referralLink
+      )
         .then(async (status) => {
           if (status) {
             setTimeout(() => {

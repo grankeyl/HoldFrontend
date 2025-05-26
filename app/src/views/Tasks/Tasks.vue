@@ -253,7 +253,7 @@
             <Task 
               v-for="(task, i) in TasksAdsgram"
               :key="i"
-              :debug="true" 
+              :debug="false" 
               :blockId="task"
               :animationDelay="`${i * 0.27}s`"
               :rewardAmount="GameData.ads.task"
@@ -613,7 +613,7 @@ export default {
 
           task.isClaimed = true;
           task.isDone = true;
-          
+
           taskToUpdate.isClaimed = true;
           taskToUpdate.isDone = true;
 
