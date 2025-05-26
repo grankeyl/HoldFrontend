@@ -173,6 +173,14 @@ button:disabled {
   color: $app-h !important;
 }
 
+.head-logotype {
+  margin-top: calc(var(--tg-content-safe-area-inset-top) + 0px) !important;
+
+  .language {
+    margin-top: calc(var(--tg-content-safe-area-inset-top) + 6px) !important;
+  }
+}
+
 .head-balance {
-  margin-top: calc(var(--tg-content-safe-area-inset-top) + 50px) !important;
+  margin-top: calc(var(--tg-content-safe-area-inset-top) + 9px) !important;
 }

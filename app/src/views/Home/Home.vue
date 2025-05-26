@@ -1,5 +1,5 @@
 <template>
-  <div class="head">
+  <div class="head head-logotype">
     <img src="/logotype.svg" alt="logotype" />
 
     <div @click="openLanguageModal()" class="language">
