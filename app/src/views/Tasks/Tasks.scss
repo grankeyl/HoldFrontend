@@ -108,7 +108,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 0 135px 0;
-    padding-top: 88px;
+    padding-top: calc(var(--tg-content-safe-area-inset-top, 0px) + 45px);
 
     .contextSection {
       width: 100%;

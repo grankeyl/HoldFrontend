@@ -141,7 +141,7 @@
     background: $app-bg-secondary-h;
     border: 1px solid rgba($app-h, 0.1);
     margin-right: $app-page-padding-left;
-    margin-top: calc(var(--tg-content-safe-area-inset-top) + 68px) !important;;
+    margin-top: calc(var(--tg-content-safe-area-inset-top, 0px) + 68px) !important;;
     z-index: 1;
     padding: 1px 0;
     opacity: 0;

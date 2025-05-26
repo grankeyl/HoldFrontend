@@ -174,13 +174,13 @@ button:disabled {
 }
 
 .head-logotype {
-  margin-top: calc(var(--tg-content-safe-area-inset-top) + 0px) !important;
+  margin-top: calc(var(--tg-content-safe-area-inset-top, 0px) + 3px) !important;
 
   .language {
-    margin-top: calc(var(--tg-content-safe-area-inset-top) + 6px) !important;
+    margin-top: calc(var(--tg-content-safe-area-inset-top, 0px) + 6px) !important;
   }
 }
 
 .head-balance {
-  margin-top: calc(var(--tg-content-safe-area-inset-top) + 9px) !important;
+  margin-top: calc(var(--tg-content-safe-area-inset-top, 0px) + 12px) !important;
 }
