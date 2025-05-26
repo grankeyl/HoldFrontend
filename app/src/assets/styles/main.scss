@@ -174,5 +174,5 @@ button:disabled {
 }
 
 .head-balance {
-  margin-top: calc(var(--tg-content-safe-area-inset-top)) !important;
+  margin-top: calc(var(--tg-safe-area-inset-top) + var(--tg-content-safe-area-inset-top)) !important;
 }
