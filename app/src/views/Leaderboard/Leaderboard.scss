@@ -73,10 +73,7 @@
   width: fit-content;
   height: 36px;
   position: absolute;
-  margin-top: calc(
-    var(--tg-viewport-safe-area-inset-top, 10px) +
-    var(--tg-viewport-content-safe-area-inset-top, 10px)
-  );
+  top: calc(var(--tg-viewport-content-safe-area-inset-top) + var(--tg-viewport-safe-area-inset-top) + 25%);
   left: 50%;
   transform: translateX(-50%);
   background: $app-bg-secondary-h;
@@ -87,6 +84,7 @@
   padding: 0 12px;
   gap: 6px;
   z-index: 4;
+  
   h4 {
     width: 100%;
     height: fit-content;
