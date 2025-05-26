@@ -2,6 +2,8 @@ import { hapticFeedback, miniApp, on, postEvent, mockTelegramEnv, shareStory } f
 import { backButton, invoice, initDataStartParam, openTelegramLink } from '@telegram-apps/sdk';
 import { init, retrieveLaunchParams } from '@telegram-apps/sdk';
 import { isDesktop } from '@/utils/checkDevice';
+import { viewport } from '@telegram-apps/sdk';
+
 import WebApp from "@twa-dev/sdk";
 
 function mock(status: string = import.meta.env.VITE_APP_TEST) {
@@ -64,6 +66,10 @@ init();
 
 const TelegramModule = {
     async initMiniApp() {
+      if (viewport.bindCssVars.isAvailable()) {
+        viewport.bindCssVars();
+      }
+
       WebApp.requestWriteAccess();
       WebApp.disableVerticalSwipes();
       WebApp.expand();

@@ -176,6 +176,7 @@ button:disabled {
 .head-balance {
   margin-top: calc(
     var(--tg-viewport-safe-area-inset-top, 0px) +
-    var(--tg-viewport-content-safe-area-inset-top)
+    var(--tg-viewport-content-safe-area-inset-top) +
+    50px
   ) !important;
 }
