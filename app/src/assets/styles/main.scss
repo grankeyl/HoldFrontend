@@ -173,7 +173,7 @@ button:disabled {
   color: $app-h !important;
 }
 
-:deep(.head-balance) {
+.head-balance {
   margin-top: calc(
     var(--tg-viewport-safe-area-inset-top, 0px) +
     var(--tg-viewport-content-safe-area-inset-top)
