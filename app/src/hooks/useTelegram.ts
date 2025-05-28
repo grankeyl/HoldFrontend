@@ -125,8 +125,10 @@ const TelegramModule = {
     },
 
     async useSendMessage(url: string, message: string) {
-      const link = `https://t.me/share/url=${url}&text=${message}`
-      this.useLink(link);
+      const encodedUrl = encodeURIComponent(url);
+      const encodedMessage = encodeURIComponent(message);
+      const shareLink = `https://t.me/share/url?url=${encodedUrl}&text=${encodedMessage}`;
+      WebApp.openTelegramLink(shareLink);
     }
 };
 
