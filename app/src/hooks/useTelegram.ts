@@ -1,5 +1,5 @@
-import { hapticFeedback, on, postEvent, shareStory } from '@telegram-apps/sdk';
-import { backButton, invoice, initDataStartParam, openTelegramLink } from '@telegram-apps/sdk';
+import { on, postEvent, shareStory } from '@telegram-apps/sdk';
+import { invoice } from '@telegram-apps/sdk';
 import { isDesktop } from '@/utils/checkDevice';
 
 import WebApp from "@twa-dev/sdk";
