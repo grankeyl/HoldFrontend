@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Load v-if="loadingPage" />
+    <Load v-if="loadingPage || miniAppLoading" />
 
     <RouterView 
       v-if="(!miniAppLoading && !loadingPage)" 
@@ -8,6 +8,7 @@
       @loaded="onRouterViewLoaded"
       :success="pageSuccess"
     />
+
     <Menu v-if="(!miniAppLoading && !loadingPage) && initMenu()" />
   </div>
 </template>
@@ -31,6 +32,7 @@ import Load from '@/components/Load/Load.vue'
 import Menu from '@/components/Menu/Menu.vue'
 import Toast from 'primevue/toast';
 import TelegramModule from './hooks/useTelegram';
+import { miniApp } from '@telegram-apps/sdk';
 
 
 export default {
@@ -54,7 +56,7 @@ export default {
     const loadingPage = ref(true);
     const pageSuccess = ref(false);
 
-    // const miniAppMounted = ref(false);
+    const miniAppMounted = ref(false);
     const miniAppLoading = ref(true);
 
     const authenticate = async () => {
@@ -71,16 +73,14 @@ export default {
       TelegramModule.initMiniApp();
       TelegramModule.useHeavyHaptic();
 
-      miniAppLoading.value = false;
-      
-      // if (miniApp.mount.isAvailable()) {
-      //   miniApp.mount();
-      //   miniAppMounted.value = miniApp.isMounted();
-      //   setTimeout(() => { miniAppLoading.value = false; }, 300);
-      // } else {
-      //   miniAppMounted.value = true;
-      //   setTimeout(() => { miniAppLoading.value = false; }, 300);
-      // }
+      if (miniApp.mount.isAvailable()) {
+        miniApp.mount();
+        miniAppMounted.value = miniApp.isMounted();
+        setTimeout(() => { miniAppLoading.value = false; }, 300);
+      } else {
+        // miniAppMounted.value = true;
+        // setTimeout(() => { miniAppLoading.value = false; }, 300);
+      }
     }
 
     const checkLevelUp = () => {
