@@ -69,7 +69,6 @@ const TelegramModule = {
     },
 
     useLink(link: string) {
-        console.log('Opening link:', link);
         WebApp.openTelegramLink(link);
     },
 
@@ -126,7 +125,7 @@ const TelegramModule = {
     },
 
     async useSendMessage(url: string, message: string) {
-      const link = `https://t.me/share?url=${url}&text=${message}`
+      const link = `https://t.me/share/url=${url}&text=${message}`
       this.useLink(link);
     }
 };
