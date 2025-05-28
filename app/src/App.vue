@@ -32,7 +32,6 @@ import Load from '@/components/Load/Load.vue'
 import Menu from '@/components/Menu/Menu.vue'
 import Toast from 'primevue/toast';
 import TelegramModule from './hooks/useTelegram';
-import { miniApp } from '@telegram-apps/sdk';
 
 
 export default {
@@ -56,7 +55,6 @@ export default {
     const loadingPage = ref(true);
     const pageSuccess = ref(false);
 
-    const miniAppMounted = ref(false);
     const miniAppLoading = ref(true);
 
     const authenticate = async () => {
@@ -72,15 +70,6 @@ export default {
     const mountMiniApp = () => {
       TelegramModule.initMiniApp();
       TelegramModule.useHeavyHaptic();
-
-      if (miniApp.mount.isAvailable()) {
-        miniApp.mount();
-        miniAppMounted.value = miniApp.isMounted();
-        setTimeout(() => { miniAppLoading.value = false; }, 300);
-      } else {
-        // miniAppMounted.value = true;
-        // setTimeout(() => { miniAppLoading.value = false; }, 300);
-      }
     }
 
     const checkLevelUp = () => {
@@ -123,6 +112,7 @@ export default {
         if (userGet) {
           loadingPage.value = false;
           pageSuccess.value = true;
+          miniAppLoading.value = false;
 
           mountMiniApp();
           checkLevelUp();

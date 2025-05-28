@@ -1,11 +1,8 @@
-import { init, on, postEvent, shareStory } from '@telegram-apps/sdk';
+import { on, postEvent, shareStory } from '@telegram-apps/sdk';
 import { invoice } from '@telegram-apps/sdk';
 import { isDesktop } from '@/utils/checkDevice';
 
 import WebApp from "@twa-dev/sdk";
-
-
-init()
 
 
 const TelegramModule = {
