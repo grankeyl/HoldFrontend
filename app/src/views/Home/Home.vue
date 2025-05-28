@@ -587,7 +587,7 @@ export default {
         this.UserData.is_slaved = false;
         this.UserData.place.place_id = 1;
         this.UserData.place.place_type = 'village';
-        this.$router.push('/level-up');
+        // this.$router.push('/level-up');
         this.userProgressInit();
       }
     });
@@ -805,7 +805,7 @@ export default {
       this.IsActiveLanguageModal = false;
       TelegramModule.useMediumHaptic();
     },
-    
+
     handleClickOutside(event: MouseEvent) {
       const modal = this.$refs.languageSelectRef as HTMLElement;
       const button = this.$refs.languageBtnRef as HTMLElement;

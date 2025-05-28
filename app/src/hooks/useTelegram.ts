@@ -13,7 +13,8 @@ const TelegramModule = {
 
       if (!isDesktop()) {
         WebApp.requestFullscreen();
-      }
+      };
+      
       WebApp.ready();
     },
 
