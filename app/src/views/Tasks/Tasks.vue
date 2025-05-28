@@ -750,8 +750,8 @@ export default {
       '🔗 Ты стал рабом. Проверьте, или вы пожалеете об этом.' : 
       "🔗 You've become a slave. Check or you'll regret it.";
 
-      TelegramModule.useMediumHaptic();
       TelegramModule.useSendMessage(link, text);
+      TelegramModule.useMediumHaptic();
     },
   },
 };

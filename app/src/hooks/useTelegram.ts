@@ -26,53 +26,51 @@ const TelegramModule = {
     },
 
     checkStartParam() {
-        const startParam = initDataStartParam();
-        return startParam;
+        return WebApp.initDataUnsafe?.start_param || null;
     },
 
     hideBackButton() {
-        if (backButton.isSupported()) {
-            backButton.mount();
+        const backButton = WebApp.BackButton;
+        if (backButton?.isVisible !== undefined) {
             backButton.hide();
         }
     },
 
-    useBackButton(action: any) {
-        if (backButton.isSupported()) {
-            backButton.mount();
+    useBackButton(action: () => void) {
+        const backButton = WebApp.BackButton;
+        if (backButton?.show && backButton.onClick) {
             backButton.show();
             backButton.onClick(action);
         }
     },
 
     useSoftHaptic() {
-        if (hapticFeedback.impactOccurred.isAvailable()) {
-            hapticFeedback.impactOccurred('soft');
+        if (WebApp.HapticFeedback?.impactOccurred) {
+            WebApp.HapticFeedback.impactOccurred('soft');
         }
     },
 
     useLightHaptic() {
-        if (hapticFeedback.impactOccurred.isAvailable()) {
-            hapticFeedback.impactOccurred('light');
+        if (WebApp.HapticFeedback?.impactOccurred) {
+            WebApp.HapticFeedback.impactOccurred('light');
         }
     },
 
     useMediumHaptic() {
-        if (hapticFeedback.impactOccurred.isAvailable()) {
-            hapticFeedback.impactOccurred('medium');
+        if (WebApp.HapticFeedback?.impactOccurred) {
+            WebApp.HapticFeedback.impactOccurred('medium');
         }
     },
 
     useHeavyHaptic() {
-        if (hapticFeedback.impactOccurred.isAvailable()) {
-            hapticFeedback.impactOccurred('heavy');
+        if (WebApp.HapticFeedback?.impactOccurred) {
+            WebApp.HapticFeedback.impactOccurred('heavy');
         }
     },
 
     useLink(link: string) {
-        if (openTelegramLink.isAvailable()) {
-            openTelegramLink(link);
-        }
+        console.log('Opening link:', link);
+        WebApp.openTelegramLink(link);
     },
 
     async useShareMessage(id: string) {

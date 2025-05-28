@@ -69,8 +69,9 @@ export default {
 
     const mountMiniApp = () => {
       TelegramModule.initMiniApp();
+      TelegramModule.useHeavyHaptic();
+
       miniAppLoading.value = false;
-      // TelegramModule.useHeavyHaptic();
       
       // if (miniApp.mount.isAvailable()) {
       //   miniApp.mount();
@@ -163,7 +164,7 @@ export default {
 
     initMenu() {
       const excludedRoutes: Array<string | null> = [
-        'onborad', 'place', 'friends-upgrade', 'level-up', 'error'
+        'onborad', 'place', 'friends-upgrade', 'level-up', 'error', 'banned'
       ];
       return !excludedRoutes.includes(this.$route.name?.toString() || '');
     }

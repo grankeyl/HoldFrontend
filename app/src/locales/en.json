@@ -130,5 +130,10 @@
         "Title": "There was an error",
         "Description": "Try again later",
         "Button": "Back to home"
+    },
+
+    "Banned": {
+        "Title": "You have been banned",
+        "Button": "Contact support"
     }
 }

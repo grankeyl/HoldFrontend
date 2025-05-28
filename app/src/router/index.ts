@@ -60,7 +60,12 @@ const router = createRouter({
       path: '/error',
       name: 'error',
       component: () => import('@/views/Error/Error.vue'),
-    }
+    },
+    {
+      path: '/banned',
+      name: 'banned',
+      component: () => import('@/views/Banned/Banned.vue'),
+    },
   ]
 })
 

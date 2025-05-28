@@ -2,7 +2,7 @@
   <div class="head head-logotype">
     <img src="/logotype.svg" alt="logotype" />
 
-    <div @click="openLanguageModal()" class="language">
+    <div @click="openLanguageModal()" ref="languageBtnRef" class="language">
       <IconComp
         :icon="Icon.Network"
         width="24px"
@@ -10,7 +10,7 @@
       />
     </div>
 
-    <div class="language-select" :class="{ active: IsActiveLanguageModal }">
+    <div ref="languageSelectRef" class="language-select" :class="{ active: IsActiveLanguageModal }">
       <div @click="setLanguage('ru')" class="language-select-item">
         <div class="language-select-item-text">
           <p>🇷🇺 RU</p>
@@ -592,12 +592,14 @@ export default {
       }
     });
     
+    document.addEventListener('click', this.handleClickOutside);
   },
 
   beforeUnmount() {
     if (this.IntervalId) {
       clearInterval(this.IntervalId);
     }
+    document.removeEventListener('click', this.handleClickOutside);
   },
 
   methods: {
@@ -763,8 +765,8 @@ export default {
       '🔗 Ты стал рабом. Проверьте, или вы пожалеете об этом.' : 
       "🔗 You've become a slave. Check or you'll regret it.";
 
-      TelegramModule.useMediumHaptic();
       TelegramModule.useSendMessage(link, text);
+      TelegramModule.useMediumHaptic();
     },
 
     async getReferralsList() {
@@ -802,6 +804,19 @@ export default {
 
       this.IsActiveLanguageModal = false;
       TelegramModule.useMediumHaptic();
+    },
+    
+    handleClickOutside(event: MouseEvent) {
+      const modal = this.$refs.languageSelectRef as HTMLElement;
+      const button = this.$refs.languageBtnRef as HTMLElement;
+
+      if (!modal || !button) return;
+
+      const clickedOutside = !modal.contains(event.target as Node) && !button.contains(event.target as Node);
+
+      if (clickedOutside) {
+        this.IsActiveLanguageModal = false;
+      }
     }
   },
 };
