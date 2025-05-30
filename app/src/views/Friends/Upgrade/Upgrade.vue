@@ -307,8 +307,8 @@ export default {
 
       if (!result) return;
 
-      if (result.status === "error" && result.data.type === 'no_cost') {
-        toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.data.value }));
+      if (result.status === "error" && result.type === 'no_cost') {
+        toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.value }));
         return;
       }
 
