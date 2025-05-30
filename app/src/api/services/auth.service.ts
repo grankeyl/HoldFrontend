@@ -21,7 +21,12 @@ export const login = async (payload: AuthPayload) => {
       return responseMessage;
     }
   } catch (e: any) {
-    console.error(e);
-    throw new Error("Authentication failed");
+    if (e.response && e.response.status === 401) {
+      if (e.response.data?.message?.type === "user_blocked") {
+        return { status: "banned", message: e.response.data.message };
+      } else {
+        return { status: "error" };
+      }
+    }
   }
 }

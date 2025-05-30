@@ -92,8 +92,30 @@ export default {
       }
     }
 
+    const onAppLoad = async () => {
+      loadingPage.value = false;
+      pageSuccess.value = true;
+      miniAppLoading.value = false;
+
+      mountMiniApp();
+      checkLevelUp();
+    }
+
     onMounted(async () => {
       const isAuthenticated = await authenticate();
+
+      if (isAuthenticated.status && isAuthenticated.status === 'banned') {
+        onAppLoad();
+        appCache.UserData = isAuthenticated.message;
+        router.push({ name: 'banned' });
+        return;
+      }
+
+      if (isAuthenticated.status && isAuthenticated.status === 'error') {
+        onAppLoad();
+        router.push({ name: 'error' });
+        return;
+      }
 
       if (isAuthenticated) {
         const userGet = await userApi.get();
@@ -110,12 +132,7 @@ export default {
         appCache.TasksData.Tasks = [ ...tasksGet.tasks ];
 
         if (userGet) {
-          loadingPage.value = false;
-          pageSuccess.value = true;
-          miniAppLoading.value = false;
-
-          mountMiniApp();
-          checkLevelUp();
+          onAppLoad();
         }
 
         if (isAuthenticated.status) {

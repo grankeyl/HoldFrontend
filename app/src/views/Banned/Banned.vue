@@ -29,7 +29,12 @@
         </div>
 
         <div class="contextDescrption">
-          <p>Reason</p>
+          <p v-if="$i18n.locale === 'en'">
+            {{ UserData?.reason }}
+          </p>
+          <p v-if="$i18n.locale === 'ru'">
+            {{ UserData?.reasonRu }}
+          </p>
         </div>
 
       </div>
@@ -56,7 +61,6 @@ import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue'
 
-const appCache = AppCache() as any;
 
 export default {
   props: {
@@ -72,6 +76,8 @@ export default {
   },
 
   data() {
+    const appCache = AppCache() as any;
+
     return {
       PropsSuccess: this.success,
       IsPageLoading: false,
