@@ -179,7 +179,6 @@
           <div 
             v-for="(referral, i) in FriendsData" :key="i" 
             class="contextFriendsItemsItem" 
-            :style="{ animationDelay: `${i * 0.07}s` }"
             :ref="(el: any) => i === FriendsData.length - 1 ? setLastFriendRef(el) : null"
           >
             <div class="contextFriendsItemsItemDeep">
@@ -453,8 +452,8 @@ export default {
     
     async fetchFriends() {
       const response = await friendsApi.get({
-        offset: Number(this.FriendsOffset),
-        limit: Number(this.FriendsLimit),
+        offset: this.FriendsOffset,
+        limit: this.FriendsLimit,
       });
 
       if (response && response.referrals?.length) {
@@ -463,8 +462,15 @@ export default {
           ReferralsMoneyToHourCurrent: response.tokens_per_hour,
           ReferralsMoneyAllCurrent: response.total_collected,
         });
-        this.FriendsData.push(...response.referrals);
-        this.FriendsOffset += this.FriendsLimit;
+
+        this.$nextTick(async () => {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
+          setTimeout(() => {
+            this.FriendsData.push(...response.referrals);
+            this.FriendsOffset += this.FriendsLimit;
+          }, 300);
+        });
       } else {
         this.FriendsObserver?.disconnect();
       }

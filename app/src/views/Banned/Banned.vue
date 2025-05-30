@@ -117,7 +117,8 @@ export default {
     },
 
     openContactSupport() {
-      TelegramModule.useLink('https://t.me/' + import.meta.env.VITE_TELEGRAM_SUPPORT.replace('@', ''));
+      const link = 'https://t.me/' + import.meta.env.VITE_APP_MINI_APP_SUPPORT_USERNAME.replace('@', '');
+      TelegramModule.useLink(link);
       TelegramModule.useMediumHaptic();
     },
   },

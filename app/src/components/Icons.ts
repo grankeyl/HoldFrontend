@@ -22,6 +22,7 @@ import TowerBlack from '/icons/TowerBlack.svg?raw';
 import NetworkIcon from '/icons/Network.svg?raw';
 import SelectedIcon from '/icons/Selected.svg?raw';
 import QuestionIcon from '/icons/Question.svg?raw';
+import DoneIcon from '/icons/Done.svg?raw';
 
 export const Icon = {
     Town: TownIcon,
@@ -48,4 +49,5 @@ export const Icon = {
     Network: NetworkIcon,
     Selected: SelectedIcon,
     Question: QuestionIcon,
+    Done: DoneIcon
 };

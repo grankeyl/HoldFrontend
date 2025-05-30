@@ -155,6 +155,10 @@
           animation: pulse 2s ease-in-out infinite;
           will-change: transform;
 
+          @media screen and (min-height: 600px) {
+            width: 245px;
+          }
+
           @media screen and (min-width: 440px) {
             width: 412px;
             height: 304px;

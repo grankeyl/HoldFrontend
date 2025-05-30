@@ -121,7 +121,11 @@
                   </div>
                   <div v-if="!task.isLoading && task.isClaimed && task.isDone" slot="button" class="contextBannersBannerContentButton done">
                     <button>
-                      <span v-html="$t('Tasks.Ready')"></span>
+                      <IconComp 
+                        :icon="Icon.Done"
+                        width="12px"
+                        height="12px"
+                      />
                     </button>
                   </div>
                 </div>
@@ -185,7 +189,11 @@
                   </div>
                   <div v-if="!task.isLoading && task.isClaimed && task.isDone" slot="button" class="contextBannersBannerContentButton done">
                     <button>
-                      <span v-html="$t('Tasks.Ready')"></span>
+                      <IconComp 
+                        :icon="Icon.Done"
+                        width="12px"
+                        height="12px"
+                      />
                     </button>
                   </div>
                 </div>
@@ -245,7 +253,11 @@
               </div>
               <div v-if="!task.isLoading && task.isClaimed && task.isDone" slot="button" class="contextTasksItemsItemButton done">
                 <button>
-                  <span v-html="$t('Tasks.Ready')"></span>
+                  <IconComp 
+                    :icon="Icon.Done"
+                    width="12px"
+                    height="12px"
+                  />
                 </button>
               </div>
             </div>

@@ -297,11 +297,17 @@
               }
 
               &.done button {
+                width: 44px;
                 background: $app-bg-noise;
                 border: 1px solid rgba($app-bg-secondary-h, 0.1);
 
                 span {
                   color: $app-color-primary;
+                }
+
+                .kit-icon {
+                  width: 13px;
+                  height: 13px;
                 }
               }
 
@@ -527,11 +533,17 @@
               }
 
               &.done button {
+                width: 44px;
                 background: $app-bg-noise;
                 border: 1px solid rgba($app-bg-noise, 0.1);
 
                 span {
                   color: $app-color-primary;
+                }
+
+                .kit-icon {
+                  width: 13px;
+                  height: 13px;
                 }
               }
 
@@ -728,11 +740,17 @@
             }
 
             &.done button {
+              width: 44px;
               background: $app-bg-secondary-h;
               border: 1px solid rgba($app-bg-secondary-h, 0.1);
 
               span {
                 color: $app-color-primary;
+              }
+
+              .kit-icon {
+                width: 13px;
+                height: 13px;
               }
             }
 
