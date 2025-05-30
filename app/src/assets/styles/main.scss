@@ -166,11 +166,7 @@ button:disabled {
 }
 
 .Toastify__toast-container {
-  margin-top: calc(
-    var(--tg-viewport-safe-area-inset-top, 18px) +
-    var(--tg-viewport-content-safe-area-inset-top, 18px) +
-    28px
-  );
+  margin-top: calc(var(--tg-content-safe-area-inset-top, 20px) + 20px) !important;
 }
 
 .Toastify__toast {
