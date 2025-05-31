@@ -783,6 +783,7 @@ export default {
       if (!collect) { return; }
       
       this.GameInfo.BalanceCurrent = collect.new_balance;
+      this.UserData.balance = collect.new_balance;
       this.AddBalanceAnimation();
 
       this.ReferralsInfo.ReferralsMoneyTake = 0;
