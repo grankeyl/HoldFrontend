@@ -2,6 +2,49 @@
 @use "@/assets/styles/variables.scss" as *;
 
 
+
+@keyframes shield-loop {
+  0% {
+    transform: rotate(0deg) scale(0.95);
+  }
+  2% {
+    transform: rotate(7deg) scale(1);
+  }
+  4% {
+    transform: rotate(-7deg);
+  }
+  6% {
+    transform: rotate(8deg);
+  }
+  8% {
+    transform: rotate(-8deg);
+  }
+  10% {
+    transform: rotate(8deg);
+  }
+  12% {
+    transform: rotate(-8deg);
+  }
+  14% {
+    transform: rotate(6deg);
+  }
+  16% {
+    transform: rotate(-6deg);
+  }
+  18% {
+    transform: rotate(3deg);
+  }
+  20% {
+    transform: rotate(0deg);
+  }
+  30% {
+    transform: rotate(0deg) scale(0.95);
+  }
+  100% {
+    transform: rotate(0deg) scale(0.95);
+  }
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -316,6 +359,9 @@
           img {
             width: 44px;
             height: 44px;
+            animation: shield-loop 6.1s linear infinite;
+            transform-origin: center;
+            will-change: transform;
 
             &.chains-small {
                 animation: spin 13s linear infinite;
@@ -657,7 +703,37 @@
 
             & img {
               width: 100%;
+              height: 100%;
+              opacity: .7;
+              filter: brightness(130%);
+              border-radius: 9px;
+
+              @media screen and (max-width: 400px) {
+                object-fit: fill;
+                height: 94px;
+              }
+            }
+          }
+
+          .contextInfoBg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+
+            & img.static {
+              width: 100%;
               object-fit: contain;
+              position: absolute;
+              top: 0;
+              left: 0;
+              opacity: .8;
+              filter: brightness(100%);
 
               @media screen and (max-width: 400px) {
                 object-fit: fill;
@@ -1011,6 +1087,8 @@
               & .kit-icon {
                   width: 24px;
                   height: 24px;
+                  animation: shield-loop 3.8s linear infinite;
+                  will-change: transform;
               }
     
               span {

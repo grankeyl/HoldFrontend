@@ -213,9 +213,15 @@
           <div @click="showAds()" class="contextInfoVideo" ref="ContextInfoVideo">
             <div class="contextInfoBg">
               <img 
-                src="/home/background-video.png"
+                src="https://telegram.blum.codes/_dist/animation.BRMCslGi.gif"
                 alt="bg-video"
                 class="fade-in"
+                @load="onImageLoad"
+              />
+              <img 
+                src="/home/background-video.png"
+                alt="bg-video"
+                class="static fade-in"
                 @load="onImageLoad"
               />
             </div>
