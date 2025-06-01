@@ -24,7 +24,8 @@
     "Toasts": {
         "ErrorShowAds": "Error showing ads, try again later",
         "NotEnoughTokens": "Not enough {tokens} tokens",
-        "SuccessEarnTokens": "You have successfully earned {tokens} tokens"
+        "SuccessEarnTokens": "You have successfully earned {tokens} tokens",
+        "ErrorStories": "You have already received an award in the last 12 hours."
     },
 
     "Onborad": {

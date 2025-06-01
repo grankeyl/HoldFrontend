@@ -22,8 +22,7 @@ export const request = async (payload: AdsRequestPayload) => {
       return responseData.message;
     }
   } catch (e: any) {
-    console.error("Request ads failed:", e);
-    return false;
+    return e.response.data.message;
   }
 }
 
@@ -46,6 +45,6 @@ export const complete = async (payload: AdsCompletePayload) => {
       return responseData.message;
     }
   } catch (e: any) {
-    throw new Error("Complete ads failed");
+    return e.response.data.message;
   }
 }

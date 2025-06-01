@@ -90,7 +90,7 @@
             height="24px"
           />
           <span v-html="$t('LevelUp.ButtonStories')"></span>
-          <strong>
+          <strong v-if="!ShareStoryRewarded">
             <p>+23,000</p>
             <IconComp 
               :icon="Icon.Token"
@@ -112,11 +112,15 @@ import { AppCache } from '@/stores/pinia';
 import { getPlacesData } from '@/utils/usePlaces';
 import { getCurrentInstance } from 'vue';
 import { toRoman } from '@/utils/useGame';
+import { getReferralLink } from '@/utils/useApp';
+import { toast } from 'vue3-toastify';
+import { collectConfetti } from '@/utils/useConfetti';
+
+import * as adsApi from '@/api/services/ads.service';
 
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue'
-import { getReferralLink } from '@/utils/useApp';
 
 const appCache = AppCache() as any;
 
@@ -147,6 +151,7 @@ export default {
       IsPageLoading: false,
 
       ShareStoryButtonLoading: false,
+      ShareStoryRewarded: false,
 
       LevelUpData: {
         OldLevelId: 1,
@@ -205,6 +210,26 @@ export default {
       this.$router.push('/');
     },
 
+    async rewardStory() {
+      const result = await adsApi.complete({ reward_token: localStorage.getItem('share_to_stories_token') || '' });
+      if (!result) return;
+
+      if (result.status === "error") {
+        toast.error(this.proxy.$t('Toasts.ErrorStories'));
+        return;
+      }
+
+      if (result.status === "success") {
+        this.ShareStoryRewarded = true;
+        this.ShareStoryButtonLoading = false;
+
+        this.UserData.balance = result.new_balance;
+
+        collectConfetti();
+        TelegramModule.useMediumHaptic();
+      }
+    },
+
     shareStory() {
       const language = this.$i18n.locale;
       const referralLink = getReferralLink(this.UserData.referral_code);
@@ -217,8 +242,25 @@ export default {
       )
         .then(async (status) => {
           if (status) {
-            setTimeout(() => {
-              this.ShareStoryButtonLoading = true;
+            if (this.ShareStoryRewarded) {
+              this.ShareStoryButtonLoading = false;
+              return;
+            }
+
+            const adUse = await adsApi.request({ task_type: "share_to_stories" });
+            if (!adUse) return;
+
+            if (adUse.status === "error" && adUse.message.type === 'too_soon') {
+              toast.error(this.proxy.$t('Toasts.ErrorStories'));
+              return;
+            }
+
+            const adToken = adUse.reward_token;
+            localStorage.setItem('share_to_stories_token', adToken);
+
+            setTimeout(async () => {
+              await this.rewardStory();
+              this.ShareStoryButtonLoading = false;
             }, 6440);
           }
         })

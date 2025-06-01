@@ -24,7 +24,8 @@
     "Toasts": {
         "ErrorShowAds": "Ошибка показа рекламы, попробуйте позже",
         "NotEnoughTokens": "Нехватает {tokens} токена",
-        "SuccessEarnTokens": "Вы успешно получили {tokens} токенов"
+        "SuccessEarnTokens": "Вы успешно получили {tokens} токенов",
+        "ErrorStories": "Вы уже получали награду за последние 12 часов"
     },
 
     "Onborad": {

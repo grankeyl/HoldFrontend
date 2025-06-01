@@ -101,28 +101,19 @@ const TelegramModule = {
     },
 
     async useShareStory(storyMedia: string, language: string, referralLink: string) {
-      if (!shareStory.isSupported()) return;
-      if (!shareStory.isAvailable()) return;
+        const text = language === 'ru'
+        ? `${referralLink} Зарабатывайте, ничего не делая. Пусть рабы работают на вас в холде.`
+        : `${referralLink} Earn by doing nothing. Let the slaves work for you in Hold.`;
 
-      if (language === 'ru') {
-        shareStory(storyMedia, {
-          text: `${referralLink} Зарабатывайте, ничего не делая. Пусть рабы работают на вас в холде.`,
-          widgetLink: {
-            url: referralLink,
-            name: import.meta.env.VITE_APP_MINI_APP_USERNAME,
-          },
+        WebApp.shareToStory(storyMedia, {
+            text,
+            widget_link: {
+                url: referralLink,
+                name: import.meta.env.VITE_APP_MINI_APP_USERNAME,
+            },
         });
-      } else {
-        shareStory(storyMedia, {
-          text: `${referralLink} Earn by doing nothing. Let the slaves work for you in Hold.`,
-          widgetLink: {
-            url: referralLink,
-            name: import.meta.env.VITE_APP_MINI_APP_USERNAME,
-          },
-        });
-      }
 
-      return true;
+        return true;
     },
 
     async useSendMessage(url: string, message: string) {
