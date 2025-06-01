@@ -307,6 +307,8 @@ export default {
 
       if (!result) return;
 
+      console.log('Upgrade all friends result:', result);
+
       if (result.status === "error" && result.type === 'no_cost') {
         toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.value }));
         return;
