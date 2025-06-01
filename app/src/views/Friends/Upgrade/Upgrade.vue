@@ -322,14 +322,43 @@ export default {
       }
     };
 
+    const upgradeFriend = async () => {
+      const appCache = AppCache() as any;
+      const result = await adsApi.complete({ reward_token: localStorage.getItem('ads_last_upgrade_friend') || '' });
+
+      if (!result) return;
+
+      if (result.status === "error" && result.type === 'no_cost') {
+        toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.value }));
+        return;
+      }
+
+      if (result.status === "success") {
+        collectConfetti();
+        TelegramModule.useMediumHaptic();
+
+        appCache.UserData.balance = result.new_balance;
+        appCache.tokens_per_hour = result.tokens_per_hour;
+        router.push('/friends');
+      }
+    };
+
     const upgradeAllAds = async () => {
-      const adUse = await adsApi.request({ task_type: 'upgrade_friends' });
+      const adUse = await adsApi.request({ 
+        task_type: PageType.value === 'all' ? 'upgrade_friends' : 'upgrade_friend',
+        user_id: userId
+      });
       if (!adUse) return;
 
-      const adToken = adUse.reward_token;
-      localStorage.setItem('ads_last_upgrade_friends', adToken);
+      if (PageType.value === 'all') {
+        const adToken = adUse.reward_token;
+        localStorage.setItem('ads_last_upgrade_friends', adToken);
+      } else {
+        const adToken = adUse.reward_token;
+        localStorage.setItem('ads_last_upgrade_friend', adToken);
+      }
 
-      const onReward = () => upgradeAll();
+      const onReward = () => PageType.value === 'all' ? upgradeAll() : upgradeFriend();
       const onError = () => toast.warn(proxy.$t('Toasts.ErrorShowAds'));
 
       const showAd = await useAdsgram({

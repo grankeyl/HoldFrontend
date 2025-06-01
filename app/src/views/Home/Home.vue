@@ -12,8 +12,11 @@
 
     <div ref="languageSelectRef" class="language-select" :class="{ active: IsActiveLanguageModal }">
       <div @click="setLanguage('ru')" class="language-select-item">
+        <div class="language-select-item-image">
+          <img src="/home/ru.png" alt="RU">
+        </div>
         <div class="language-select-item-text">
-          <p>🇷🇺 RU</p>
+          <p>RU</p>
           <div v-if="$i18n.locale === 'ru'" class="selected">
             <IconComp
               :icon="Icon.Selected"
@@ -24,8 +27,11 @@
         </div>
       </div>
       <div @click="setLanguage('en')" class="language-select-item">
+        <div class="language-select-item-image">
+          <img src="/home/en.png" alt="EN">
+        </div>
         <div class="language-select-item-text">
-          <p>🇺🇸 EN</p>
+          <p>EN</p>
           <div v-if="$i18n.locale === 'en'" class="selected">
             <IconComp
               :icon="Icon.Selected"

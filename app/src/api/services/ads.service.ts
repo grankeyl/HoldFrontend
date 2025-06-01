@@ -22,6 +22,7 @@ export const request = async (payload: AdsRequestPayload) => {
       return responseData.message;
     }
   } catch (e: any) {
+    console.error("Request ads failed:", e);
     return false;
   }
 }

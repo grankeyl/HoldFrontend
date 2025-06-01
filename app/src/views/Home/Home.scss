@@ -167,6 +167,7 @@
     background: $app-bg-secondary-h;
     border: 1px solid rgba($app-h, 0.1);
     margin-right: $app-page-padding-left;
+    cursor: pointer;
     z-index: 4;
 
     & .kit-icon {
@@ -175,7 +176,7 @@
   }
 
   .language-select {
-    width: 100px;
+    width: 110px;
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -207,6 +208,12 @@
       position: relative;
       border-bottom: 1px solid rgba($app-h, 0.1);
       z-index: 1;
+      cursor: pointer;
+      transition: background 0.2s linear;
+      will-change: background;
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
 
       &:last-child {
         border-bottom: none;
@@ -227,16 +234,35 @@
         }
       }
 
+      &-image {
+        width: fit-content;
+        height: fit-content;
+        display: flex;
+        align-items: end;
+        justify-content: start;
+        position: relative;
+        z-index: 1;
+        gap: 10px;
+        margin-top: 23px;
+        padding-left: 20px;
+
+        & img {
+          width: 20px;
+        }
+      }
+
       &-text {
         width: fit-content;
         height: fit-content;
         display: flex;
+        width: 100%;
         align-items: center;
-        justify-content: center;
+        justify-content: start;
         position: relative;
+        padding-left: 14px;
         z-index: 1;
         gap: 10px;
-        margin-top: -3px;
+        margin-top: -1px;
 
         & p {
           font-size: 14px;
@@ -351,6 +377,7 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
+        cursor: pointer;
       
         .icon-wrapper {
           position: relative;
@@ -661,6 +688,7 @@
           padding: 11px 12px;
           transition: transform 0.2s linear, opacity 0.2s linear;
           will-change: transform, opacity;
+          cursor: pointer;
 
           @media screen and (max-width: 400px) {
             max-width: 140px;
@@ -844,6 +872,7 @@
           background: $app-bg-secondary;
           border-radius: 12px;
           z-index: 1;
+          cursor: pointer;
           gap: 5px;
           padding: 0px 15px 0px 0px;
 
