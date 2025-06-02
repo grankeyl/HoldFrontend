@@ -204,6 +204,18 @@
         
         <div class="contextTasks">
           <div class="contextTasksTitle">
+            <h4 v-html="$t('Tasks.Partners')"></h4>
+          </div>
+
+          <div class="contextTasksItems">
+            <TraffyTasks
+              :rewardAmount="GameData.ads.task"
+            />
+          </div>
+        </div>
+        
+        <div class="contextTasks">
+          <div class="contextTasksTitle">
             <h4 v-html="$t('Tasks.Socials')"></h4>
           </div>
 
@@ -261,11 +273,6 @@
                 </button>
               </div>
             </div>
-
-            <TraffyTasks
-              :rewardAmount="GameData.ads.task"
-            />
-
           </div>
         </div>
 

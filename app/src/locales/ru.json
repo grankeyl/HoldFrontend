@@ -118,7 +118,8 @@
         "Ready": "Готово",
         "SlaveFarm": "Ферма Рабов",
         "Socials": "Социальные сети",
-        "InviteFriends": "Пригласить {referrals} друзей"
+        "InviteFriends": "Пригласить {referrals} друзей",
+        "Partners": "Партнеры"
     },
 
     "LevelUp": {

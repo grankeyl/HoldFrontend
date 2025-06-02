@@ -118,7 +118,8 @@
         "Ready": "Ready",
         "SlaveFarm": "Slave Farm",
         "Socials": "Socials",
-        "InviteFriends": "Invite {referrals} peoples"
+        "InviteFriends": "Invite {referrals} peoples",
+        "Partners": "Partners"
     },
 
     "LevelUp": {

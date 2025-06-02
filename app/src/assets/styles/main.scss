@@ -251,6 +251,7 @@ button:disabled {
   color: #ffffff;
   text-align: left;
   white-space: nowrap;
+  margin-left: -3px;
 }
 
 .traffy-taskElementInstructionCont {
@@ -283,10 +284,12 @@ button:disabled {
   opacity: .83;
 }
 
-.traffy-taskElementButtonContOuter {
+.traffy-taskElementButtonText {
   width: fit-content;
   height: 33px;
   background: $app-button;
+  background-image: none;
+  border: 1px solid rgba($app-color-primary, 0.1);
   border-radius: 50px;
   border: none;
   padding: 0 12px;
@@ -300,21 +303,72 @@ button:disabled {
   background-image: none;
   margin: 0;
 
+  font-family: $font;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+
+  .traffy-taskElementButtonContInner {
+    display: none;
+  }
+
   &::before {
-    font-family: $font;
     content: 'Start';
-    width: fit-content;
-    height: fit-content;
-    font-size: 14px;
-    font-weight: 700;
-    color: $app-button-text;
-    text-align: center;
   }
 }
 
-.traffy-taskElementButtonContInner {
-  display: none;
+.traffy-taskElementButtonCheckText {
+  width: fit-content;
+  height: 33px;
+  background: $app-color-primary !important;
+  border: 1px solid rgba($app-color-primary, 0.1) !important;
+  border-radius: 50px;
+  border: none;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s linear, opacity 0.2s linear;
+  will-change: transform, opacity;
+  gap: 10px;
+  cursor: pointer;
+  background-image: none;
+  margin: 0;
+
+  font-family: $font;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
 }
+
+.traffy-taskElementButtonLoaderCont {
+
+  width: 64px;
+  height: 33px;
+  background: $app-bg-secondary-h;
+  border: 1px solid rgba($app-bg-secondary-h, 0.1);
+  border-radius: 50px;
+  border: none;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s linear, opacity 0.2s linear;
+  will-change: transform, opacity;
+  gap: 10px;
+  cursor: pointer;
+  background-image: none;
+  margin: 0;
+
+  font-family: $font;
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+}
+
+// .traffy-taskElementButtonContInner {
+//   display: none;
+// }
 
 .traffy-taskElementCont {
   width: 100%;
@@ -324,28 +378,6 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-
-.traffy-taskElementButtonLoaderCont {
-  width: fit-content;
-  height: 33px;
-  border-radius: 50px;
-  border: none;
-  padding: 0 12px;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  transition: transform 0.2s linear, opacity 0.2s linear;
-  will-change: transform, opacity;
-  gap: 10px;
-  cursor: pointer;
-  background-image: none;
-  background: $app-button;
-  margin: 0;
-
-  &::before {
-    display: none;
-  }
 }
 
 .traffy-taskElementInfoCont {

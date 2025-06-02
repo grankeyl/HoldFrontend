@@ -26,14 +26,13 @@ function onTaskLoad(tasks: Task[]) {
 }
 
 function onTaskRender(
+  changeReward: (str: string) => void,
   changeCardTitle: (str: string) => void,
   changeDescription: (str: string) => void,
   changeButtonCheckText: (str: string) => void
 ) {
-  console.log('onTaskRender triggered!');
-  changeDescription('Subscribe on:');
-  changeCardTitle('Subscribe on:');
-  changeButtonCheckText(`+${props.rewardAmount}`);
+  changeDescription(`+${props.rewardAmount}`);
+  changeButtonCheckText("Check");
 }
 
 async function onTaskReward(task: Task, signedToken: string) {
