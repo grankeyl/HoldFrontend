@@ -366,15 +366,12 @@ button:disabled {
   color: #000;
 }
 
-// .traffy-taskElementButtonContInner {
-//   display: none;
-// }
-
 .traffy-taskElementCont {
   width: 100%;
 }
 
 .traffyTasks {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 6px;
