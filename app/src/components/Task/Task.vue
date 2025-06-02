@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { toast } from 'vue3-toastify';
 import { collectConfetti } from '@/utils/useConfetti';
 import { AppCache } from '@/stores/pinia';
-
 import * as adsApi from '@/api/services/ads.service';
-
 import TelegramModule from '@/hooks/useTelegram';
 
 type Task = {
@@ -32,9 +30,10 @@ function onTaskRender(
   changeDescription: (str: string) => void,
   changeButtonCheckText: (str: string) => void
 ) {
-  changeDescription(`+${props.rewardAmount}`);
-  changeCardTitle('Subscribe on: ');
-  changeButtonCheckText('Check');
+  console.log('onTaskRender triggered!');
+  changeDescription('Subscribe on:');
+  changeCardTitle('Subscribe on:');
+  changeButtonCheckText(`+${props.rewardAmount}`);
 }
 
 async function onTaskReward(task: Task, signedToken: string) {
@@ -48,21 +47,20 @@ async function onTaskReward(task: Task, signedToken: string) {
   localStorage.setItem('ads_task', adToken);
 
   if (adToken) {
-      const result = await adsApi.complete({ reward_token: adToken || localStorage.getItem('ads_task') });
-      if (!result) return;
+    const result = await adsApi.complete({ reward_token: adToken || localStorage.getItem('ads_task') });
+    if (!result) return;
 
-      if (result.status === "error" && result.type === 'no_cost') {
-        toast.error('Error');
-        return;
-      }
+    if (result.status === "error" && result.type === 'no_cost') {
+      toast.error('Error');
+      return;
+    }
 
-      if (result.status === "success") {
-        collectConfetti();
-        TelegramModule.useMediumHaptic();
-
-        toast.success(`+${props.rewardAmount}`);
-        appCache.UserData.balance = result.new_balance;
-      }
+    if (result.status === "success") {
+      collectConfetti();
+      TelegramModule.useMediumHaptic();
+      toast.success(`+${props.rewardAmount}`);
+      appCache.UserData.balance = result.new_balance;
+    }
   }
 }
 
@@ -71,18 +69,28 @@ function onTaskReject(task: Task) {
   toast.error('Task rejected');
 }
 
-onMounted(() => {
-  const traffyTasksEl = traffyTasks.value
+function renderTraffyTasks() {
+  const traffyTasksEl = traffyTasks.value;
+
   if (traffyTasksEl && window.Traffy && typeof window.Traffy.renderTasks === 'function') {
+    traffyTasksEl.innerHTML = '';
+
+    console.log('Rendering tasks...');
     window.Traffy.renderTasks(traffyTasksEl, {
       max_tasks: 3,
       onTaskLoad,
       onTaskRender,
       onTaskReward,
       onTaskReject
-    })
+    });
   }
-})
+}
+
+onMounted(() => {
+  nextTick(() => {
+    renderTraffyTasks();
+  });
+});
 </script>
 
 <template>
@@ -90,7 +98,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.traffyTasks { 
+.traffyTasks {
   width: 100%;
 }
 </style>
