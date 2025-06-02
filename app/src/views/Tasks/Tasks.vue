@@ -201,18 +201,10 @@
             </swiper-slide>
           </swiper>
         </div>
-        
-        <div class="contextTasks">
-          <div class="contextTasksTitle">
-            <h4 v-html="$t('Tasks.Partners')"></h4>
-          </div>
 
-          <div class="contextTasksItems">
-            <TraffyTasks
-              :rewardAmount="GameData.ads.task"
-            />
-          </div>
-        </div>
+        <TraffyTasks
+          :rewardAmount="GameData.ads.task"
+        />
         
         <div class="contextTasks">
           <div class="contextTasksTitle">
@@ -770,7 +762,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use './Tasks.scss' as *;
 @use '@/components/Modal/Modal.scss' as *;
 </style>

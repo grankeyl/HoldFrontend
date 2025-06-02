@@ -17,9 +17,19 @@ const props = defineProps<{
   rewardAmount: number
 }>()
 
-const traffyTasks = ref<HTMLElement | null>(null)
+const hasTasks = ref(false);
+const traffyTasks = ref<HTMLElement | null>(null);
 
 function onTaskLoad(tasks: Task[]) {
+  console.log('onTaskLoad triggered with tasks:', tasks);
+
+  if (!Array.isArray(tasks) || tasks.length === 0) {
+    hasTasks.value = false;
+    return;
+  }
+
+  hasTasks.value = true;
+
   tasks.forEach(task => {
     console.log(`Task loaded: ${task.title} (ID: ${task.id})`);
   });
@@ -39,7 +49,7 @@ function onTaskRender(
 
 async function onTaskReward(task: Task, signedToken: string) {
   console.log(`Task rewarded: ${task.title} (ID: ${task.id}) with token: ${signedToken}`);
-
+  
   const appCache = AppCache() as any;
   const adUse = await adsApi.request({ task_type: "task" });
   if (!adUse) return;
@@ -71,19 +81,35 @@ function onTaskReject(task: Task) {
 }
 
 function renderTraffyTasks() {
-  const traffyTasksEl = traffyTasks.value;
+  const oldEl = traffyTasks.value;
 
-  if (traffyTasksEl && window.Traffy && typeof window.Traffy.renderTasks === 'function') {
-    traffyTasksEl.innerHTML = '';
+  if (!oldEl || !oldEl.parentNode) {
+    console.warn('traffyTasksEl not found');
+    return;
+  }
 
-    console.log('Rendering tasks...');
-    window.Traffy.renderTasks(traffyTasksEl, {
+  hasTasks.value = false;
+
+  const newEl = document.createElement('div');
+  newEl.className = 'traffyTasks';
+
+  oldEl.parentNode.replaceChild(newEl, oldEl);
+  traffyTasks.value = newEl;
+
+  if (window.Traffy && typeof window.Traffy.renderTasks === 'function') {
+    window.Traffy.renderTasks(newEl, {
       max_tasks: 3,
       onTaskLoad,
       onTaskRender,
       onTaskReward,
       onTaskReject
     });
+
+    setTimeout(() => {
+      console.log('[DEBUG] traffyTasksEl.innerHTML after render:', newEl.innerHTML);
+    }, 500);
+  } else {
+    console.warn('Traffy.renderTasks is not available');
   }
 }
 
@@ -95,10 +121,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="traffyTasks" ref="traffyTasks"></div>
+  <div class="contextTasks" :class="{ 'hide': !hasTasks }">
+    <div v-if="!hasTasks" class="loader-button"></div>
+    <div class="contextTasksTitle">
+      <h4 v-html="$t('Tasks.Partners')"></h4>
+    </div>
+    <div class="contextTasksItems">
+      <div class="traffyTasks" ref="traffyTasks"></div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+@import url('./Task.module.scss');
+
 .traffyTasks {
   width: 100%;
 }
