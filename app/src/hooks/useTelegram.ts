@@ -1,4 +1,4 @@
-import { on, postEvent, shareStory } from '@telegram-apps/sdk';
+import { on, postEvent } from '@telegram-apps/sdk';
 import { invoice } from '@telegram-apps/sdk';
 import { isDesktop } from '@/utils/checkDevice';
 

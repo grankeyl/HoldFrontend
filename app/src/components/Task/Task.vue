@@ -28,7 +28,6 @@ function onTaskLoad(tasks: Task[]) {
 }
 
 function onTaskRender(
-  changeReward: (str: string) => void,
   changeCardTitle: (str: string) => void,
   changeDescription: (str: string) => void,
   changeButtonCheckText: (str: string) => void
@@ -39,6 +38,8 @@ function onTaskRender(
 }
 
 async function onTaskReward(task: Task, signedToken: string) {
+  console.log(`Task rewarded: ${task.title} (ID: ${task.id}) with token: ${signedToken}`);
+
   const appCache = AppCache() as any;
   const adUse = await adsApi.request({ task_type: "task" });
   if (!adUse) return;
@@ -66,7 +67,8 @@ async function onTaskReward(task: Task, signedToken: string) {
 }
 
 function onTaskReject(task: Task) {
-  // логика при отклонении задания
+  console.log(`Task rejected: ${task.title} (ID: ${task.id})`);
+  toast.error('Task rejected');
 }
 
 onMounted(() => {
