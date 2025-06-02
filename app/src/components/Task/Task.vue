@@ -31,6 +31,8 @@ function onTaskRender(
   changeDescription: (str: string) => void,
   changeButtonCheckText: (str: string) => void
 ) {
+  changeReward(`+${props.rewardAmount}`);
+  changeCardTitle("");
   changeDescription(`+${props.rewardAmount}`);
   changeButtonCheckText("Check");
 }

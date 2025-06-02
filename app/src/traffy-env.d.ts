@@ -7,6 +7,7 @@ declare global {
           max_tasks?: number
           onTaskLoad?: (tasks: Task[]) => void
           onTaskRender?: (
+            changeReward: (str: string) => void,
             changeCardTitle: (str: string) => void,
             changeDescription: (str: string) => void,
             changeButtonCheckText: (str: string) => void
