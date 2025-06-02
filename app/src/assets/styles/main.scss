@@ -188,3 +188,169 @@ button:disabled {
 .head-balance {
   margin-top: calc(var(--tg-content-safe-area-inset-top, 0px) + 12px) !important;
 }
+
+.traffy-custom {
+    --traffy-buttonRewardImage-background-image: url('https://d36t0rmxsg07e0.cloudfront.net/arrow.webp');
+    --traffy-buttonRewardImage-background-size: 24px;
+    --traffy-taskElementButtonContOuter-padding: 0;
+    --traffy-taskElementButtonText-padding-left: 0;
+    --traffy-taskElementButtonContOuter-background-color: none;
+
+    --traffy-buttonLoader-border: 2px solid rgba(142, 142, 147, 1);
+
+    --traffy-buttonCheckRewardImage-background-image: none;
+    --traffy-buttonCheckRewardImage-background-size: 0;
+
+    --traffy-taskElementButtonCheckText-color: rgba(0, 122, 255, 1);
+    --traffy-taskElementButtonCheckText-font-size: 14px; 
+    --traffy-taskElementInstructionText-font-size: 14px;
+
+    --traffy-taskElementChannelText-color: $app-h;
+    --traffy-taskElementButtonText-padding-left: 4px;
+
+    --traffy-taskElementInstructionInfoCont-flex-direction: row;
+    --traffy-taskElementInstructionInfoCont-gap: 0px;
+
+    --traffy-taskElementInstructionDescriptionCont-display: flex;
+    --traffy-taskElementInstructionDescriptionCont-gap: 2px;
+    --traffy-taskElementInstructionDescriptionImg-image: url('/public/icons/Token.svg');
+    --traffy-taskElementInstructionDescriptionImg-size: 14px;
+    --traffy-taskElementInstructionDescriptionText-color: #ffffff;
+
+    --traffy-taskElementImageCont-display: block;
+    --traffy-taskElementInfoCont-gap: 12px;
+
+    --traffy-taskElementCont-bg: transparent;
+    --traffy-taskElementCont-height: 67px;
+
+    --traffy-taskElementImageCont-width: 47px;
+    --traffy-taskElementImageCont-height: 47px;
+
+    --traffy-taskElementCont-padding: 10px 0px;
+
+    --traffy-taskElementCont-font-family: $font;
+}
+
+.traffy-taskElementInstructionTextValue:before {
+  color: $app-h;
+}
+
+.traffy-taskElementImageCont {
+  width: 47px;
+  height: 47px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: $app-bg-secondary;
+}
+
+.traffy-taskElementInstructionText, .traffy-taskElementChannelText {
+  font-family: $font;
+  height: fit-content;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.traffy-taskElementInstructionCont {
+  justify-content: start;
+  gap: 4px;
+}
+
+.traffy-taskElementInstructionInfoCont {
+  height: fit-content;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.traffy-taskElementInstructionDescriptionCont {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 5px;
+}
+
+.traffy-taskElementInstructionDescriptionText {
+  font-family: $font;
+  gap: 5px;
+  opacity: .83;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.traffy-taskElementInstructionDescriptionImg {
+  opacity: .83;
+}
+
+.traffy-taskElementButtonContOuter {
+  width: fit-content;
+  height: 33px;
+  background: $app-button;
+  border-radius: 50px;
+  border: none;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s linear, opacity 0.2s linear;
+  will-change: transform, opacity;
+  gap: 10px;
+  cursor: pointer;
+  background-image: none;
+  margin: 0;
+
+  &::before {
+    font-family: $font;
+    content: 'Start';
+    width: fit-content;
+    height: fit-content;
+    font-size: 14px;
+    font-weight: 700;
+    color: $app-button-text;
+    text-align: center;
+  }
+}
+
+.traffy-taskElementButtonContInner {
+  display: none;
+}
+
+.traffy-taskElementCont {
+  width: 100%;
+}
+
+.traffyTasks {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.traffy-taskElementButtonLoaderCont {
+  width: fit-content;
+  height: 33px;
+  border-radius: 50px;
+  border: none;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  transition: transform 0.2s linear, opacity 0.2s linear;
+  will-change: transform, opacity;
+  gap: 10px;
+  cursor: pointer;
+  background-image: none;
+  background: $app-button;
+  margin: 0;
+
+  &::before {
+    display: none;
+  }
+}
+
+.traffy-taskElementInfoCont {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+

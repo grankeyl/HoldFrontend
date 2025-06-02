@@ -262,12 +262,7 @@
               </div>
             </div>
 
-            <Task 
-              v-for="(task, i) in TasksAdsgram"
-              :key="i"
-              :debug="false" 
-              :blockId="task"
-              :animationDelay="`${i * 0.27}s`"
+            <TraffyTasks
               :rewardAmount="GameData.ads.task"
             />
 
@@ -299,9 +294,8 @@ import * as telegramApi from '@/api/services/telegram.service';
 import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue'
-import Task from '@/components/Task/Task.vue';
 import Modal from '@/components/Modal/Modal.vue';
-
+import TraffyTasks from '@/components/Task/Task.vue';
 
 export default {
   props: {
@@ -316,7 +310,7 @@ export default {
     Loader,
     Swiper,
     SwiperSlide,
-    Task,
+    TraffyTasks,
     Modal,
   },
 

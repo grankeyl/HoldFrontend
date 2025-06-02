@@ -43,7 +43,9 @@
               class="fade-in"
               @load="onImageLoad"
             />
-            <span v-if="PageType === 'slave'">{{ FriendData.name }}</span>
+            <span v-if="PageType === 'slave'">
+              <p>{{ FriendData.name }}</p>
+            </span>
           </div>
           <div class="contextInfoLevel">
 
@@ -304,10 +306,7 @@ export default {
     const upgradeAll = async () => {
       const appCache = AppCache() as any;
       const result = await adsApi.complete({ reward_token: localStorage.getItem('ads_last_upgrade_friends') || '' });
-
       if (!result) return;
-
-      console.log('Upgrade all friends result:', result);
 
       if (result.status === "error" && result.type === 'no_cost') {
         toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.value }));
@@ -327,7 +326,6 @@ export default {
     const upgradeFriend = async () => {
       const appCache = AppCache() as any;
       const result = await adsApi.complete({ reward_token: localStorage.getItem('ads_last_upgrade_friend') || '' });
-
       if (!result) return;
 
       if (result.status === "error" && result.type === 'no_cost') {

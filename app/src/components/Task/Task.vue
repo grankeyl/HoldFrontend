@@ -1,72 +1,94 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
-import { Icon } from '../Icons';
+import { ref, onMounted } from 'vue';
+import { toast } from 'vue3-toastify';
+import { collectConfetti } from '@/utils/useConfetti';
+import { AppCache } from '@/stores/pinia';
 
-import IconComp from '@/components/IconComp.vue';
-import taskStyles from '@/components/Task/Task.module.scss';
+import * as adsApi from '@/api/services/ads.service';
 
+import TelegramModule from '@/hooks/useTelegram';
+
+type Task = {
+  id: string
+  title: string
+  image_url: string | null
+  link: string
+}
 
 const props = defineProps<{
-  debug: boolean;
-  blockId: string;
-  animationDelay: string;
-  rewardAmount: number;
-}>();
+  rewardAmount: number
+}>()
 
-const contextTasksItemsItem = ref<HTMLElement | null>(null);
-const isReady = ref(false);
+const traffyTasks = ref<HTMLElement | null>(null)
 
-const handler = (event: Event) => {
-  const customEvent = event as CustomEvent;
-  alert(`reward, detail = ${customEvent.detail}`);
-};
+function onTaskLoad(tasks: Task[]) {
+  tasks.forEach(task => {
+    console.log(`Task loaded: ${task.title} (ID: ${task.id})`);
+  });
+}
+
+function onTaskRender(
+  changeReward: (str: string) => void,
+  changeCardTitle: (str: string) => void,
+  changeDescription: (str: string) => void,
+  changeButtonCheckText: (str: string) => void
+) {
+  changeDescription(`+${props.rewardAmount}`);
+  changeCardTitle('Subscribe on: ');
+  changeButtonCheckText('Check');
+}
+
+async function onTaskReward(task: Task, signedToken: string) {
+  const appCache = AppCache() as any;
+  const adUse = await adsApi.request({ task_type: "task" });
+  if (!adUse) return;
+
+  const adToken = adUse.reward_token;
+  localStorage.setItem('ads_task', adToken);
+
+  if (adToken) {
+      const result = await adsApi.complete({ reward_token: adToken || localStorage.getItem('ads_task') });
+      if (!result) return;
+
+      if (result.status === "error" && result.type === 'no_cost') {
+        toast.error('Error');
+        return;
+      }
+
+      if (result.status === "success") {
+        collectConfetti();
+        TelegramModule.useMediumHaptic();
+
+        toast.success(`+${props.rewardAmount}`);
+        appCache.UserData.balance = result.new_balance;
+      }
+  }
+}
+
+function onTaskReject(task: Task) {
+  // логика при отклонении задания
+}
 
 onMounted(() => {
-  if (customElements.get('adsgram-task')) {
-    isReady.value = true;
+  const traffyTasksEl = traffyTasks.value
+  if (traffyTasksEl && window.Traffy && typeof window.Traffy.renderTasks === 'function') {
+    window.Traffy.renderTasks(traffyTasksEl, {
+      max_tasks: 3,
+      onTaskLoad,
+      onTaskRender,
+      onTaskReward,
+      onTaskReject
+    })
   }
-
-  if (contextTasksItemsItem.value) {
-    contextTasksItemsItem.value.addEventListener('reward', handler);
-  }
-});
-
-onUnmounted(() => {
-  if (contextTasksItemsItem.value) {
-    contextTasksItemsItem.value.removeEventListener('reward', handler);
-  }
-});
+})
 </script>
 
 <template>
-  <adsgram-task
-    v-if="isReady"
-    class="contextTasksItemsItem"
-    :data-block-id="props.blockId"
-    :data-debug="props.debug"
-    ref="contextTasksItemsItem"
-    :style="{ animationDelay: props.animationDelay }"
-  >
-    <div slot="reward" :class="taskStyles.reward">
-        <span>+{{ rewardAmount }}</span>
-        <IconComp 
-            :icon="Icon.Token"
-            width="16px"
-            height="16px"
-        />
-    </div>
-    <div slot="button" :class="taskStyles.button">
-        <span v-html="$t('Tasks.Start')"></span>
-    </div>
-    <div slot="done" :class="taskStyles.done">
-        <span v-html="$t('Tasks.Ready')"></span>
-    </div>
-  </adsgram-task>
+  <div class="traffyTasks" ref="traffyTasks"></div>
 </template>
 
-<style>
-  ::slotted(img) {
-    opacity: 0;
-    display: none;
-  }
+<style scoped>
+.traffyTasks { 
+  width: 100%;
+}
 </style>
