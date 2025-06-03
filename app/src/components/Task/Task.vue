@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, nextTick } from 'vue';
 import { toast } from 'vue3-toastify';
+import { getCurrentInstance } from 'vue';
 import { collectConfetti } from '@/utils/useConfetti';
 import { AppCache } from '@/stores/pinia';
 import * as adsApi from '@/api/services/ads.service';
 import TelegramModule from '@/hooks/useTelegram';
+
+const { proxy } = getCurrentInstance()! as any;
 
 type Task = {
   id: string
@@ -48,16 +51,16 @@ async function onTaskReward(task: Task, signedToken: string) {
 
   console.log('✅ result', result);
 
-  if (result.status === 'error' && result.type === 'no_cost') {
-    toast.error('Error');
+  if (result.type && result.type === 'no_cost') {
+    toast.error(proxy.$t('Toasts.ErrorTask'));
     return;
   }
 
-  if (result.status === 'success') {
+  if (!result.type && result.balance) {
     collectConfetti();
     TelegramModule.useMediumHaptic();
-    toast.success(`+${props.rewardAmount}`);
-    appCache.UserData.balance = result.new_balance;
+    toast.success(`${proxy.$t('Toasts.SuccessEarnTokens', { tokens: result.balance })}`);
+    appCache.UserData.balance = result.balance;
   }
 }
 

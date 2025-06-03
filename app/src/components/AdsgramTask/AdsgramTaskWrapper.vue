@@ -2,8 +2,16 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { toast } from 'vue3-toastify';
 import { Icon } from '@/components/Icons';
+import { collectConfetti } from '@/utils/useConfetti';
+import { AppCache } from '@/stores/pinia';
+import { getCurrentInstance } from 'vue';
 
+import * as adsApi from '@/api/services/ads.service';
+
+import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue';
+
+const { proxy } = getCurrentInstance()! as any;
 
 const props = defineProps<{
   rewardAmount: number;
@@ -14,10 +22,33 @@ const props = defineProps<{
 const taskRef = ref<HTMLElement | null>(null);
 const hasTask = ref(true); // флаг отображения
 
-const onReward = (event: Event) => {
+const onReward = async (event: Event) => {
   const customEvent = event as CustomEvent;
   console.log('✅ onReward', customEvent);
-  toast.success(`+${props.rewardAmount}`);
+  
+  const appCache = AppCache() as any;
+  const adUse = await adsApi.request({ task_type: 'task' });
+  if (!adUse) return;
+
+  const adToken = adUse.reward_token;
+  localStorage.setItem('ads_task', adToken);
+
+  const result = await adsApi.complete({ reward_token: adToken });
+  if (!result) return;
+
+  console.log('✅ result', result);
+
+  if (result.type && result.type === 'no_cost') {
+    toast.error(proxy.$t('Toasts.ErrorTask'));
+    return;
+  }
+
+  if (!result.type && result.balance) {
+    collectConfetti();
+    TelegramModule.useMediumHaptic();
+    toast.success(`${proxy.$t('Toasts.SuccessEarnTokens', { tokens: result.balance })}`);
+    appCache.UserData.balance = result.balance;
+  }
 };
 
 const onError = (event: Event) => {
