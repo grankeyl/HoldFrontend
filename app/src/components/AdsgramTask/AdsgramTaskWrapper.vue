@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { toast } from 'vue3-toastify';
-
 import { Icon } from '@/components/Icons';
+
 import IconComp from '@/components/IconComp.vue';
 
 const props = defineProps<{
@@ -20,6 +20,12 @@ const onReward = (event: Event) => {
   toast.success(`+${props.rewardAmount}`);
 };
 
+const onError = (event: Event) => {
+  const customEvent = event as CustomEvent;
+  console.error('❌ Error:', customEvent.detail);
+  hasTask.value = false;
+};
+
 const onBannerNotFound = () => {
   console.log('❌ No task to display');
   hasTask.value = false;
@@ -27,11 +33,13 @@ const onBannerNotFound = () => {
 
 onMounted(() => {
   taskRef.value?.addEventListener('reward', onReward);
+  taskRef.value?.addEventListener('onError', onError);
   taskRef.value?.addEventListener('onBannerNotFound', onBannerNotFound);
 });
 
 onBeforeUnmount(() => {
   taskRef.value?.removeEventListener('reward', onReward);
+  taskRef.value?.removeEventListener('onError', onError);
   taskRef.value?.removeEventListener('onBannerNotFound', onBannerNotFound);
 });
 </script>
