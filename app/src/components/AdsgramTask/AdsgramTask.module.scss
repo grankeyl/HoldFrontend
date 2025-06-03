@@ -9,6 +9,7 @@
   --adsgram-task-icon-border-radius: 12px;
 
   width: 100%;
+  justify-content: flex-start;
   font-family: $font;
   background-color: #000;
 }
@@ -117,10 +118,10 @@
 }
 
 .task__button {
-  width: fit-content;
   position: absolute;
-  bottom: 0;
   right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .task__reward {
@@ -133,6 +134,7 @@
   z-index: 1;
   gap: 5px;
   opacity: .83;
+  width: 550px;
 
   & strong {
     font-size: 17px;
