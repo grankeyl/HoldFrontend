@@ -250,6 +250,8 @@ export default {
             const adUse = await adsApi.request({ task_type: "share_to_stories" });
             if (!adUse) return;
 
+            console.log('✅ adUse', adUse);
+
             if (adUse.status === "error" && adUse.message.type === 'too_soon') {
               toast.error(this.proxy.$t('Toasts.ErrorStories'));
               return;

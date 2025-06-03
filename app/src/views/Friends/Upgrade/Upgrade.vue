@@ -155,7 +155,7 @@
         </button>
       </div>
       <div class="buttonsButton ads">
-        <button @click="upgradeAllAds()">
+        <button @click="upgradeAds()">
           <div class="bg">
             <img 
               src="/friends/upgrade/ads.png"
@@ -165,7 +165,7 @@
             />
           </div>
           <span v-html="$t('FriendsUpgrade.Button')"></span>
-          <strong v-if="!PageLoading">
+          <strong v-if="!PageLoading && !VideoUpgradeLoading">
             <p v-if="PageType === 'all'">{{ toUniqNumber(AllFriendsData.tokens_to_upgrade_discount) }}</p>
             <p v-if="PageType === 'slave'">{{ toUniqNumber(FriendData.tokens_to_upgrade_discount) }}</p>
             <IconComp 
@@ -174,7 +174,7 @@
               height="16px"
             />
           </strong>
-          <strong v-if="PageLoading">
+          <strong v-if="PageLoading || VideoUpgradeLoading">
             <div class="loader-button"></div>
           </strong>
           <svg width="43" height="44" viewBox="0 0 43 44" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -298,7 +298,9 @@ export default {
     const router = useRouter();
 
     const params = route.params as any;
+
     const PageType = ref('slave');
+    const VideoUpgradeLoading = ref(false) as any;
 
     const userId = Number(params?.user_id ?? 0);
     if (userId === 0) PageType.value = 'all';
@@ -343,7 +345,10 @@ export default {
       }
     };
 
-    const upgradeAllAds = async () => {
+    const upgradeAds = async () => {
+      if (VideoUpgradeLoading.value) return;
+      VideoUpgradeLoading.value = true;
+
       const adUse = await adsApi.request({ 
         task_type: PageType.value === 'all' ? 'upgrade_friends' : 'upgrade_friend',
         user_id: userId
@@ -358,8 +363,13 @@ export default {
         localStorage.setItem('ads_last_upgrade_friend', adToken);
       }
 
-      const onReward = () => PageType.value === 'all' ? upgradeAll() : upgradeFriend();
-      const onError = () => toast.warn(proxy.$t('Toasts.ErrorShowAds'));
+      const onReward = () => {
+        PageType.value === 'all' ? upgradeAll() : upgradeFriend();
+      }
+      const onError = () => {
+        toast.warn(proxy.$t('Toasts.ErrorShowAds'));
+        VideoUpgradeLoading.value = false;
+      };
 
       const showAd = await useAdsgram({
         blockId: import.meta.env.VITE_APP_ADSGRAM_UPGRADE_PAGE_VIDEO_BLOCK_ID,
@@ -373,7 +383,8 @@ export default {
     return {
       proxy,
 
-      upgradeAllAds
+      upgradeAds,
+      VideoUpgradeLoading
     };
   },
 
