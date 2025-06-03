@@ -40,13 +40,13 @@ async function onTaskReward(task: Task, signedToken: string) {
   const adUse = await adsApi.request({ task_type: 'task' });
   if (!adUse) return;
 
-  console.log('✅ adUse', adUse);
-
   const adToken = adUse.reward_token;
   localStorage.setItem('ads_task', adToken);
 
   const result = await adsApi.complete({ reward_token: adToken });
   if (!result) return;
+
+  console.log('✅ result', result);
 
   if (result.status === 'error' && result.type === 'no_cost') {
     toast.error('Error');
