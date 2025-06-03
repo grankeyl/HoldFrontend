@@ -205,7 +205,7 @@
         
         <div class="contextTasks">
           <div class="contextTasksTitle">
-            <h4 v-html="$t('Task.Partners')"></h4>
+            <h4 v-html="$t('Tasks.Partners')"></h4>
           </div>
 
           <div class="contextTasksItems">

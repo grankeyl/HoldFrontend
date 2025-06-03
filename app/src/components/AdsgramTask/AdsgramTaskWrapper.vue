@@ -35,19 +35,22 @@ onBeforeUnmount(() => {
     :data-debug="props.dataDebug"
     class="task"
   >
-    <p slot="reward" class="task__reward">
+    <span slot="reward" class="task__reward">
       <strong>+{{ props.rewardAmount }}</strong>
       <IconComp 
         :icon="Icon.Token"
         width="16px"
         height="16px"
       />
-    </p>
+    </span>
     <div slot="button" class="task__button go">
-      Start
+      <span>Start</span>
+    </div>
+    <div slot="claim" class="task__button claim">
+      <span>Claim</span>
     </div>
     <div slot="done" class="task__button done">
-      Claim
+      <span>Done</span>
     </div>
   </adsgram-task>
 </template>
