@@ -126,47 +126,7 @@
           </div>
         </div>
 
-        <swiper v-bind="SwiperPlacesOptions" class="contextPlaces">
-          <swiper-slide v-for="(place, index) in TrimmedPlacesList" :key="index">
-            <div 
-              class="contextPlace" 
-              :style="{ animationDelay: `${index * 0.31}s` }"
-            >
-              <div class="contextPlaceOverlay">
-                <img 
-                  :src="PlacesListData[place.type].photo"
-                  alt="bg"
-                />
-                <div class="shadow"></div>
-              </div>
-              <div class="contextPlaceContext">
-                <div class="contextPlaceContextImage">
-                  <img 
-                    :src="PlacesListData[place.type].icon"
-                    alt="icon"
-                    class="fade-in"
-                    @load="onImageLoad"
-                  />
-                </div>
-                <div class="contextPlaceContextTitle">
-                  <h4 v-if="$i18n.locale === 'en'">{{ toRoman(place.id) }} {{ PlacesListData[place.type].nameEn }}</h4>
-                  <h4 v-if="$i18n.locale === 'ru'">{{ toRoman(place.id) }} {{ PlacesListData[place.type].name }}</h4>
-                </div>
-                <div class="contextPlaceContextInfo">
-                  <IconComp 
-                    :icon="Icon.Friends"
-                    width="12px"
-                    height="12px"
-                  />
-                  <p>{{ place.referrals_need }}</p>
-                  <span>+{{ place.percents_add }}%</span>
-                </div>
-              </div>
-            </div>
-          </swiper-slide>
-        </swiper>
-
-        <!-- <div class="contextPlaces">
+        <div class="contextPlaces">
           <div 
             v-for="(place, index) in TrimmedPlacesList" :key="index"
             class="contextPlace" 
@@ -203,7 +163,7 @@
               </div>
             </div>
           </div>
-        </div> -->
+        </div>
 
         <div class="contextTip">
           <IconComp
@@ -234,8 +194,6 @@
 import { AppCache } from '@/stores/pinia';
 import { toRoman } from '@/utils/useGame';
 import { getPlacesData } from '@/utils/usePlaces';
-import { Autoplay } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Icon } from '@/components/Icons';
 
 // @ts-ignore
@@ -253,8 +211,6 @@ export default {
   },
 
   components: {
-    Swiper,
-    SwiperSlide,
     IconComp,
   },
 
@@ -262,17 +218,6 @@ export default {
     const appCache = AppCache();
 
     return {
-      SwiperPlacesOptions: {
-        modules: [Autoplay],
-        slidesPerView: 3,
-        initialSlide: 0,
-        autoplay: {
-          delay: 3100,
-          disableOnInteraction: false,
-        },
-        speed: 700,
-      } as any,
-
       PropsSuccess: this.success,
       IsPageLoading: false,
 
