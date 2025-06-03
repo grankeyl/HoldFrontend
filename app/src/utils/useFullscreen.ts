@@ -15,7 +15,10 @@ function delay(ms: number): Promise<void> {
 
 export default function useFullscreen() {
   onMounted(() => {
-    if (!WebApp || isDesktop()) return
+    if (!WebApp || isDesktop()) {
+      WebApp.exitFullscreen?.()
+      return
+    }
 
     const expand = () => {
       WebApp?.requestFullscreen?.()
