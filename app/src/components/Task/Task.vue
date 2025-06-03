@@ -30,7 +30,7 @@ function onTaskRender(
   changeReward(`+${props.rewardAmount}`);
   changeCardTitle('');
   changeDescription(`+${props.rewardAmount}`);
-  changeButtonCheckText('Check');
+  changeButtonCheckText('Claim');
 }
 
 async function onTaskReward(task: Task, signedToken: string) {
@@ -39,6 +39,8 @@ async function onTaskReward(task: Task, signedToken: string) {
   const appCache = AppCache() as any;
   const adUse = await adsApi.request({ task_type: 'task' });
   if (!adUse) return;
+
+  console.log('✅ adUse', adUse);
 
   const adToken = adUse.reward_token;
   localStorage.setItem('ads_task', adToken);

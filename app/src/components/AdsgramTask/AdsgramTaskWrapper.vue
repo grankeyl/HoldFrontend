@@ -1,24 +1,30 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { Icon } from '@/components/Icons';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { toast } from 'vue3-toastify';
 
+import { Icon } from '@/components/Icons';
 import IconComp from '@/components/IconComp.vue';
 
 const props = defineProps<{
-  rewardAmount: number,
-  dataBlockId: string,
-  dataDebug: boolean
+  rewardAmount: number;
+  dataBlockId: string;
+  dataDebug: boolean;
 }>();
 
 const taskRef = ref<HTMLElement | null>(null);
 
+const onReward = (event: Event) => {
+  const customEvent = event as CustomEvent;
+  console.log('✅ onReward', customEvent);
+  toast.success(`+${props.rewardAmount}`);
+};
+
 onMounted(() => {
-  if (taskRef.value) {
-    taskRef.value.addEventListener('reward', () => {
-      toast.success(`+${props.rewardAmount}`);
-    });
-  }
+  taskRef.value?.addEventListener('reward', onReward);
+});
+
+onBeforeUnmount(() => {
+  taskRef.value?.removeEventListener('reward', onReward);
 });
 </script>
 
@@ -29,7 +35,7 @@ onMounted(() => {
     :data-debug="props.dataDebug"
     class="task"
   >
-    <p slot='reward' class="task__reward">
+    <p slot="reward" class="task__reward">
       <strong>+{{ props.rewardAmount }}</strong>
       <IconComp 
         :icon="Icon.Token"
@@ -37,11 +43,11 @@ onMounted(() => {
         height="16px"
       />
     </p>
-    <div slot='button' class="task__button go">
-      <span v-html="$t('Tasks.Start')"></span>
+    <div slot="button" class="task__button go">
+      Start
     </div>
-    <div slot='done' class="task__button done">
-      <span v-html="$t('Tasks.Claim')"></span>
+    <div slot="done" class="task__button done">
+      Claim
     </div>
   </adsgram-task>
 </template>

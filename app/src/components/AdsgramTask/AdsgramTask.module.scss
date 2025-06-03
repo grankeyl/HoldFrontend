@@ -45,7 +45,7 @@
   width: fit-content;
   height: 33px;
   margin-left: -32px;
-  margin-top: -10px;
+  margin-top: -3px;
   background: $app-button;
   border-radius: 50px;
   border: none;
@@ -58,24 +58,21 @@
   gap: 10px;
   cursor: pointer;
   z-index: 1;
+  font-size: 14px;
+  font-weight: 700;
+  color: $app-button-text;
+  margin-top: 1px;
   
   &:active {
     opacity: 0.87;
   }
-
-    span {
-      font-size: 14px;
-      font-weight: 700;
-      color: $app-button-text;
-      margin-top: 1px;
-    }
 }
 
 .claim {
   width: fit-content;
   height: 33px;
   margin-left: -32px;
-  margin-top: -10px;
+  margin-top: -3px;
   background: $app-color-primary;
   border: 1px solid rgba($app-color-primary, 0.1);
   border-radius: 50px;
@@ -89,24 +86,21 @@
   gap: 10px;
   cursor: pointer;
   z-index: 1;
+  font-size: 14px;
+  font-weight: 700;
+  color: $app-color-primary;
+  margin-top: 1px;
   
   &:active {
     opacity: 0.87;
   }
-
-    span {
-      font-size: 14px;
-      font-weight: 700;
-      color: $app-color-primary;
-      margin-top: 1px;
-    }
 }
 
 .done {
   width: fit-content;
   height: 33px;
   margin-left: -32px;
-  margin-top: -10px;
+  margin-top: -3px;
   background: $app-bg-secondary-h;
   border-radius: 50px;
   border: none;
@@ -119,17 +113,14 @@
   gap: 10px;
   cursor: pointer;
   z-index: 1;
-  
+  font-size: 14px;
+  font-weight: 700;
+  color: $app-color-primary;
+  margin-top: 1px;
+
   &:active {
     opacity: 0.87;
   }
-
-    span {
-      font-size: 14px;
-      font-weight: 700;
-      color: $app-color-primary;
-      margin-top: 1px;
-    }
 }
 
 .contextTasks.hide {
