@@ -12,6 +12,7 @@ const props = defineProps<{
 }>();
 
 const taskRef = ref<HTMLElement | null>(null);
+const hasTask = ref(true); // флаг отображения
 
 const onReward = (event: Event) => {
   const customEvent = event as CustomEvent;
@@ -19,17 +20,25 @@ const onReward = (event: Event) => {
   toast.success(`+${props.rewardAmount}`);
 };
 
+const onBannerNotFound = () => {
+  console.log('❌ No task to display');
+  hasTask.value = false;
+};
+
 onMounted(() => {
   taskRef.value?.addEventListener('reward', onReward);
+  taskRef.value?.addEventListener('onBannerNotFound', onBannerNotFound);
 });
 
 onBeforeUnmount(() => {
   taskRef.value?.removeEventListener('reward', onReward);
+  taskRef.value?.removeEventListener('onBannerNotFound', onBannerNotFound);
 });
 </script>
 
 <template>
   <adsgram-task
+    v-if="hasTask"
     ref="taskRef"
     :data-block-id="props.dataBlockId"
     :data-debug="props.dataDebug"
