@@ -308,9 +308,7 @@ export default {
       const result = await adsApi.complete({ reward_token: localStorage.getItem('ads_last_upgrade_friends') || '' });
       if (!result) return;
 
-      console.log(result);
-
-      if (result.status === "error" && result.type === 'no_cost') {
+      if (result.type === 'no_cost') {
         toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.value }));
         return;
       }
@@ -330,9 +328,7 @@ export default {
       const result = await adsApi.complete({ reward_token: localStorage.getItem('ads_last_upgrade_friend') || '' });
       if (!result) return;
 
-      console.log(result);
-
-      if (result.status === "error" && result.type === 'no_cost') {
+      if (result.type === 'no_cost') {
         toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.value }));
         return;
       }
