@@ -30,6 +30,7 @@
   width: fit-content;
   height: 33px;
   margin-left: -32px;
+  margin-top: -10px;
   background: $app-button;
   border-radius: 50px;
   border: none;
@@ -59,6 +60,7 @@
   width: fit-content;
   height: 33px;
   margin-left: -32px;
+  margin-top: -10px;
   background: $app-bg-secondary-h;
   border-radius: 50px;
   border: none;
@@ -104,5 +106,5 @@
 }
 
 .contextTasks {
-  margin-top: 12px !important;
+  margin-top: 2px !important;
 }

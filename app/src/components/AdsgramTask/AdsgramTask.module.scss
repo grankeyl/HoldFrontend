@@ -24,6 +24,7 @@
     z-index: 1;
     gap: 4px;
     opacity: .8;
+    width: 550px;
 
     & span {
       width: fit-content;
@@ -44,6 +45,7 @@
   width: fit-content;
   height: 33px;
   margin-left: -32px;
+  margin-top: -10px;
   background: $app-button;
   border-radius: 50px;
   border: none;
@@ -55,10 +57,10 @@
   will-change: transform, opacity;
   gap: 10px;
   cursor: pointer;
+  z-index: 1;
   
   &:active {
     opacity: 0.87;
-    transform: scale(0.98);
   }
 
     span {
@@ -69,10 +71,42 @@
     }
 }
 
+.claim {
+  width: fit-content;
+  height: 33px;
+  margin-left: -32px;
+  margin-top: -10px;
+  background: $app-color-primary;
+  border: 1px solid rgba($app-color-primary, 0.1);
+  border-radius: 50px;
+  border: none;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s linear, opacity 0.2s linear;
+  will-change: transform, opacity;
+  gap: 10px;
+  cursor: pointer;
+  z-index: 1;
+  
+  &:active {
+    opacity: 0.87;
+  }
+
+    span {
+      font-size: 14px;
+      font-weight: 700;
+      color: $app-color-primary;
+      margin-top: 1px;
+    }
+}
+
 .done {
   width: fit-content;
   height: 33px;
   margin-left: -32px;
+  margin-top: -10px;
   background: $app-bg-secondary-h;
   border-radius: 50px;
   border: none;
@@ -84,10 +118,10 @@
   will-change: transform, opacity;
   gap: 10px;
   cursor: pointer;
+  z-index: 1;
   
   &:active {
     opacity: 0.87;
-    transform: scale(0.98);
   }
 
     span {
