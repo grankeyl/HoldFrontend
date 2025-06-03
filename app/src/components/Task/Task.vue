@@ -116,9 +116,9 @@ setInterval(() => {
 <template>
   <div v-if="!tasksNotFound" class="contextTasks">
     <div>
-      <div class="contextTasksTitle">
+      <!-- <div class="contextTasksTitle">
         <h4 v-html="$t('Tasks.Partners')" />
-      </div>
+      </div> -->
       <div class="contextTasksItems">
         <div id="traffyTasks" class="traffyTasks" />
       </div>

@@ -312,6 +312,7 @@ export default {
 
       if (result.type === 'no_cost') {
         toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.value }));
+        VideoUpgradeLoading.value = false;
         return;
       }
 
@@ -332,6 +333,7 @@ export default {
 
       if (result.type === 'no_cost') {
         toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.value }));
+        VideoUpgradeLoading.value = false;
         return;
       }
 

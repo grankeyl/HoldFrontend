@@ -202,6 +202,23 @@
           </swiper>
         </div>
 
+        
+        <div class="contextTasks">
+          <div class="contextTasksTitle">
+            <h4 v-html="$t('Tasks.Socials')"></h4>
+          </div>
+
+          <div class="contextTasksItems">
+            <AdsgramTask
+              v-for="(task, i) in TasksAdsgram"
+              :key="i"
+              :rewardAmount="GameData.ads.task"
+              :dataBlockId="task"
+              :dataDebug="false"
+            />
+          </div>
+        </div>
+
         <TraffyTasks
           :rewardAmount="GameData.ads.task"
         />
@@ -294,6 +311,7 @@ import TelegramModule from '@/hooks/useTelegram';
 import IconComp from '@/components/IconComp.vue'
 import Loader from '@/components/Loader.vue'
 import Modal from '@/components/Modal/Modal.vue';
+import AdsgramTask from '@/components/AdsgramTask/AdsgramTaskWrapper.vue';
 import TraffyTasks from '@/components/Task/Task.vue';
 
 export default {
@@ -309,6 +327,7 @@ export default {
     Loader,
     Swiper,
     SwiperSlide,
+    AdsgramTask,
     TraffyTasks,
     Modal,
   },
