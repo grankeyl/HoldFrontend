@@ -6,12 +6,11 @@ import WebApp from "@twa-dev/sdk";
 
 const TelegramModule = {
     async initMiniApp() { 
-      useFullscreen();
-
       WebApp.requestWriteAccess();
       WebApp.disableVerticalSwipes();
-      WebApp.expand();
       WebApp.ready();
+      WebApp.expand();
+      useFullscreen();
     },
 
     initDataRaw() {
