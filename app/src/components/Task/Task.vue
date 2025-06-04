@@ -38,7 +38,6 @@ function onTaskRender(
 
 async function onTaskReward(task: Task, signedToken: string) {
   console.log('✅ onTaskReward', task, signedToken);
-
   const appCache = AppCache() as any;
   const adUse = await adsApi.request({ task_type: 'task' });
   if (!adUse) return;
@@ -49,8 +48,6 @@ async function onTaskReward(task: Task, signedToken: string) {
   const result = await adsApi.complete({ reward_token: adToken });
   if (!result) return;
 
-  console.log('✅ result', result);
-
   if (result.type && result.type === 'no_cost') {
     toast.error(proxy.$t('Toasts.ErrorTask'));
     return;
@@ -59,7 +56,7 @@ async function onTaskReward(task: Task, signedToken: string) {
   if (!result.type && result.balance) {
     collectConfetti();
     TelegramModule.useMediumHaptic();
-    toast.success(`${proxy.$t('Toasts.SuccessEarnTokens', { tokens: result.balance })}`);
+    toast.success(`${proxy.$t('Toasts.SuccessEarnTokens', { tokens: props.rewardAmount })}`);
     appCache.UserData.balance = result.balance;
   }
 }

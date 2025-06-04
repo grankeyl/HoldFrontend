@@ -25,7 +25,6 @@ const hasTask = ref(true); // флаг отображения
 const onReward = async (event: Event) => {
   const customEvent = event as CustomEvent;
   console.log('✅ onReward', customEvent);
-  
   const appCache = AppCache() as any;
   const adUse = await adsApi.request({ task_type: 'task' });
   if (!adUse) return;
@@ -36,8 +35,6 @@ const onReward = async (event: Event) => {
   const result = await adsApi.complete({ reward_token: adToken });
   if (!result) return;
 
-  console.log('✅ result', result);
-
   if (result.type && result.type === 'no_cost') {
     toast.error(proxy.$t('Toasts.ErrorTask'));
     return;
@@ -46,7 +43,7 @@ const onReward = async (event: Event) => {
   if (!result.type && result.balance) {
     collectConfetti();
     TelegramModule.useMediumHaptic();
-    toast.success(`${proxy.$t('Toasts.SuccessEarnTokens', { tokens: result.balance })}`);
+    toast.success(`${proxy.$t('Toasts.SuccessEarnTokens', { tokens: props.rewardAmount })}`);
     appCache.UserData.balance = result.balance;
   }
 };
