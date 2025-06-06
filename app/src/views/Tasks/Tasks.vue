@@ -379,7 +379,8 @@ export default {
       },
 
       TasksAdsgram: [
-        import.meta.env.VITE_APP_ADSGRAM_TASK_1
+        import.meta.env.VITE_APP_ADSGRAM_TASK_1,
+        import.meta.env.VITE_APP_ADSGRAM_TASK_2
       ] as any[],
 
       Icon,
