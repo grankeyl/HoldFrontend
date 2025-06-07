@@ -1,8 +1,8 @@
 import { on, postEvent } from '@telegram-apps/sdk';
 import { invoice } from '@telegram-apps/sdk';
 
-import useFullscreen from '@/utils/useFullscreen';
 import WebApp from "@twa-dev/sdk";
+import { isDesktop } from '@/utils/checkDevice';
 
 const TelegramModule = {
     async initMiniApp() { 
@@ -10,7 +10,10 @@ const TelegramModule = {
       WebApp.disableVerticalSwipes();
       WebApp.ready();
       WebApp.expand();
-      useFullscreen();
+
+      if (!isDesktop()) {
+        WebApp.requestFullscreen();
+      }
     },
 
     initDataRaw() {
