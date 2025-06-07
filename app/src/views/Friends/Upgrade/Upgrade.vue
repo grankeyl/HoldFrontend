@@ -368,6 +368,7 @@ export default {
       const onReward = () => {
         PageType.value === 'all' ? upgradeAll() : upgradeFriend();
       }
+      
       const onError = () => {
         toast.warn(proxy.$t('Toasts.ErrorShowAds'));
         VideoUpgradeLoading.value = false;
