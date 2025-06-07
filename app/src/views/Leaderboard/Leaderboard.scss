@@ -201,7 +201,7 @@
 
         &Leader {
           width: 100%;
-          height: 79px;
+          height: 90px;
           margin-left: -10px;
           display: flex;
           align-items: center;
@@ -212,7 +212,12 @@
           padding-right: $app-page-padding-right;
           transform: translateY(20px);
           animation: fadeInUp 0.63s forwards;
+          border-bottom: 1px solid rgba($app-bg-secondary-h, 0.6);
           opacity: 0;
+
+          &:last-child {
+            border-bottom: none;
+          }
           
           &Number {
             width: 38px;

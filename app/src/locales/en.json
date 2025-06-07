@@ -107,7 +107,7 @@
 
     "Leaderboard": {
         "Title": "Leaders",
-        "Description": "Top 100 masters earn exclusive rewards. The more slaves you bring — the higher you rise."
+        "Description": "Top 100 <span class='muted'>masters earn</span> exclusive rewards.<br><span class='muted'>The</span> more slaves <span class='muted'>you bring — the higher you</span> rise."
     },
 
     "Tasks": {
