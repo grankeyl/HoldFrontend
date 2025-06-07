@@ -1,19 +1,20 @@
 import { on, postEvent } from '@telegram-apps/sdk';
 import { invoice } from '@telegram-apps/sdk';
+import { isDesktop } from '@/utils/checkDevice';
 
 import WebApp from "@twa-dev/sdk";
-import { isDesktop } from '@/utils/checkDevice';
 
 const TelegramModule = {
     async initMiniApp() { 
       WebApp.requestWriteAccess();
-      WebApp.disableVerticalSwipes();
-      WebApp.ready();
-      WebApp.expand();
 
       if (!isDesktop()) {
         WebApp.requestFullscreen();
       }
+
+      WebApp.disableVerticalSwipes();
+      WebApp.ready();
+      WebApp.expand();
     },
 
     initDataRaw() {
