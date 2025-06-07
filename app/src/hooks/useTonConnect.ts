@@ -1,7 +1,7 @@
 import { TonConnectUI, THEME } from '@tonconnect/ui';
 
 export const tonConnectUI = new TonConnectUI({
-  manifestUrl: 'https://tonconnect-vue.vercel.app/tonconnect-manifest.json',
+  manifestUrl: 'https://holdslaves.com/tonconnect-manifest.json',
 });
 
 tonConnectUI.uiOptions = {
