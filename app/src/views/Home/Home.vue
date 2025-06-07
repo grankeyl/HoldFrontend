@@ -438,6 +438,11 @@ export default {
       const result = await adsApi.complete({ reward_token: localStorage.getItem('ads_last') || '' });
       if (!result) { return; }
 
+      if (result.type === 'no_cost') {
+        toast.error(proxy.$t('Toasts.NotEnoughTokens', { tokens: result.value }));
+        return;
+      }
+
       GameInfo.value.BalanceCurrent = result.balance;
       UserData.value.balance = result.balance;
 
