@@ -21,9 +21,9 @@ jobs:
       - name: Clean remote frontend directory
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
           script: |
             cd project/frontend
             rm -rf dist
@@ -33,9 +33,9 @@ jobs:
       - name: Upload Dockerfile
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
           source: "docker/Dockerfile.frontend"
           target: project/frontend
           rm: false
@@ -43,9 +43,9 @@ jobs:
       - name: Upload nginx.conf
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
           source: "nginx.conf"
           target: project/frontend
           rm: false
@@ -53,9 +53,9 @@ jobs:
       - name: Upload dist directory
         uses: appleboy/scp-action@v0.1.4
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }} 
-          password: ${{ secrets.SSH_PASSWORD }}
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }} 
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
           source: "app/dist/*"
           target: project/frontend/dist
           strip_components: 2
@@ -64,9 +64,9 @@ jobs:
       - name: Restart Frontend Container
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          password: ${{ secrets.DEV_SSH_PASSWORD }}
           script: |
             cd project
             docker compose up frontend --build -d

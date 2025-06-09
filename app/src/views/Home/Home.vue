@@ -410,6 +410,10 @@ export default {
       ReferralsTokenPerHour: 0,
     });
 
+    if (UserData.value.balance >= 0) {
+      UserData.value.is_slaved = false;
+    }
+
     const ContextInfoVideo = ref<HTMLElement>();
     
     const AddBalanceAnimation = () => {
