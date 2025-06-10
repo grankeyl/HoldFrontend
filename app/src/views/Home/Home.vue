@@ -607,6 +607,10 @@ export default {
 
     this.$emit('loaded');
     this.$watch(() => this.UserData.balance, (newValue: number) => {
+      console.log(this.UserData);
+      console.log(newValue);
+      console.log(this.UserData.is_slaved);
+      console.log(this.UserData.balance);
       if (this.UserData.is_slaved === true && newValue >= 0) {
         this.UserData.is_slaved = false;
         this.UserData.place.place_id = 1;
