@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import { fileURLToPath } from 'node:url'
 import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
+// import vueDevTools from 'vite-plugin-vue-devtools'
 import path from 'node:path'
 
 const __filename = fileURLToPath(import.meta.url)
@@ -14,7 +14,7 @@ export default defineConfig({
 
   plugins: [
     vue(), 
-    vueDevTools()
+    // vueDevTools()
   ],
   
   server: {

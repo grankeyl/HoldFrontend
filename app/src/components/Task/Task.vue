@@ -37,7 +37,8 @@ function onTaskRender(
 }
 
 async function onTaskReward(task: Task, signedToken: string) {
-  console.log('✅ onTaskReward', task, signedToken);
+  console.log('✅ onReward', task, signedToken);
+
   const appCache = AppCache() as any;
   const adUse = await adsApi.request({ task_type: 'task' });
   if (!adUse) return;
@@ -62,13 +63,11 @@ async function onTaskReward(task: Task, signedToken: string) {
 }
 
 function onTaskReject(task: Task) {
-  console.log('✅ onTaskReject', task);
-  toast.error('Task rejected');
+  console.log('❌ onReject', task);
+  toast.error(proxy.$t('Toasts.ErrorTask'));
 }
 
 function onTaskLoad(tasks: Task[]) {
-  console.log('✅ onTaskLoad');
-
   if (tasks && tasks.length > 0) {
     hasVisibleTasks.value = true;
     isLoading.value = false;
@@ -87,10 +86,7 @@ function initTraffyTasks() {
     return;
   }
 
-  console.log('✅ Вызываю Traffy.renderTasks');
-
   if (typeof window.Traffy !== 'undefined' && window.Traffy.renderTasks) {
-    console.log('✅ window.Traffy определен');
     container.innerHTML = '';
     window.Traffy.renderTasks(container, {
       max_tasks: 3,

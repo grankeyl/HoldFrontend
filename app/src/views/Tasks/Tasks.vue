@@ -690,7 +690,7 @@ export default {
 
           const check = this.useTaskJoinMiniApp(task) as any;
           if (check) { taskToUpdate.isLoading = false; }
-        }, 1680);
+        }, 2680);
       }
 
       if (task.condition_type === 'JoinSite') {
@@ -704,7 +704,7 @@ export default {
 
           const check = this.useTaskJoinSite(task) as any;
           if (check) { taskToUpdate.isLoading = false; }
-        }, 1680);
+        }, 2680);
       }
     },
 
