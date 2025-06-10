@@ -77,5 +77,15 @@
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
+    <script>
+      if (localStorage.getItem('showErudaT') === '1') {
+        window.addEventListener('DOMContentLoaded', () => {
+          const script = document.createElement('script');
+          script.src = 'https://cdn.jsdelivr.net/npm/eruda';
+          script.onload = () => eruda.init();
+          document.body.appendChild(script);
+        });
+      }
+    </script>
   </body>
 </html>
