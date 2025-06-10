@@ -447,7 +447,7 @@ export default {
       }
 
       GameInfo.value.BalanceCurrent = result.balance;
-      UserData.value.balance = result.balance;
+      UserData.balance = result.balance;
       AddBalanceAnimation();
     };
 
