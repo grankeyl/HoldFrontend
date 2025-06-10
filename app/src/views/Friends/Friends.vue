@@ -183,7 +183,7 @@
           >
             <div class="contextFriendsItemsItemDeep">
               <img 
-                src="/friends/rab-1.png"
+                :src="'/friends/rabs/rab-' + referral.ref_level + '.png'"
                 alt="rab-1"
                 class="fade-in"
                 @load="onImageLoad"
