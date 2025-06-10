@@ -157,11 +157,17 @@ export default {
       }
     });
 
+    const onRouterViewLoaded = () => {
+      miniAppLoading.value = false;
+      loadingPage.value = false;
+    };
+
     return {
       loadingPage,
       pageSuccess,
       miniAppLoading,
       initDataRaw,
+      onRouterViewLoaded
     };
   },
 
@@ -176,10 +182,6 @@ export default {
   },
 
   methods: {
-    onRouterViewLoaded() {
-      this.RouterViewLoaded = true;
-    },
-
     initMenu() {
       const excludedRoutes: Array<string | null> = [
         'onborad', 'place', 'friends-upgrade', 'level-up', 'error', 'banned'

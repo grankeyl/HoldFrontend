@@ -201,6 +201,7 @@ export default {
   mounted() {
     TelegramModule.hideBackButton();
 
+    this.$emit('loaded');
     this.fetchLeaders();
   },
 
