@@ -224,7 +224,7 @@
         />
         
         <div class="contextTasks">
-          <div class="contextTasksTitle">
+          <div class="contextTasksTitle socials">
             <h4 v-html="$t('Tasks.Socials')"></h4>
           </div>
 

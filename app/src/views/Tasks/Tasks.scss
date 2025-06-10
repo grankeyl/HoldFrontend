@@ -600,6 +600,10 @@
           z-index: 1;
           gap: 8px;
           margin-bottom: 12px;
+
+          &.socials {
+            margin-bottom: 2px;
+          }
           
           & h4 {
             width: 100%;

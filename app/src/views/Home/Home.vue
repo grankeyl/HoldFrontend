@@ -610,15 +610,7 @@ export default {
 
     this.$emit('loaded');
     this.startBalanceWatcher();
-    // this.$watch(() => this.UserData.balance, (newValue: number) => {
-    //   if (this.UserData.is_slaved === true && newValue >= 0) {
-    //     this.UserData.is_slaved = false;
-    //     this.UserData.place.place_id = 1;
-    //     this.UserData.place.place_type = 'village';
-    //     this.userProgressInit();
-    //   }
-    // });
-    
+
     document.addEventListener('click', this.handleClickOutside);
   },
 
