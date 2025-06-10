@@ -398,14 +398,13 @@ export default {
 
   setup() {
     const { proxy } = getCurrentInstance()! as any;
-    const { UserData } = AppCache() as any;
+    const appCache = AppCache() as any;
+    const UserData = appCache.UserData;
 
     const GameInfo = ref({
       Balance: 0,
       BalanceCurrent: 0,
-
       Level: 1,
-
       ReferralsTokenPerHour: 0,
     });
 
@@ -446,10 +445,15 @@ export default {
         return;
       }
 
-      console.log(result);
-
       GameInfo.value.BalanceCurrent = result.balance;
-      UserData.balance = result.balance;
+
+      appCache.$patch({
+        UserData: {
+          ...appCache.UserData,
+          balance: result.balance,
+        }
+      });
+
       AddBalanceAnimation();
     };
 
@@ -482,7 +486,7 @@ export default {
       await showAd();
     };
 
-    return {
+    return { 
       UserData,
       GameInfo,
       ContextInfoVideo,
