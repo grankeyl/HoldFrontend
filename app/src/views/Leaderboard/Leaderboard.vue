@@ -17,10 +17,9 @@
 
         <div class="contextTitle">
           <IconComp
-            :icon="Icon.CircleFull"
+            :icon="Icon.CrownFill"
             width="27px"
             height="27px"
-            pathColor="#fff"
           />
           <h4 v-html="$t('Leaderboard.Title')"></h4>
         </div>

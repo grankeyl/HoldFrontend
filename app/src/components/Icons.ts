@@ -1,6 +1,7 @@
 import TownIcon from '/icons/Town.svg?raw';
 import CircleIcon from '/icons/Circle.svg?raw';
 import CrownIcon from '/icons/Crown.svg?raw';
+import CrownFillIcon from '/icons/CrownFill.svg?raw';
 import WalletIcon from '/icons/Wallet.svg?raw';
 import WalletFullIcon from '/icons/WalletFull.svg?raw';
 import InfoSmallIcon from '/icons/InfoSmall.svg?raw';
@@ -28,6 +29,7 @@ export const Icon = {
     Town: TownIcon,
     Circle: CircleIcon,
     Crown: CrownIcon,
+    CrownFill: CrownFillIcon,
     Wallet: WalletIcon, 
     WalletFull: WalletFullIcon,
     InfoSmall: InfoSmallIcon,
