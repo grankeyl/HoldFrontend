@@ -116,7 +116,7 @@
             <img 
               class="chains-small fade-in" 
               src="/home/chains-small.webp"
-              alt="chains-small" 
+              alt="chains-small"
               @load="onImageLoad"
             />
             <div class="kit-icon" v-html="Icon.InfoSmall"></div>

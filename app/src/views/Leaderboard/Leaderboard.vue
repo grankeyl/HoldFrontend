@@ -1,17 +1,17 @@
 <template>
+  <div class="head-balance">
+    <h4>{{ UserData.balance }}</h4>
+    <IconComp 
+      :icon="Icon.Token"
+      width="16px"
+      height="16px"
+    />
+  </div>
+
   <section 
     class="_wrap _leaderboard" 
     :class="{ show: !IsPageLoading }"
   >
-    <div class="head-balance">
-      <h4>{{ UserData.balance }}</h4>
-      <IconComp 
-        :icon="Icon.Token"
-        width="16px"
-        height="16px"
-      />
-    </div>
-
     <div class="_view">
       <div class="context">
 
