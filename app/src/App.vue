@@ -132,7 +132,6 @@ export default {
         appCache.TasksData.Tasks = [ ...tasksGet.tasks ];
 
         if (userGet) {
-          onAppLoad();
         }
 
         if (isAuthenticated.status) {
@@ -142,6 +141,10 @@ export default {
             name: 'onborad', 
             params: { type: isAuthenticated.status }
           });
+          
+          if (userGet) { onAppLoad(); }
+        } else {
+          if (userGet) { onAppLoad(); }
         }
       }
     });
