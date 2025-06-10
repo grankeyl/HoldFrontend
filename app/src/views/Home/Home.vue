@@ -446,6 +446,8 @@ export default {
         return;
       }
 
+      console.log(result);
+
       GameInfo.value.BalanceCurrent = result.balance;
       UserData.balance = result.balance;
       AddBalanceAnimation();
