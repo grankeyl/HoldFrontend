@@ -227,7 +227,7 @@ export default {
         '/tasks/rabs.png',
         '/logotype.svg',
       ].map(src => new Promise<void>((resolve) => {
-        const img = new Image();
+        const img = new Image(); 
         img.onload = img.onerror = () => resolve();
         img.src = src;
       }));
