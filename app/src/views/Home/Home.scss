@@ -411,10 +411,10 @@
         }
       
         p {
+            max-width: 260px;
             width: fit-content;
             font-size: 17px;
             margin: auto;
-            white-space: nowrap;
 
             span {
                 color: $app-color-tint;
