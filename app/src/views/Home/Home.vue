@@ -106,7 +106,6 @@
 
     <div class="_view">
       <div class="context">
-
         <div 
           v-if="SlavedPage"
           @click="openPlace()"
@@ -608,11 +607,10 @@ export default {
 
     this.$emit('loaded');
     this.$watch(() => this.UserData.balance, (newValue: number) => {
-      if (this.UserData.is_slaved && newValue >= 0) {
+      if (this.UserData.is_slaved === true && newValue >= 0) {
         this.UserData.is_slaved = false;
         this.UserData.place.place_id = 1;
         this.UserData.place.place_type = 'village';
-        // this.$router.push('/level-up');
         this.userProgressInit();
       }
     });
