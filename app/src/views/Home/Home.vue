@@ -398,7 +398,7 @@ export default {
   setup() {
     const { proxy } = getCurrentInstance()! as any;
     const appCache = AppCache() as any;
-    const UserData = appCache.UserData;
+    const UserData = appCache.UserData as any;
 
     const GameInfo = ref({
       Balance: 0,
@@ -445,6 +445,7 @@ export default {
       }
 
       GameInfo.value.BalanceCurrent = result.balance;
+      UserData.balance = result.balance;
 
       appCache.$patch({
         UserData: {
@@ -539,6 +540,8 @@ export default {
       },
 
       PlacesListData: getPlacesData() as any,
+
+      BalanceWatcherInterval: null as any,
     }
   },
 
@@ -606,23 +609,22 @@ export default {
     });
 
     this.$emit('loaded');
-    this.$watch(() => this.UserData.balance, (newValue: number) => {
-      console.log(this.UserData);
-      console.log(newValue);
-      console.log(this.UserData.is_slaved);
-      console.log(this.UserData.balance);
-      if (this.UserData.is_slaved === true && newValue >= 0) {
-        this.UserData.is_slaved = false;
-        this.UserData.place.place_id = 1;
-        this.UserData.place.place_type = 'village';
-        this.userProgressInit();
-      }
-    });
+    this.startBalanceWatcher();
+    // this.$watch(() => this.UserData.balance, (newValue: number) => {
+    //   if (this.UserData.is_slaved === true && newValue >= 0) {
+    //     this.UserData.is_slaved = false;
+    //     this.UserData.place.place_id = 1;
+    //     this.UserData.place.place_type = 'village';
+    //     this.userProgressInit();
+    //   }
+    // });
     
     document.addEventListener('click', this.handleClickOutside);
   },
 
   beforeUnmount() {
+    clearInterval(this.BalanceWatcherInterval);
+
     if (this.IntervalId) {
       clearInterval(this.IntervalId);
     }
@@ -630,6 +632,20 @@ export default {
   },
 
   methods: {
+    startBalanceWatcher() {
+      if (!this.UserData.is_slaved) return;
+
+      this.BalanceWatcherInterval = setInterval(() => {
+        if (this.UserData.is_slaved === true && this.UserData.balance >= 0) {
+          this.UserData.is_slaved = false;
+          this.UserData.place.place_id = 1;
+          this.UserData.place.place_type = 'village';
+          this.userProgressInit();
+          clearInterval(this.BalanceWatcherInterval);
+        }
+      }, 1000);
+    },
+
     onImageLoad(event: Event) {
       const img = event.target as HTMLImageElement;
       img.classList.add('loaded');
