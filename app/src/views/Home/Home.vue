@@ -398,9 +398,8 @@ export default {
 
   setup() {
     const { proxy } = getCurrentInstance()! as any;
-    
-    const appCache = AppCache();
-    const UserData = ref(appCache.UserData);
+    const { UserData } = AppCache() as any;
+
     const GameInfo = ref({
       Balance: 0,
       BalanceCurrent: 0,
@@ -449,7 +448,6 @@ export default {
 
       GameInfo.value.BalanceCurrent = result.balance;
       UserData.value.balance = result.balance;
-
       AddBalanceAnimation();
     };
 
