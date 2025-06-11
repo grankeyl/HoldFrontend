@@ -42,7 +42,8 @@
 
           <div class="contextInfoImage">
             <img 
-              src="/levelup/shield1.png"
+              v-if="LevelUpData.NewLevelNameEn"
+              :src="PlacesListData[LevelUpData.NewLevelNameEn.toLowerCase()].icon"
               alt="shield1"
               class="fade-in"
               @load="onImageLoad"
@@ -158,6 +159,7 @@ export default {
         OldLevelName: 'Village',
         NewLevelId: 2,
         NewLevelName: 'City',
+        NewLevelNameEn: 'City',
         FriendsCount: 0,
         Percents: 0,
       },
@@ -302,6 +304,9 @@ export default {
         newName = this.PlacesListData[placeType]?.nameEn;
         this.LevelUpData.NewLevelName = newName;
       }
+      
+      newName = this.PlacesListData[placeType]?.nameEn;
+      this.LevelUpData.NewLevelNameEn = newName;
 
       this.LevelUpData.FriendsCount = this.UserData.referrals_count;
       this.LevelUpData.Percents = this.PlacesData[this.UserData.place.place_id].percents_add;
