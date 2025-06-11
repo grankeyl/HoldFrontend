@@ -38,14 +38,20 @@
           </div>
           <div class="contextInfoImage">
             <img 
-              v-if="FriendData.old_level <= 3"
+              v-if="PageType === 'all'"
+              :src="'/friends/rabs.png'"
+              class="fade-in"
+              @load="onImageLoad"
+            />
+            <img 
+              v-if="PageType === 'slave' && FriendData.old_level <= 3"
               :src="'/friends/rabs/rab-' + FriendData.old_level + '.png'"
               alt="rab-1"
               class="fade-in"
               @load="onImageLoad"
             />
             <img 
-              v-if="FriendData.old_level >= 4"
+              v-if="PageType === 'slave' && FriendData.old_level >= 4"
               :src="'/friends/rabs/rab-' + 3 + '.png'"
               alt="rab-1"
               class="fade-in"
