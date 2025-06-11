@@ -183,7 +183,15 @@
           >
             <div class="contextFriendsItemsItemDeep">
               <img 
+                v-if="referral.ref_level <= 3"
                 :src="'/friends/rabs/rab-' + referral.ref_level + '.png'"
+                alt="rab-1"
+                class="fade-in"
+                @load="onImageLoad"
+              />
+              <img 
+                v-if="referral.ref_level >= 4"
+                :src="'/friends/rabs/rab-' + 3 + '.png'"
                 alt="rab-1"
                 class="fade-in"
                 @load="onImageLoad"
