@@ -330,7 +330,6 @@ import Loader from '@/components/Loader.vue'
 import Modal from '@/components/Modal/Modal.vue';
 import AdsgramTask from '@/components/AdsgramTask/AdsgramTaskWrapper.vue';
 import TraffyTasks from '@/components/Task/Task.vue';
-import { nextTick } from 'process';
 
 export default {
   props: {
@@ -826,13 +825,19 @@ export default {
       }
 
       if (task.condition_type === 'Stories') {
+        let StoryImage = import.meta.env.VITE_APP_STORIES_TASK_EN;
+
+        if (this.$i18n.locale === 'ru') {
+          StoryImage = import.meta.env.VITE_APP_STORIES_TASK_RU;
+        }
+
         const language = this.$i18n.locale;
         const referralLink = getReferralLink(this.UserData.referral_code);
 
         taskToUpdate.isLoading = true;
 
         TelegramModule.useShareStory(
-          import.meta.env.VITE_APP_STORIES_PREMIUM,
+          StoryImage,
           language, referralLink
         )
           .then(async (status) => {
