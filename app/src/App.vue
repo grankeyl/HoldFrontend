@@ -43,6 +43,7 @@ export default {
 
   setup() {
     const isDev = import.meta.env.DEV;
+    const initDataUnsafe = ref(TelegramModule.initData()) as any;
     const initDataRaw = ref(isDev
       ? import.meta.env.VITE_INIT_DATA
       : TelegramModule.initDataRaw()
@@ -101,6 +102,14 @@ export default {
       checkLevelUp();
     }
 
+    const redirectApp = async (start_param: string) => {
+      if (start_param === 'p_home') { router.push('/'); }
+      if (start_param === 'p_tasks') { router.push('/tasks'); }
+      if (start_param === 'p_leaderboard') { router.push('/leaderboard'); }
+      if (start_param === 'p_wallet') { router.push('/wallet'); }
+      if (start_param === 'p_friends') { router.push('/friends'); }
+    }
+
     const showEruda = async (user_id: number) => {
       const allowedIds = [799631929, 2106187940, 769703344, 7274565407];
       if (allowedIds.includes(user_id)) {
@@ -152,7 +161,11 @@ export default {
           
           if (userGet) { onAppLoad(); }
         } else {
-          if (userGet) { onAppLoad(); }
+          if (userGet) {
+            onAppLoad();
+            console.log(initDataUnsafe.value)
+            redirectApp(initDataUnsafe.value.start_param);
+          }
         }
       }
     });
