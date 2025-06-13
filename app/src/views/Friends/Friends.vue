@@ -280,7 +280,7 @@ export default {
 
       FriendsData: [] as any,
       FriendsOffset: 0,
-      FriendsLimit: 10,
+      FriendsLimit: 20,
       FriendsObserver: null as IntersectionObserver | null,
       LastFriendRef: null as HTMLElement | null,
 

@@ -234,7 +234,7 @@
               class="contextTasksItemsItem"
               :style="{ animationDelay: `${i * 0.27}s` }"
             >
-              <div class="contextTasksItemsItemDeep">
+              <div v-if="task.condition_type !== 'Stories'" class="contextTasksItemsItemDeep">
                 <img 
                   :src="task.condition_value.PhotoUrl"
                   alt="image"
@@ -242,11 +242,20 @@
                   @load="onImageLoad"
                 >
               </div>
+              <div v-if="task.condition_type === 'Stories'" class="contextTasksItemsItemDeep stories">
+                <IconComp
+                  :icon="Icon.Repost"
+                  width="27px"
+                  height="27px"
+                />
+              </div>
               <div class="contextTasksItemsItemContent">
                 <div slot="reward" class="contextTasksItemsItemContentTitle">
                   <h4 v-if="task.condition_type === 'SubscribeChannel'">{{ task.condition_value.ChannelName }}</h4>
                   <h4 v-if="task.condition_type === 'JoinMiniapp'">{{ task.condition_value.MiniAppName }}</h4>
                   <h4 v-if="task.condition_type === 'JoinSite'">{{ task.condition_value.SiteName }}</h4>
+                  <h4 v-if="task.condition_type === 'Stories' && $i18n.locale === 'ru'">{{ task.condition_value.stories_ru }}</h4>
+                  <h4 v-if="task.condition_type === 'Stories' && $i18n.locale === 'en'">{{ task.condition_value.stories }}</h4>
                 </div>
                 <div slot="reward" class="contextTasksItemsItemContentReward">
                   <span>+{{ task.reward_value }}</span>
@@ -272,13 +281,21 @@
                   <span v-html="$t('Tasks.Claim')"></span>
                 </button>
               </div>
-              <div v-if="!task.isLoading && task.isClaimed && task.isDone" slot="button" class="contextTasksItemsItemButton done">
+              <div v-if="!task.isLoading && task.isClaimed && task.isDone && task.condition_type !== 'Stories'" slot="button" class="contextTasksItemsItemButton done">
                 <button>
                   <IconComp 
                     :icon="Icon.Done"
                     width="12px"
                     height="12px"
                   />
+                </button>
+              </div>
+              <div
+                v-if="!task.isLoading && task.isClaimed && task.isDone && task.condition_type === 'Stories'"
+                class="contextTasksItemsItemButton done"
+              >
+                <button class="stories">
+                  <span>{{ task.cooldownTimeLeft || '00:00' }}</span>
                 </button>
               </div>
             </div>
@@ -313,6 +330,7 @@ import Loader from '@/components/Loader.vue'
 import Modal from '@/components/Modal/Modal.vue';
 import AdsgramTask from '@/components/AdsgramTask/AdsgramTaskWrapper.vue';
 import TraffyTasks from '@/components/Task/Task.vue';
+import { nextTick } from 'process';
 
 export default {
   props: {
@@ -404,9 +422,37 @@ export default {
 
   mounted() {
     TelegramModule.hideBackButton();
-    
+
     this.waitForAssets(); 
     this.animateReferralsProgress();
+  },
+
+  watch: {
+    TasksData: {
+      handler(newTasks: any[]) {
+        newTasks?.forEach((task: any) => {
+          if (
+            task.condition_type === 'Stories' &&
+            task.cooldown &&
+            !task._cooldownStarted
+          ) {
+            task._cooldownStarted = true; // флаг чтобы не перезапускать
+            console.log(task)
+            this.initCooldown(task);
+          }
+        });
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+
+  beforeUnmount() {
+    this.TasksData.forEach(task => {
+      if (task.cooldownInterval) {
+        clearInterval(task.cooldownInterval);
+      }
+    });
   },
 
   methods: {
@@ -451,6 +497,31 @@ export default {
 
     openHome() {
       this.$router.push('/');
+    },
+
+    initCooldown(task: any) {
+      const cooldownSeconds = Number(task.cooldown);
+      const targetTime = Math.floor(Date.now() / 1000) + cooldownSeconds;
+
+      const updateCooldown = () => {
+        const now = Math.floor(Date.now() / 1000);
+        const remaining = targetTime - now;
+
+        if (remaining <= 0) {
+          task.cooldownTimeLeft = '00:00:00';
+          clearInterval(task.cooldownInterval);
+          return;
+        }
+
+        const hours = Math.floor(remaining / 3600).toString().padStart(2, '0');
+        const minutes = Math.floor((remaining % 3600) / 60).toString().padStart(2, '0');
+        const seconds = (remaining % 60).toString().padStart(2, '0');
+
+        task.cooldownTimeLeft = `${hours}:${minutes}:${seconds}`;
+      };
+
+      updateCooldown();
+      task.cooldownInterval = setInterval(updateCooldown, 1000);
     },
 
     startCheckSubscribeChannel(ChannelId: any) {
@@ -620,6 +691,53 @@ export default {
       }
     },
 
+    async useStories(task: any) {
+      const appCache = AppCache();
+      
+      const taskToUpdate = this.TasksData.find((t: any) => String(t.id) === String(task.id));
+      if (!taskToUpdate) { return; }
+      
+      if (task.isClaimed && !task.isDone) {
+        const use = await tasksApi.use({ 
+          taskId: task.id,
+          taskProgress: { isClaimed: true, isDone: false }
+        });
+
+        if (use && use.status === 'claimed') {
+          task.isClaimed = true;
+          task.isDone = false;
+          taskToUpdate.isClaimed = true;
+          taskToUpdate.isDone = false;
+
+          TelegramModule.useMediumHaptic();
+        }
+      }
+
+      if (task.isClaimed && task.isDone) {
+        const use = await tasksApi.use({ 
+          taskId: task.id,
+          taskProgress: { isClaimed: true, isDone: true }
+        });
+
+        if (use && use.status === 'done') {
+          taskToUpdate.isLoading = true;
+
+          task.isClaimed = true;
+          task.isDone = true;
+          taskToUpdate.isClaimed = true;
+          taskToUpdate.isDone = true;
+
+          collectConfetti();
+          TelegramModule.useMediumHaptic();
+
+          appCache.UserData.balance += use.tickets;
+          toast.success(this.proxy.$t('Toasts.SuccessEarnTokens', { tokens: use.tickets }));
+
+          taskToUpdate.isLoading = false;
+        }
+      }
+    },
+
     async useTaskRefCount(task: any) {
       const appCache = AppCache();
 
@@ -706,6 +824,32 @@ export default {
           if (check) { taskToUpdate.isLoading = false; }
         }, 2680);
       }
+
+      if (task.condition_type === 'Stories') {
+        const language = this.$i18n.locale;
+        const referralLink = getReferralLink(this.UserData.referral_code);
+
+        taskToUpdate.isLoading = true;
+
+        TelegramModule.useShareStory(
+          import.meta.env.VITE_APP_STORIES_PREMIUM,
+          language, referralLink
+        )
+          .then(async (status) => {
+            if (status) {
+              setTimeout(() => { 
+                task.isClaimed = true;
+                taskToUpdate.isClaimed = true;
+
+                const check = this.useStories(task) as any;
+                if (check) { taskToUpdate.isLoading = false; }
+              }, 6680);
+            }
+          })
+          .catch(() => {
+            taskToUpdate.isLoading = false;
+          });
+      }
     },
 
     async claimTask(task: any, type?: any) {
@@ -747,6 +891,15 @@ export default {
           task.isDone = true;
 
           this.useTaskRefCount(task);
+        }, 200);
+      }
+
+      if (task.condition_type === 'Stories') {
+        setTimeout(() => {
+          task.isClaimed = true;
+          task.isDone = true;
+
+          this.useStories(task);
         }, 200);
       }
     },

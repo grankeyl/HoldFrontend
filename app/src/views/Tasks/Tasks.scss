@@ -657,6 +657,15 @@
             gap: 10px;
             overflow: hidden;
 
+            &.stories {
+              background: $app-bg-secondary-h;
+
+              .kit-icon {
+                width: 27px;
+                height: 27px;
+              }
+            }
+
             & img {
               width: 100%;
               height: 100%;
@@ -744,6 +753,15 @@
               width: 44px;
               background: $app-bg-secondary-h;
               border: 1px solid rgba($app-bg-secondary-h, 0.1);
+
+              &.stories {
+                width: fit-content;
+
+                span {
+                  font-size: 14px;
+                  color: $app-color-tint;
+                }
+              }
 
               span {
                 color: $app-color-primary;
