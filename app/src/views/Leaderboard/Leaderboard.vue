@@ -116,7 +116,7 @@
           >
           <img 
             class="league fade-in" 
-            :src="PlacesListData[UserData.place.place_type].icon"
+            :src="PlacesListData?.[UserData?.place?.place_type]?.icon"
             alt="league"
             @load="onImageLoad"
           >
