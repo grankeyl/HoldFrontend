@@ -735,7 +735,7 @@ export default {
           taskToUpdate.isLoading = false;
 
           task._cooldownStarted = true;
-          task.cooldown = 43200000;
+          task.cooldown = 43200;
           this.initCooldown(task);
         }
       }
