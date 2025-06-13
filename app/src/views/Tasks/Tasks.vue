@@ -729,13 +729,14 @@ export default {
           collectConfetti();
           TelegramModule.useMediumHaptic();
 
-          task._cooldownStarted = true;
-          this.initCooldown(task);
-
           appCache.UserData.balance += use.tickets;
           toast.success(this.proxy.$t('Toasts.SuccessEarnTokens', { tokens: use.tickets }));
 
           taskToUpdate.isLoading = false;
+
+          task._cooldownStarted = true;
+          task.cooldown = 43200000;
+          this.initCooldown(task);
         }
       }
     },
