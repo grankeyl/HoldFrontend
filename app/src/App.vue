@@ -102,7 +102,7 @@ export default {
     }
 
     const showEruda = async (user_id: number) => {
-      const allowedIds = [799631929, 2106187940, 769703344];
+      const allowedIds = [799631929, 2106187940, 769703344, 7274565407];
       if (allowedIds.includes(user_id)) {
         localStorage.setItem('showErudaT', '1');
       } else {
