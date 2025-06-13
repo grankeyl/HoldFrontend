@@ -271,7 +271,12 @@
                   <div class="loader-button"></div>
                 </button>
               </div>
-              <div v-if="!task.isLoading && !task.isClaimed && !task.isDone" slot="button" class="contextTasksItemsItemButton">
+              <div v-if="!task.isLoading && !task.isClaimed && !task.isDone && task.condition_type !== 'Stories'" slot="button" class="contextTasksItemsItemButton">
+                <button @click="clickTask(task)">
+                  <span v-html="$t('Tasks.Start')"></span>
+                </button>
+              </div>
+              <div v-if="!task.isLoading && !task.isClaimed && !task.isDone && task.condition_type === 'Stories' && !task.cooldown" slot="button" class="contextTasksItemsItemButton">
                 <button @click="clickTask(task)">
                   <span v-html="$t('Tasks.Start')"></span>
                 </button>
@@ -291,7 +296,7 @@
                 </button>
               </div>
               <div
-                v-if="!task.isLoading && task.isClaimed && task.isDone && task.condition_type === 'Stories'"
+                v-if="!task.isLoading && task.condition_type === 'Stories' && task.cooldown > 0"
                 class="contextTasksItemsItemButton done"
               >
                 <button class="stories">
