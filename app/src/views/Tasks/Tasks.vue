@@ -729,6 +729,9 @@ export default {
           collectConfetti();
           TelegramModule.useMediumHaptic();
 
+          task._cooldownStarted = true;
+          this.initCooldown(task);
+
           appCache.UserData.balance += use.tickets;
           toast.success(this.proxy.$t('Toasts.SuccessEarnTokens', { tokens: use.tickets }));
 
