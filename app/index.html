@@ -7,6 +7,17 @@
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0">
     <title>HOLD</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CJMFXZXVHZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-CJMFXZXVHZ');
+    </script>
+
     <script>
       // Set up a mutation observer to wait for WebApp to be available
       const initWebApp = () => {
@@ -54,6 +65,7 @@
         }, 1000)
       }
     </script>
+
     <script>
       try {
         const originalStartViewTransition = document.startViewTransition
@@ -70,6 +82,7 @@
         console.error('View transitions setup failed:', error)
       }
     </script>
+    
     <!-- <script src="https://embed.traffy.site/v0.0.7/traffy-wrapper.min.js" resource-id="f5222027-75c6-4ed2-91fd-b61f999dfb62" mode="production"></script> -->
     <script src="https://embed.traffy.site/v0.0.7/traffy-wrapper.min.js" resource-id="16749589-af75-41cb-a717-2b002d289126" mode="production"></script>
   </head>

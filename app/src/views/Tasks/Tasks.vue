@@ -440,7 +440,7 @@ export default {
             task.cooldown &&
             !task._cooldownStarted
           ) {
-            task._cooldownStarted = true; // флаг чтобы не перезапускать
+            task._cooldownStarted = true;
             console.log(task)
             this.initCooldown(task);
           }

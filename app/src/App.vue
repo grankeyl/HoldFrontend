@@ -163,7 +163,6 @@ export default {
         } else {
           if (userGet) {
             onAppLoad();
-            console.log(initDataUnsafe.value)
             redirectApp(initDataUnsafe.value.start_param);
           }
         }
