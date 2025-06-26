@@ -80,7 +80,8 @@
         "Collect": "Collect",
         "BroughtYou": "Brought to you",
         "Upgrade": "Upgrade",
-        "Tip": "Invite your friends over to turn them into your slaves and raise goldfish"
+        "Tip": "Invite your friends over to turn them into your slaves and raise goldfish",
+        "Level": "{level} level"
     },
 
     "FriendsUpgrade": {

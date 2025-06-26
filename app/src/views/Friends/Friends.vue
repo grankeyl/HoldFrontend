@@ -182,7 +182,7 @@
             class="contextFriendsCategoriesItem" 
             :class="{ active: FriendsCategoryActive === category.level }"
           >
-            <p>{{ category?.level }} level</p>
+            <p v-html="$t('Friends.Level', { level: category?.level })"></p>
             <span>{{ category?.count }}</span>
           </div>
         </div>
