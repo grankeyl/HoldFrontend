@@ -107,7 +107,8 @@
 
     "Leaderboard": {
         "Title": "Leaders",
-        "Description": "Top 100 <span class='muted'>masters earn</span> exclusive rewards.<br><span class='muted'>The</span> more slaves <span class='muted'>you bring — the higher you</span> rise."
+        "Description": "Top 100 <span class='muted'>masters earn</span> exclusive rewards.<br><span class='muted'>The</span> more slaves <span class='muted'>you bring — the higher you</span> rise.",
+        "ShowMeToTop": "Display in the top"
     },
 
     "Tasks": {

@@ -35,7 +35,7 @@
               <input v-if="!UserData.show_top" type="checkbox">
               <span class="slider"></span>
             </label>
-            <span>Show me to top</span>
+            <span v-html="$t('Leaderboard.ShowMeToTop')"></span>
           </div>
         </div>
 

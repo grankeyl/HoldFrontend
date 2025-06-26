@@ -106,7 +106,8 @@
 
     "Leaderboard": {
         "Title": "Лидеры",
-        "Description": "100 лучших <span class='muted'>мастеров получают</span> эксклюзивные награды.<br><span class='muted'>Чем</span> больше рабов <span class='muted'>вы приведете, тем выше</span> подниметесь."
+        "Description": "100 лучших <span class='muted'>мастеров получают</span> эксклюзивные награды.<br><span class='muted'>Чем</span> больше рабов <span class='muted'>вы приведете, тем выше</span> подниметесь.",
+        "ShowMeToTop": "Отображение в топе"
     },
 
     "Tasks": {
