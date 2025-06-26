@@ -45,7 +45,7 @@ export const get = async (payload: FriendsGet) => {
     }
 
     const response = await api.post(
-      `/friends/get?offset=${payload.offset}&limit=${payload.limit}&level=${payload.level}`,
+      `/friends/get?offset=${payload.offset}&limit=${payload.limit}` + (payload.level ? `&level=${payload.level}` : ''),
       {},
       {
         headers: {

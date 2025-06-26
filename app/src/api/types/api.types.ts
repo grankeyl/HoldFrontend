@@ -65,7 +65,7 @@ export interface AdsCompletePayload {
 export interface FriendsGet {
   offset: number;
   limit: number;
-  level: number;
+  level?: number;
 }
 
 export interface FriendsCollect {
