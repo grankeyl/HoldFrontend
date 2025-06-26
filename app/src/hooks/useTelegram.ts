@@ -7,11 +7,6 @@ import WebApp from "@twa-dev/sdk";
 const TelegramModule = {
     async initMiniApp() { 
       WebApp.requestWriteAccess();
-
-    //   if (!isDesktop()) {
-    //     WebApp.requestFullscreen();
-    //   }
-
       WebApp.disableVerticalSwipes();
       WebApp.ready();
       WebApp.expand();

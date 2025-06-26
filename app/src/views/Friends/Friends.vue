@@ -175,6 +175,18 @@
           </div>
         </div>
 
+        <div class="contextFriendsCategories">
+          <div 
+            v-for="(category, i) in FriendsCategories" :key="i" 
+            @click="setFriendsCategoryActive(category.level)"
+            class="contextFriendsCategoriesItem" 
+            :class="{ active: FriendsCategoryActive === category.level }"
+          >
+            <p>{{ category?.level }} level</p>
+            <span>{{ category?.count }}</span>
+          </div>
+        </div>
+
         <div v-if="FriendsData && FriendsData.length > 0" class="contextFriendsItems">
           <div 
             v-for="(referral, i) in FriendsData" :key="i" 
@@ -202,13 +214,20 @@
               <div class="contextFriendsItemsItemContentTitle">
                 <h4>{{ referral.full_name }}</h4>
               </div>
-              <div class="contextFriendsItemsItemContentReward">
-                <span>+{{ toUniqNumber(referral.tokens_per_hour) }}</span>
-                <IconComp 
-                  :icon="Icon.Token"
-                  width="16px"
-                  height="16px"
-                />
+              <div
+                class="contextFriendsItemsItemContentReward"
+                :class="{
+                  'big': referral.tokens_per_hour >= 10000,
+                }"
+              >
+                <div class="contextFriendsItemsItemContentRewardFlexed">
+                  <span>+{{ toUniqNumber(referral.tokens_per_hour) }}</span>
+                  <IconComp 
+                    :icon="Icon.Token"
+                    width="16px"
+                    height="16px"
+                  />
+                </div>
                 <span>/{{ $t('App.Hour') }}</span>
               </div>
             </div>
@@ -233,7 +252,12 @@
           </div>
         </div>
 
-        <div v-if="FriendsData && FriendsData.length === 0" class="contextFriendsNull">
+        <div v-if="FriendsData && FriendsData.length === 0 && !FriendsLoading" class="contextFriendsNull">
+          <strong v-html="$t('Friends.Tip')"></strong>
+        </div>
+
+        <div v-if="FriendsLoading" class="contextFriendsLoad">
+          <div class="loader-button"></div>
           <strong v-html="$t('Friends.Tip')"></strong>
         </div>
 
@@ -282,7 +306,11 @@ export default {
       FriendsOffset: 0,
       FriendsLimit: 20,
       FriendsObserver: null as IntersectionObserver | null,
+      FriendsLoading: false,
       LastFriendRef: null as HTMLElement | null,
+
+      FriendsCategories: [] as any,
+      FriendsCategoryActive: 1,
 
       ShareReferralModal: false,
       ShareReferralCopied: false,
@@ -322,6 +350,7 @@ export default {
     
     this.waitForAssets();
     this.fetchFriends();
+    this.fetchFriendsCategories();
   },
 
   watch: {
@@ -448,6 +477,7 @@ export default {
       const response = await friendsApi.get({
         offset: Number(this.FriendsOffset),
         limit: Number(this.FriendsLimit),
+        level: this.FriendsCategoryActive,
       });
 
       if (response && response.referrals?.length) {
@@ -457,19 +487,38 @@ export default {
         this.FriendsObserver?.disconnect();
       }
     },
+
+    async fetchFriendsCategories() {
+      const response = await friendsApi.getCategories();
+
+      if (response && response.length) {
+        this.FriendsCategories.push(...response);
+      }
+    },
+
+    async setFriendsCategoryActive(category: number) {
+      this.FriendsCategoryActive = category;
+      this.FriendsData = [];
+      this.FriendsOffset = 0;
+      this.FriendsLoading = true;
+      this.fetchFriends(false);
+    },
     
-    async fetchFriends() {
+    async fetchFriends(reload: boolean = true) {
       const response = await friendsApi.get({
         offset: this.FriendsOffset,
         limit: this.FriendsLimit,
+        level: this.FriendsCategoryActive,
       });
 
       if (response && response.referrals?.length) {
-        this.initReferralsInfo({
-          ReferralsMoneyTakeCurrent: response.total_income,
-          ReferralsMoneyToHourCurrent: response.tokens_per_hour,
-          ReferralsMoneyAllCurrent: response.total_collected,
-        });
+        if (reload) {
+          this.initReferralsInfo({
+            ReferralsMoneyTakeCurrent: response.total_income,
+            ReferralsMoneyToHourCurrent: response.tokens_per_hour,
+            ReferralsMoneyAllCurrent: response.total_collected,
+          });
+        }
 
         this.$nextTick(async () => {
           await new Promise(resolve => setTimeout(resolve, 100));
@@ -477,6 +526,8 @@ export default {
           setTimeout(() => {
             this.FriendsData.push(...response.referrals);
             this.FriendsOffset += this.FriendsLimit;
+            this.FriendsLoading = false;
+            return true;
           }, 300);
         });
       } else {

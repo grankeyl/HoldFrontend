@@ -24,8 +24,19 @@
           <h4 v-html="$t('Leaderboard.Title')"></h4>
         </div>
 
-        <div class="contextDescrption">
+        <div class="contextDescription">
           <p v-html="$t('Leaderboard.Description')"></p>
+        </div>
+
+        <div class="contextHideTop">
+          <div class="contextHideTopSwitch" @click="setTop">
+            <label class="switch">
+              <input v-if="UserData.show_top" type="checkbox" checked>
+              <input v-if="!UserData.show_top" type="checkbox">
+              <span class="slider"></span>
+            </label>
+            <span>Show me to top</span>
+          </div>
         </div>
 
         <div v-if="LeadersData && LeadersData.length > 0" class="contextLeaders">
@@ -156,6 +167,7 @@ import { AppCache } from '@/stores/pinia';
 import { getPlacesData } from '@/utils/usePlaces';
 import { toUniqNumber } from '@/utils/useGame';
 
+import * as userApi from '@/api/services/user.service';
 import * as leadersApi from '@/api/services/leaders.service';
 
 import TelegramModule from '@/hooks/useTelegram';
@@ -258,6 +270,13 @@ export default {
 
     setLastLeaderRef(el: HTMLElement | any) {
       this.LastLeader = el;
+    },
+
+    async setTop() {
+      const response = await userApi.setTop() as any;
+      if (response.type === 'success') {
+        this.UserData.show_top = response.data;
+      }
     },
 
     initObserver() {

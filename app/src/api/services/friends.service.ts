@@ -9,6 +9,33 @@ import type {
 } from '../types/api.types';
 
 
+export const getCategories = async () => {
+  try {
+    const tokenAuth = Cookies.get("token");
+
+    if (!tokenAuth) {
+      throw new Error("Token not found");
+    }
+
+    const response = await api.post(
+      `/friends/get/categories`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${tokenAuth}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      return response.data.message;
+    }
+  } catch (e: any) {
+    throw new Error("Friends get failed");
+  }
+};
+
+
 export const get = async (payload: FriendsGet) => {
   try {
     const tokenAuth = Cookies.get("token");
@@ -18,7 +45,7 @@ export const get = async (payload: FriendsGet) => {
     }
 
     const response = await api.post(
-      `/friends/get?offset=${payload.offset}&limit=${payload.limit}`,
+      `/friends/get?offset=${payload.offset}&limit=${payload.limit}&level=${payload.level}`,
       {},
       {
         headers: {
