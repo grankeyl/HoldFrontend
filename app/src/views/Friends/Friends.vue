@@ -175,9 +175,17 @@
           </div>
         </div>
 
-        <div class="contextFriendsCategories">
+        <div 
+          class="contextFriendsCategories"
+          ref="scrollContainer"
+          @mousedown="startDrag"
+          @mousemove="onDrag"
+          @mouseup="stopDrag"
+          @mouseleave="stopDrag"
+        >
           <div 
-            v-for="(category, i) in FriendsCategories" :key="i" 
+            v-for="(category, i) in FriendsCategories" 
+            :key="i" 
             @click="setFriendsCategoryActive(category.level)"
             class="contextFriendsCategoriesItem" 
             :class="{ active: FriendsCategoryActive === category.level }"
@@ -312,6 +320,10 @@ export default {
       FriendsCategories: [] as any,
       FriendsCategoryActive: 1,
 
+      isDragging: false,
+      startX: 0,
+      scrollLeft: 0,
+      
       ShareReferralModal: false,
       ShareReferralCopied: false,
 
@@ -406,7 +418,7 @@ export default {
     },
 
     animateReferralsToHour() {
-      const duration = 1250;
+      const duration = 750;
       const start = performance.now();
       const from = 0;
       const to = this.ReferralsInfo.ReferralsMoneyToHourCurrent;
@@ -423,7 +435,7 @@ export default {
     },
 
     animateReferralsAll() {
-      const duration = 1250;
+      const duration = 750;
       const start = performance.now();
       const from = 0;
       const to = this.ReferralsInfo.ReferralsMoneyAllCurrent;
@@ -497,11 +509,13 @@ export default {
     },
 
     async setFriendsCategoryActive(category: number) {
+      if (this.FriendsCategoryActive === category) return;
+
       this.FriendsCategoryActive = category;
       this.FriendsData = [];
       this.FriendsOffset = 0;
       this.FriendsLoading = true;
-      this.fetchFriends(false);
+      this.fetchFriends(true);
     },
     
     async fetchFriends(reload: boolean = true) {
@@ -608,6 +622,26 @@ export default {
       this.addTotalCollected();
 
       collectConfetti();
+    },
+
+    startDrag(e: any) {
+      this.isDragging = true;
+      const scrollContainer = this.$refs.scrollContainer as HTMLElement;
+      this.startX = e.pageX - scrollContainer.offsetLeft;
+      this.scrollLeft = scrollContainer.scrollLeft;
+    },
+
+    onDrag(e: any) {
+      if (!this.isDragging) return;
+      e.preventDefault();
+      const scrollContainer = this.$refs.scrollContainer as HTMLElement;
+      const x = e.pageX - scrollContainer.offsetLeft;
+      const walk = (x - this.startX) * 1.5;
+      scrollContainer.scrollLeft = this.scrollLeft - walk;
+    },
+
+    stopDrag() {
+      this.isDragging = false;
     }
   },
 };
